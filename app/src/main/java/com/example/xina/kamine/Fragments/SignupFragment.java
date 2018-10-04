@@ -193,7 +193,7 @@ public class SignupFragment extends Fragment {
                 retrofit2.Call<SendOTPModel>call = apiInterface.getSendOTPDetail(mobile);
                 call.enqueue(new Callback<SendOTPModel>() {
                     @Override
-                    public void onResponse(retrofit2.Call<SendOTPModel> call, Response<SendOTPModel> response) {
+                    public void onResponse(retrofit2.Call<SendOTPModel> call, Response<SendOTPModel>  response) {
 
                         signupID=response.body().getSendOTPDetail().getId();
 
