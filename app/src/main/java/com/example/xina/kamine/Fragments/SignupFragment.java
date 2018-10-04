@@ -41,7 +41,7 @@ public class SignupFragment extends Fragment {
     EditText firestname,lastname,phone,password,email,dob;
     ImageView imgback;
     TextInputLayout dobt;
-    String gender,first_name,last_name,mobile,email_str,psswd,dateofbirth;
+    String gender,first_name,last_name,mobile,email_str,psswd,dateofbirth,signupID;
     TextView login;
     LinearLayout signup;
     RadioGroup group;
@@ -194,16 +194,22 @@ public class SignupFragment extends Fragment {
                 call.enqueue(new Callback<SendOTPModel>() {
                     @Override
                     public void onResponse(retrofit2.Call<SendOTPModel> call, Response<SendOTPModel> response) {
+
+                        signupID=response.body().getSendOTPDetail().getId();
+
+                        //x = response.body().getSendOTPDetail().getOtp();
                         if (response.body().getSuccess()==200){
                             progressDialog.dismiss();
                             Toast.makeText(getActivity(),response.message() , Toast.LENGTH_SHORT).show();
-                            SharedPreferences sp=getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+                            SharedPreferences sp = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor= sp.edit();
-                            editor.putString("firstName",first_name);
-                            editor.putString("lastname",last_name);
-                            editor.putString("gender",gender);
-                            editor.putString("dob",dateofbirth);
-                            editor.putString("mobile",mobile);
+                            editor.putString("firstName_signup",first_name);
+                            editor.putString("lastname_signup",last_name);
+                            editor.putString("gender_signup",gender);
+                            editor.putString("dob_signup",dateofbirth);
+                            editor.putString("mobile_signup",mobile);
+                            editor.putString("gender_signup",gender);
+                            editor.putString("ID_signup",signupID);
 
 
                         }else if(response.body().getSuccess()==201){
