@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_account"
+        android:icon="@drawable/iconred31_2"
+        android:title="My Account" />
+
+    <item
+        android:id="@+id/navigation_collections"
+        android:icon="@drawable/icon4"
+        android:enabled="true"
+        android:title="Collection" />
+
+    <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/iconkamine3"
+        android:enabled="true"
+        android:title="Home" />
+
+    <item
+        android:id="@+id/navigation_closet"
+        android:icon="@drawable/icon"
+        android:enabled="true"
+        android:title="Closet" />
+    <item
+        android:id="@+id/navigation_cart"
+        android:icon="@drawable/shoping"
+        android:enabled="true"
+        android:title="Bag" />
+
+</menu>
