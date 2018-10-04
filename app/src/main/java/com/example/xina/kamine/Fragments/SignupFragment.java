@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.telecom.Call;
@@ -39,6 +40,7 @@ public class SignupFragment extends Fragment {
 
     EditText firestname,lastname,phone,password,email,dob;
     ImageView imgback;
+    TextInputLayout dobt;
     String gender,first_name,last_name,mobile,email_str,psswd,dateofbirth;
     TextView login;
     LinearLayout signup;
@@ -57,6 +59,7 @@ public class SignupFragment extends Fragment {
         phone = view.findViewById(R.id.signup_phone);
         password= view.findViewById(R.id.signup_password);
         dob= view.findViewById(R.id.signup_dob);
+        //dobt = view.findViewById(R.id.textInputLayout18);
         email= view.findViewById(R.id.signup_email);
         imgback = view.findViewById(R.id.img_sign_back);
         group = view.findViewById(R.id.radioGroup2);
@@ -145,17 +148,27 @@ public class SignupFragment extends Fragment {
             }
         });
 
+        dob.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int mYear = c.get(Calendar.YEAR); // current year
+                int mMonth = c.get(Calendar.MONTH); // current month
+                int mDay = c.get(Calendar.DAY_OF_MONTH);
+                datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        dob.setText(dayOfMonth + "/"
+                                + (month+1)+"/"+year);
+                    }
+                },mYear,mMonth,mDay);
+                datePickerDialog.show();
+            }
+        });
+
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                dob.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        datemethodpro();
-                    }
-                });
-
 
                 first_name = firestname.getText().toString().trim();
                 last_name = lastname.getText().toString().trim();
@@ -189,7 +202,9 @@ public class SignupFragment extends Fragment {
                             editor.putString("firstName",first_name);
                             editor.putString("lastname",last_name);
                             editor.putString("gender",gender);
-                            editor.putString("dob",dob);
+                            editor.putString("dob",dateofbirth);
+                            editor.putString("mobile",mobile);
+
 
                         }else if(response.body().getSuccess()==201){
                             progressDialog.dismiss();
@@ -342,18 +357,7 @@ public class SignupFragment extends Fragment {
     }
 
     private void datemethodpro() {
-        final Calendar c = Calendar.getInstance();
-        int mYear = c.get(Calendar.YEAR); // current year
-        int mMonth = c.get(Calendar.MONTH); // current month
-        int mDay = c.get(Calendar.DAY_OF_MONTH);
-        datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                dob.setText(dayOfMonth + "/"
-                        + (month+1)+"/"+year);
-            }
-        },mYear,mMonth,mDay);
-        datePickerDialog.show();
+
     }
 
 }
