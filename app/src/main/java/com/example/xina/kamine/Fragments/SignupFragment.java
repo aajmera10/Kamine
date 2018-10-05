@@ -78,60 +78,6 @@ public class SignupFragment extends Fragment {
 
 
 
-        if (first_name.isEmpty()) {
-            firestname.setError("Please Fill Your Name");
-
-
-        }else if(last_name.isEmpty()){
-            lastname.setError("Please Fill Your Name");
-
-        } else if (mobile.isEmpty()) {
-
-            phone.setError("Please Fill Your Phone Number");
-        }
-        else if (psswd.isEmpty()) {
-
-            password.setError("Please Fill Your Password");
-        }
-        else if (email_str.isEmpty()) {
-
-            email.setError("Please Fill Your Email");
-        }
-        else if (!Patterns.EMAIL_ADDRESS.matcher(email_str).matches()) {
-
-            email.setError("Should be a Valid Email Address");
-        } else if (mobile.length() != 10 && mobile.length() != 0) {
-
-            phone.setError("please Enter 10 Digits");
-        }
-        for (int i = 0; i < mobile.length(); i++) {
-            char c = mobile.charAt(i);
-            if (!(c >= '0' && c <= '9')) {
-
-                phone.setError("Please enter a valid Number");
-            }
-        }
-        if (psswd.length() < 6 && psswd.length() != 0) {
-
-            password.setError("Password Can not be less than 6 letters");
-        }
-        for (int i = 0; i < first_name.length(); i++) {
-            char c = first_name.charAt(i);
-
-            if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))) {
-
-                firestname.setError("Please enter a valid name");
-            }
-        }
-        for (int i = 0; i < last_name.length(); i++) {
-            char c = last_name.charAt(i);
-
-            if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))) {
-
-                lastname.setError("Please enter a valid name");
-            }
-        }
-
 
         int gen = group.getCheckedRadioButtonId();
         if(gen==R.id.radioButton4){
@@ -177,6 +123,62 @@ public class SignupFragment extends Fragment {
                 mobile = phone.getText().toString().trim();
                 dateofbirth=dob.getText().toString().trim();
 
+
+                if (first_name.isEmpty()) {
+                    firestname.setError("Please Fill Your Name");
+
+
+                }else if(last_name.isEmpty()){
+                    lastname.setError("Please Fill Your Name");
+
+                } else if (mobile.isEmpty()) {
+
+                    phone.setError("Please Fill Your Phone Number");
+                }
+                else if (psswd.isEmpty()) {
+
+                    password.setError("Please Fill Your Password");
+                }
+                else if (email_str.isEmpty()) {
+
+                    email.setError("Please Fill Your Email");
+                }
+                else if (!Patterns.EMAIL_ADDRESS.matcher(email_str).matches()) {
+
+                    email.setError("Should be a Valid Email Address");
+                } else if (mobile.length() != 10 && mobile.length() != 0) {
+
+                    phone.setError("please Enter 10 Digits");
+                }
+                for (int i = 0; i < mobile.length(); i++) {
+                    char c = mobile.charAt(i);
+                    if (!(c >= '0' && c <= '9')) {
+
+                        phone.setError("Please enter a valid Number");
+                    }
+                }
+                if (psswd.length() < 6 && psswd.length() != 0) {
+
+                    password.setError("Password Can not be less than 6 letters");
+                }
+                for (int i = 0; i < first_name.length(); i++) {
+                    char c = first_name.charAt(i);
+
+                    if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))) {
+
+                        firestname.setError("Please enter a valid name");
+                    }
+                }
+                for (int i = 0; i < last_name.length(); i++) {
+                    char c = last_name.charAt(i);
+
+                    if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))) {
+
+                        lastname.setError("Please enter a valid name");
+                    }
+                }
+
+
                 int gen = group.getCheckedRadioButtonId();
                 if(gen==R.id.radioButton4){
                     gender="male";
@@ -195,7 +197,7 @@ public class SignupFragment extends Fragment {
                     @Override
                     public void onResponse(retrofit2.Call<SendOTPModel> call, Response<SendOTPModel>  response) {
 
-                        signupID=response.body().getSendOTPDetail().getId();
+                       // signupID=response.body().getSendOTPDetail().getId();
 
                         //x = response.body().getSendOTPDetail().getOtp();
                         if (response.body().getSuccess()==200){
@@ -210,6 +212,7 @@ public class SignupFragment extends Fragment {
                             editor.putString("mobile_signup",mobile);
                             editor.putString("gender_signup",gender);
                             editor.putString("ID_signup",signupID);
+                            removefragment(new EnterOTPFragment());
 
 
                         }else if(response.body().getSuccess()==201){

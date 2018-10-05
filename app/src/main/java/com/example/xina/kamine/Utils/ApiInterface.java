@@ -2,6 +2,7 @@ package com.example.xina.kamine.Utils;
 
 import com.example.xina.kamine.Model.LoginModel;
 import com.example.xina.kamine.Model.SendOTPModel;
+import com.example.xina.kamine.Model.SignUpDetailModel;
 
 
 import retrofit2.Call;
@@ -19,6 +20,9 @@ public interface ApiInterface {
   @POST("send_otp.php")
   @FormUrlEncoded
   Call<SendOTPModel> getSendOTPDetail(@Field("mobile") String MobileNo);
+  /*@POST("signup.php")
+  @FormUrlEncoded
+  Call<SignUpDetailModel>*/
 
 
 
