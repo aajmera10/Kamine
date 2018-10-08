@@ -1,6 +1,7 @@
 package com.example.xina.kamine.Fragments;
 
 import android.app.Fragment;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,19 +12,28 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.example.xina.kamine.Activities.MainHomeActivity;
 import com.example.xina.kamine.Adapter.MainHomeAdapterDisplay;
 import com.example.xina.kamine.Adapter.MainHomeSliderAdapter;
 import com.example.xina.kamine.Adapter.PicassoImageLoadingService;
 import com.example.xina.kamine.Model.HomeDisplayModel;
+import com.example.xina.kamine.Model.MainHomeCategoryListModel;
 import com.example.xina.kamine.R;
+import com.example.xina.kamine.Utils.ApiClient;
+import com.example.xina.kamine.Utils.ApiInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ss.com.bannerslider.Slider;
 import ss.com.bannerslider.event.OnSlideClickListener;
 
@@ -31,6 +41,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         RecyclerView recyclerView_horizontal_display,recyclerView_best_mens,
                 recyclerView_best_womens,recyclerView_bestsellers,recyclerView_whats_new;
         List<HomeDisplayModel>horizontallist,menslist,womenslist,whatsnewlist,bestsellerlist;
+        LinearLayout women,men,matching,best;
         Slider home_slider;
     @Nullable
     @Override
@@ -38,7 +49,10 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         View view = inflater.inflate(R.layout.main_home_fragment,container,false);
         ((MainHomeActivity)getActivity()).showBottom();
 
-
+            women = view.findViewById(R.id.home_women);
+            men = view.findViewById(R.id.home_men);
+            matching = view.findViewById(R.id.home_matching);
+            best = view.findViewById(R.id.home_clearance);
 
         //((AppCompatActivity)getActivity()).getSupportActionBar().isHideOnContentScrollEnabled();
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
@@ -134,22 +148,160 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         recyclerView_horizontal_display.setAdapter(horizontal);*/
 
 
+     women.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+             String idw = "2";
+             String woo = "Women";
+
+             final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+             progressDialog.setTitle("Loading...");
+             progressDialog.show();
+
+             ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+             Call<MainHomeCategoryListModel>call = apiInterface.getMainHomeCategory(idw,woo);
+             call.enqueue(new Callback<MainHomeCategoryListModel>() {
+                 @Override
+                 public void onResponse(Call<MainHomeCategoryListModel> call, Response<MainHomeCategoryListModel> response) {
+                     if (response.body().getSuccess().equals("200")){
+                         progressDialog.dismiss();
+                         //Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                         Toast.makeText(getContext(), "women", Toast.LENGTH_SHORT).show();
+
+                     }
+                 }
+
+                 @Override
+                 public void onFailure(Call<MainHomeCategoryListModel> call, Throwable t) {
+
+                     progressDialog.dismiss();
+                     Toast.makeText(getContext(),"oops", Toast.LENGTH_SHORT).show();
+                 }
+             });
+         }
+     });
+
+     men.setOnClickListener(new View.OnClickListener() {
+         @Override
+         public void onClick(View v) {
+             String idm = "1";
+             String man = "Men";
+
+             final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+             progressDialog.setTitle("Loading...");
+             progressDialog.show();
+
+             ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+             Call<MainHomeCategoryListModel>call = apiInterface.getMainHomeCategory(idm,man);
+             call.enqueue(new Callback<MainHomeCategoryListModel>() {
+                 @Override
+                 public void onResponse(Call<MainHomeCategoryListModel> call, Response<MainHomeCategoryListModel> response) {
+                     if (response.body().getSuccess().equals("200")){
+                         progressDialog.dismiss();
+                         //Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                         Toast.makeText(getContext(), "men", Toast.LENGTH_SHORT).show();
+
+
+                     }
+                 }
+
+                 @Override
+                 public void onFailure(Call<MainHomeCategoryListModel> call, Throwable t) {
+
+                     progressDialog.dismiss();
+                     Toast.makeText(getContext(),"oops", Toast.LENGTH_SHORT).show();
+                 }
+             });
+         }
+     });
+        matching.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String matc = "3";
+                String match = "Matching T-shirts";
+
+                final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setTitle("Loading...");
+                progressDialog.show();
+
+                ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                Call<MainHomeCategoryListModel>call = apiInterface.getMainHomeCategory(matc,match);
+                call.enqueue(new Callback<MainHomeCategoryListModel>() {
+                    @Override
+                    public void onResponse(Call<MainHomeCategoryListModel> call, Response<MainHomeCategoryListModel> response) {
+                        if (response.body().getSuccess().equals("200")){
+                            progressDialog.dismiss();
+                            //Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "matching", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MainHomeCategoryListModel> call, Throwable t) {
+
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(),"oops", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+        best.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String sel4 = "4";
+                String month = "T-shirt of the month";
+
+                final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+                progressDialog.setTitle("Loading...");
+                progressDialog.show();
+
+                ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                Call<MainHomeCategoryListModel>call = apiInterface.getMainHomeCategory(sel4,month);
+                call.enqueue(new Callback<MainHomeCategoryListModel>() {
+                    @Override
+                    public void onResponse(Call<MainHomeCategoryListModel> call, Response<MainHomeCategoryListModel> response) {
+                        if (response.body().getSuccess().equals("200")){
+                            progressDialog.dismiss();
+                            //Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Tshirt", Toast.LENGTH_SHORT).show();
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MainHomeCategoryListModel> call, Throwable t) {
+
+                        progressDialog.dismiss();
+                        Toast.makeText(getContext(),"oops", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        });
+
+
+
+
+
         return view;
 
-    }
-    private void replaceFragment(android.support.v4.app.Fragment f) {
-        FragmentManager manager = getFragmentManager();
-        FragmentTransaction transaction  = manager.beginTransaction();
+         }
+
+         private void replaceFragment(android.support.v4.app.Fragment f) {
+             FragmentManager manager = getFragmentManager();
+             FragmentTransaction transaction = manager.beginTransaction();
         /*transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
                 R.anim.fragment_slide_left_exit,
                 R.anim.fragment_slide_right_enter,
                 R.anim.fragment_slide_right_exit);*/
-        //bottomNavigationView.setVisibility(View.VISIBLE);
-        transaction.replace(R.id.frag_container,f);
-        transaction.addToBackStack(null);
-        transaction.commit();
+             //bottomNavigationView.setVisibility(View.VISIBLE);
+             transaction.replace(R.id.frag_container, f);
+             transaction.addToBackStack(null);
+             transaction.commit();
 
-    }
+         }}
 
 
-}
+
+
+

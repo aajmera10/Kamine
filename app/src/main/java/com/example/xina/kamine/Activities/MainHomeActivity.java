@@ -1,15 +1,14 @@
 package com.example.xina.kamine.Activities;
 
 import android.annotation.SuppressLint;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -17,22 +16,18 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 
-
-import com.example.xina.kamine.Adapter.MainHomeAdapterDisplay;
-import com.example.xina.kamine.BottomNavigationBehavior;
 import com.example.xina.kamine.Fragments.AccountFragment;
 import com.example.xina.kamine.Fragments.CartFragement;
 import com.example.xina.kamine.Fragments.ClosetFragment;
 import com.example.xina.kamine.Fragments.CollectionFragment;
 import com.example.xina.kamine.Fragments.HomeFragment;
 import com.example.xina.kamine.Fragments.LoginScreen;
-import com.example.xina.kamine.Fragments.MyOrders;
-import com.example.xina.kamine.Fragments.SignupFragment;
 import com.example.xina.kamine.R;
 
 public class MainHomeActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     Toolbar toolbar, shupment_toolbar;
+    SharedPreferences sp;
     @SuppressLint("NewApi")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -81,14 +76,30 @@ public class MainHomeActivity extends AppCompatActivity {
         //menu.findItem(R.id.navigation_closet).setIcon(R.drawable.iconred);
        // menu.findItem(R.id.navigation_cart).setIcon(R.drawable.sho);
        //BottomNavigationViewHelper.removeShiftMode(bottomNavigationView);
+        sp = getSharedPreferences("pref",MODE_PRIVATE);
+        final String name = sp.getString("globalname", null);
+        String date = sp.getString("globaldob", null);
+        String gender = sp.getString("globalgender", null);
+        String lname = sp.getString("globalLname", null);
+        final String mobile = sp.getString("globalMobile", null);
+        final String email = sp.getString("globalemail", null);
+        String ID = sp.getString("globalD", null);
+
+
+
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.navigation_account:
+                                if (name != null && mobile != null){
+                                    removefragment(new AccountFragment());
+                                }
                              // item.setIcon(R.drawable.iconred3);
-                                removefragment(new LoginScreen());
+                                else{
+                                    removefragment(new LoginScreen());
+                                }
                                // bottomNavigationView.setVisibility(View.GONE);
                                 break;
                             case R.id.navigation_collections:

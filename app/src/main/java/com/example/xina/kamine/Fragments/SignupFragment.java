@@ -202,7 +202,7 @@ public class SignupFragment extends Fragment {
                         //x = response.body().getSendOTPDetail().getOtp();
                         if (response.body().getSuccess()==200){
                             progressDialog.dismiss();
-                            Toast.makeText(getActivity(),response.message() , Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(),response.body().getMessage() , Toast.LENGTH_SHORT).show();
                             SharedPreferences sp = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor= sp.edit();
                             editor.putString("firstName_signup",first_name);
@@ -210,8 +210,11 @@ public class SignupFragment extends Fragment {
                             editor.putString("gender_signup",gender);
                             editor.putString("dob_signup",dateofbirth);
                             editor.putString("mobile_signup",mobile);
-                            editor.putString("gender_signup",gender);
-                            editor.putString("ID_signup",signupID);
+                            editor.putString("email_signup",email_str);
+                            editor.putString("password_signup",psswd);
+                            editor.apply();
+
+
                             removefragment(new EnterOTPFragment());
 
 

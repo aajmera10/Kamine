@@ -39,7 +39,7 @@ SharedPreferences preferences;
         preferences = getActivity().getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor eg = preferences.edit();
         user_name.setText(preferences.getString("globalname",""));
-        //user_email.setText(preferences.getString("",""));
+        user_email.setText(preferences.getString("globalemail",""));
         user_mobile_no.setText(preferences.getString("globalMobile",""));
         eg.commit();
         eg.apply();

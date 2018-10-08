@@ -34,7 +34,7 @@ TextView signup,forgot_password;
 RadioButton otp;
 String password,user;
 ProgressDialog pDialog;
-String userName,userLName,userDOB,userGender,userMobile,userID;
+String userName,userLName,userDOB,userGender,userMobile,userID,userEmail;
 SharedPreferences sp;
 TextInputEditText enter_passwd,enter_mail;
     @Nullable
@@ -76,6 +76,7 @@ TextInputEditText enter_passwd,enter_mail;
                                 userGender = response.body().getLoginDetail().getGender();
                                 userLName =  response.body().getLoginDetail().getLname();
                                 userMobile = response.body().getLoginDetail().getMobile();
+                                //userEmail = response.body().getLoginDetail().get
                                 userID = response.body().getLoginDetail().getId();
                                 //id=response.body().getLoginDetail().get
 
@@ -86,6 +87,7 @@ TextInputEditText enter_passwd,enter_mail;
                                 eg.putString("globalgender",userGender);
                                 eg.putString("globalLname",userLName);
                                 eg.putString("globalMobile",userMobile);
+                                eg.putString("globalemail",userEmail);
                                 eg.putString("globalD",userID);
                                 eg.commit();
                                 eg.apply();

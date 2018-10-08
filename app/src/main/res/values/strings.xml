@@ -3,4 +3,8 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="empty_old_pswd">Please Enter Your Old Password</string>
+    <string name="empty_new_pswd">Your New Password Cannot Be Empty</string>
+    <string name="empty_confirm_pswd">This Field Cannot Be Empty</string>
+    <string name="pswd_not_match">Passwords Do Not Match</string>
 </resources>
