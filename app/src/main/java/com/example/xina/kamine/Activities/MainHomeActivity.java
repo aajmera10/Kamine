@@ -84,6 +84,7 @@ public class MainHomeActivity extends AppCompatActivity {
         final String mobile = sp.getString("globalMobile", null);
         final String email = sp.getString("globalemail", null);
         String ID = sp.getString("globalD", null);
+        sp.getBoolean("hasloggedIN",true);
 
 
 
@@ -93,11 +94,11 @@ public class MainHomeActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.navigation_account:
-                                if (name != null && mobile != null){
+                                if (sp.getBoolean("hasloggedIN",false)){
                                     removefragment(new AccountFragment());
                                 }
                              // item.setIcon(R.drawable.iconred3);
-                                else{
+                                else if(sp.getBoolean("hasloggedIN",true)){
                                     removefragment(new LoginScreen());
                                 }
                                // bottomNavigationView.setVisibility(View.GONE);
@@ -145,6 +146,8 @@ public class MainHomeActivity extends AppCompatActivity {
         bottomNavigationView.setVisibility(View.GONE);
     }
     public void showBottom(){bottomNavigationView.setVisibility(View.VISIBLE);}
+
+
 
 
     void removefragment(Fragment f){

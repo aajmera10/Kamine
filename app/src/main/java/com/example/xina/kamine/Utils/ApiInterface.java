@@ -1,10 +1,13 @@
 package com.example.xina.kamine.Utils;
 
 import com.example.xina.kamine.Model.ChangePswdModel;
+import com.example.xina.kamine.Model.ForgotPasswordModel;
 import com.example.xina.kamine.Model.LoginModel;
+import com.example.xina.kamine.Model.LogoutModel;
 import com.example.xina.kamine.Model.MainHomeCategoryListModel;
 import com.example.xina.kamine.Model.SendOTPModel;
 import com.example.xina.kamine.Model.SignUpDetailModel;
+import com.example.xina.kamine.Model.UpadteProfileModel;
 
 
 import retrofit2.Call;
@@ -48,7 +51,22 @@ public interface ApiInterface {
   Call<MainHomeCategoryListModel>getMainHomeCategory(@Field("id") String id,
                                                      @Field("name") String ItemName);
 
+  @POST("logout.php")
+  @FormUrlEncoded
+  Call<LogoutModel>getlogout(@Field("userid") String UserId);
 
+  @POST("forgot_password.php")
+  @FormUrlEncoded
+  Call<ForgotPasswordModel>getForgotModel(@Field("email") String mail);
 
+  @POST("update_profile.php")
+  @FormUrlEncoded
+  Call<UpadteProfileModel>getUpdateProfie(@Field("id")String id,
+                                          @Field("firstname") String firstname,
+                                          @Field("lastname") String lastname,
+                                          @Field("gender")String gender,
+                                          @Field("email")String Email,
+                                          @Field("mobile")String mobile,
+                                          @Field("dob")String dob);
 
 }

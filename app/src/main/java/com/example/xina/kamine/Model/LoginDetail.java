@@ -25,6 +25,10 @@ public class LoginDetail {
 	@SerializedName("id")
 	private String id;
 
+	@SerializedName("email")
+	private String email;
+
+
 	public void setFname(String fname){
 		this.fname = fname;
 	}
@@ -59,6 +63,14 @@ public class LoginDetail {
 
 	public void setDob(String dob){
 		this.dob = dob;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getDob(){

@@ -34,7 +34,7 @@ TextView signup,forgot_password;
 RadioButton otp;
 String password,user;
 ProgressDialog pDialog;
-String userName,userLName,userDOB,userGender,userMobile,userID,userEmail;
+String userName,userLName,userDOB,userGender,userMobile,userID,userEmail,apiemail;
 SharedPreferences sp;
 TextInputEditText enter_passwd,enter_mail;
     @Nullable
@@ -78,7 +78,9 @@ TextInputEditText enter_passwd,enter_mail;
                                 userMobile = response.body().getLoginDetail().getMobile();
                                 //userEmail = response.body().getLoginDetail().get
                                 userID = response.body().getLoginDetail().getId();
+                                apiemail = response.body().getLoginDetail().getEmail();
                                 //id=response.body().getLoginDetail().get
+
 
                                 sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
                                 SharedPreferences.Editor eg = sp.edit();
@@ -87,9 +89,10 @@ TextInputEditText enter_passwd,enter_mail;
                                 eg.putString("globalgender",userGender);
                                 eg.putString("globalLname",userLName);
                                 eg.putString("globalMobile",userMobile);
-                                eg.putString("globalemail",userEmail);
+                                eg.putString("globalemail",apiemail);
                                 eg.putString("globalD",userID);
-                                eg.commit();
+                                eg.putBoolean("hasloggedIN",true);
+                                //eg.commit();
                                 eg.apply();
 
                                 removefragment(new AccountFragment());
@@ -127,6 +130,8 @@ TextInputEditText enter_passwd,enter_mail;
                 removefragment(new GetOTP());
             }
         });
+
+
 
         return view;
     }

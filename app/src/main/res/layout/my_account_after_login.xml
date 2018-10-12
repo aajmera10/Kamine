@@ -98,7 +98,7 @@
                     android:layout_marginLeft="16dp" />
 
                 <com.example.xina.kamine.Utils.PoppinsMedium
-                    android:id="@+id/textView57"
+                    android:id="@+id/Logout_account"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
@@ -120,7 +120,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView57" />
+                    app:layout_constraintTop_toBottomOf="@+id/Logout_account" />
 
                 <View
                     android:id="@+id/view10"
@@ -343,15 +343,14 @@
                 app:layout_constraintTop_toBottomOf="@+id/constraintLayout10">
 
                 <ImageView
-                    android:id="@+id/imageView19"
+                    android:id="@+id/edt_pro"
                     android:layout_width="100dp"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="16dp"
+                    android:layout_height="30dp"
                     android:layout_marginEnd="16dp"
                     android:layout_marginRight="16dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView37"
+                    app:layout_constraintBottom_toBottomOf="@+id/user_mobile"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/textView37"
+                    app:layout_constraintTop_toTopOf="@+id/user_mobile"
                     app:srcCompat="@drawable/edit" />
 
                 <com.example.xina.kamine.Utils.PoppinsMedium

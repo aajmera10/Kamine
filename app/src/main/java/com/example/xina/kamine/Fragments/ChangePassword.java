@@ -7,13 +7,16 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.xina.kamine.Activities.MainHomeActivity;
 import com.example.xina.kamine.Model.ChangePswdModel;
 import com.example.xina.kamine.R;
 import com.example.xina.kamine.Utils.ApiClient;
@@ -28,17 +31,27 @@ public class ChangePassword extends Fragment {
 
     EditText e_new_password,e_old_password,e_confirm_new_password;
     ConstraintLayout change_psswd_layout;
+    TextView updtprofile;
     String new_password,old_password,confirm_new_password,useridStr;
     SharedPreferences sp;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.change_password_screen,container,false);
-
+        ((MainHomeActivity)getActivity()).removeBottom();
         e_old_password = view.findViewById(R.id.c_pwd_old);
         e_new_password = view.findViewById(R.id.c_pwd_new);
         e_confirm_new_password = view.findViewById(R.id.c_pwd_new_con);
         change_psswd_layout = view.findViewById(R.id.change_psswd_layout);
+        updtprofile = view.findViewById(R.id.up_profile);
+
+
+        updtprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removefragment(new UpdateProfile());
+            }
+        });
 
         old_password = e_old_password.getText().toString().trim();
         new_password = e_new_password.getText().toString().trim();
@@ -90,9 +103,22 @@ public class ChangePassword extends Fragment {
 
             @Override
             public void onFailure(Call<ChangePswdModel> call, Throwable t) {
-
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
+    }
+
+    void removefragment(android.support.v4.app.Fragment f){
+        //MainActivity mainActivity = new MainActivity();r
+        // String c = String.valueOf(mainActivity.bottomNavigationView.getMenu());
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        // FragmentTransaction fragmentTransaction = getActivity().getSupp().beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.fragment_slide_left_enter,R.anim.fragment_slide_left_exit,
+                R.anim.fragment_slide_right_enter,R.anim.fragment_slide_right_exit);
+        fragmentTransaction.replace(R.id.frag_container, f);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        // getActivity().onBackPressed();
     }
 }

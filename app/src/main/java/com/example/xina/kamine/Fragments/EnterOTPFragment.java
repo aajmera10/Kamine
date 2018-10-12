@@ -45,15 +45,15 @@ public class EnterOTPFragment extends Fragment {
         pv = view.findViewById(R.id.pinview);
         submit = view.findViewById(R.id.sub_otp);
         usr_no = view.findViewById(R.id.otp_no);
-        pinValue = pv.getValue();
-        sp=getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+       // pinValue = pv.getValue();
+        /*sp=getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
         OTP_firstname = sp.getString("firstName_signup",null);
         OTP_lastname = sp.getString("lastname_signup",null);
         OTP_gender = sp.getString("gender_signup",null);
         OTP_dob = sp.getString("dob_signup",null);
         OTP_mobile =sp.getString("mobile_signup",null);
         OTP_email = sp.getString("email_signup",null);
-        OTP_password = sp.getString("password_signup",null);
+        OTP_password = sp.getString("password_signup",null);*/
         usr_no.setText(OTP_mobile);
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +74,8 @@ public class EnterOTPFragment extends Fragment {
                 progressDialog.show();
 
                 ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                Call<SignUpDetailModel>signUpDetailModelCall = apiInterface.getSignupDetail(OTP_firstname,OTP_lastname,OTP_gender,OTP_email,OTP_mobile,OTP_dob,OTP_password,pinValue);
+                Call<SignUpDetailModel>signUpDetailModelCall = apiInterface.getSignupDetail(OTP_firstname,OTP_lastname,
+                        OTP_gender,OTP_email,OTP_mobile,OTP_dob,OTP_password,pinValue);
                 signUpDetailModelCall.enqueue(new Callback<SignUpDetailModel>() {
                     @Override
                     public void onResponse(Call<SignUpDetailModel> call, Response<SignUpDetailModel> response) {
