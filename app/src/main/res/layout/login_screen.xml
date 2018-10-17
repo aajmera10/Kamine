@@ -52,11 +52,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView5"
+        android:id="@+id/fb_login"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toStartOf="@+id/imageView6"
+        app:layout_constraintEnd_toStartOf="@+id/g_login"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
@@ -64,15 +64,15 @@
         app:srcCompat="@drawable/facebook" />
 
     <ImageView
-        android:id="@+id/imageView6"
+        android:id="@+id/g_login"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
+        app:layout_constraintStart_toEndOf="@+id/fb_login"
         app:layout_constraintTop_toBottomOf="@+id/textView"
-        app:srcCompat="@drawable/google" />
+        android:src="@drawable/ic_search" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -87,7 +87,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5">
+        app:layout_constraintTop_toBottomOf="@+id/fb_login">
 
         <View
             android:layout_width="100dp"

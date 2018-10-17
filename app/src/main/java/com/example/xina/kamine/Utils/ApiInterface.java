@@ -7,6 +7,7 @@ import com.example.xina.kamine.Model.LogoutModel;
 import com.example.xina.kamine.Model.MainHomeCategoryListModel;
 import com.example.xina.kamine.Model.SendOTPModel;
 import com.example.xina.kamine.Model.SignUpDetailModel;
+import com.example.xina.kamine.Model.SocialLoginModel;
 import com.example.xina.kamine.Model.UpadteProfileModel;
 
 
@@ -68,5 +69,13 @@ public interface ApiInterface {
                                           @Field("email")String Email,
                                           @Field("mobile")String mobile,
                                           @Field("dob")String dob);
+  @POST("social_login.php")
+  @FormUrlEncoded
+  Call<SocialLoginModel>getsociallogin(@Field("name")String name,
+                                       @Field("mobile")String mobile,
+                                       @Field("gender")String gender,
+                                       @Field("dob")String dob,
+                                       @Field("email")String email);
+
 
 }

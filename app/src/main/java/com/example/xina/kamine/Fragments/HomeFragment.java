@@ -166,7 +166,10 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                      if (response.body().getSuccess().equals("200")){
                          progressDialog.dismiss();
                          //Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+                         String c  = response.body().getClass().getName();
                          Toast.makeText(getContext(), "women", Toast.LENGTH_SHORT).show();
+                         Toast.makeText(getContext(), c, Toast.LENGTH_SHORT).show();
 
                      }
                  }
