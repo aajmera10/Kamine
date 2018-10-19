@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "282210529118",
+    "firebase_url": "https://kamine-13c15.firebaseio.com",
+    "project_id": "kamine-13c15",
+    "storage_bucket": "kamine-13c15.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282210529118:android:abdd79d9ddd976b2",
+        "android_client_info": {
+          "package_name": "com.example.xina.kamine"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "282210529118-juhc4eukkhrcamnm7siks8l3k37vldmp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.xina.kamine",
+            "certificate_hash": "ae50358ac3600ca04db22cbe620707fb23183f34"
+          }
+        },
+        {
+          "client_id": "282210529118-ql7qsk4bddr7gt1f3el0o4lffc6t5sv8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAkOUwjwZD3vBj-yoDz5v6q-1wN-rEXjzc"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "282210529118-5vl44iuluh1pvuo404d668347f1kfvf9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

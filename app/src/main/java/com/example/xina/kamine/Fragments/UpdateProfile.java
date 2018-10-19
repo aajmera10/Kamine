@@ -68,20 +68,23 @@ public class UpdateProfile extends Fragment {
         });
 
         sharedPreferences = getActivity().getSharedPreferences("pref",0);
-        fname.setText(sharedPreferences.getString("globalname",null));
-        lname.setText(sharedPreferences.getString("globalLname",null));
-        dob.setText(sharedPreferences.getString("globaldob",null));
-        email.setText(sharedPreferences.getString("globalemail",null));
-        mobile.setText(sharedPreferences.getString("globalMobile",null));
-        gen = sharedPreferences.getString("globalgender",null);
-        sharedPreferences.getString("globalD",null);
+        fname.setText(sharedPreferences.getString("globalname",""));
+        lname.setText(sharedPreferences.getString("globalLname",""));
+        dob.setText(sharedPreferences.getString("globaldob",""));
+        email.setText(sharedPreferences.getString("globalemail",""));
+        mobile.setText(sharedPreferences.getString("globalMobile",""));
+        gen = sharedPreferences.getString("globalgender","");
+        sharedPreferences.getString("globalD","");
 
 
             if (gen.equals("male")){
                 button_male.setChecked(true);
             }else if (gen.equals("female")){
                 button_female.setChecked(true);
-                }
+                }/*else{
+                button_female.setChecked(false);
+                button_male.setChecked(false);
+            }*/
 
         dob.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,8 +124,8 @@ public class UpdateProfile extends Fragment {
                 dob.setText(sharedPreferences.getString("globaldob",null));
                 email.setText(sharedPreferences.getString("globalemail",null));
                 mobile.setText(sharedPreferences.getString("globalMobile",null));*/
-                gen = sharedPreferences.getString("globalgender",null);
-                signupID = sharedPreferences.getString("globalD",null);
+                gen = sharedPreferences.getString("globalgender","");
+                signupID = sharedPreferences.getString("globalD","");
 
                 first_name = fname.getText().toString().trim();
                 last_name = lname.getText().toString().trim();
@@ -180,13 +183,7 @@ public class UpdateProfile extends Fragment {
                     }
                 }
 
-              /*  sp = getActivity().getSharedPreferences("pref",0);
-                sp.getString("globalname",null);
-                lname.setText(sharedPreferences.getString("globalLname",null));
-                dob.setText(sharedPreferences.getString("globaldob",null));
-                email.setText(sharedPreferences.getString("globalemail",null));
-                mobile.setText(sharedPreferences.getString("globalMobile",null));
-                sharedPreferences.getString("globalD",null);*/
+
                 final ProgressDialog progressDialog = new ProgressDialog(getActivity());
                 progressDialog.setTitle("Loading...");
                 progressDialog.show();
@@ -197,8 +194,8 @@ public class UpdateProfile extends Fragment {
                     @Override
                     public void onResponse(Call<UpadteProfileModel> call, Response<UpadteProfileModel> response) {
                         if (response.body().getSuccess()==200){
-                            progressDialog.dismiss();
 
+                            progressDialog.dismiss();
                             sp = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
                             SharedPreferences.Editor eg = sp.edit();
                             eg.putString("globalname",first_name);
@@ -215,6 +212,8 @@ public class UpdateProfile extends Fragment {
 
                     @Override
                     public void onFailure(Call<UpadteProfileModel> call, Throwable t) {
+
+                        progressDialog.dismiss();
                         Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });

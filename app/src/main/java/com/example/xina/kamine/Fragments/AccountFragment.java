@@ -54,9 +54,9 @@ SharedPreferences preferences;
 
         preferences = getActivity().getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor eg = preferences.edit();
-        user_name.setText(preferences.getString("globalname",null));
-        user_email.setText(preferences.getString("globalemail",null));
-        user_mobile_no.setText(preferences.getString("globalMobile",null));
+        user_name.setText(preferences.getString("globalname",""));
+        user_email.setText(preferences.getString("globalemail",""));
+        user_mobile_no.setText(preferences.getString("globalMobile",""));
         eg.commit();
         eg.apply();
 
@@ -123,30 +123,29 @@ SharedPreferences preferences;
                 builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        preferences = getActivity().getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
-                        SharedPreferences.Editor eg = preferences.edit();
-                        preferences.getString("globalname",null);
-                        preferences.getString("globaldob",null);
-                        preferences.getString("globalgender",null);
-                        preferences.getString("globalLname",null);
-                        preferences.getString("globalMobile",null);
-                        preferences.getString("globalemail",null);
-                        preferences.getString("globalD",null);
-                        preferences.getBoolean("hasloggedIN",false);
-                        uid=preferences.getString("globalD",null);
 
                         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                         Call<LogoutModel> call = apiInterface.getlogout(uid);
                         call.enqueue(new Callback<LogoutModel>() {
                             @Override
                             public void onResponse(Call<LogoutModel> call, Response<LogoutModel> response) {
-                                SharedPreferences pref =getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
-                                SharedPreferences.Editor editor = pref.edit();
-                                editor.clear();
-                                editor.commit();
+                                preferences = getActivity().getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
+                                SharedPreferences.Editor eg = preferences.edit();
+                                preferences.getString("globalname","");
+                                preferences.getString("globaldob","");
+                                preferences.getString("globalgender","");
+                                preferences.getString("globalLname","");
+                                preferences.getString("globalMobile","");
+                                preferences.getString("globalemail","");
+                                preferences.getString("globalD","");
+                                preferences.getBoolean("hasloggedIN",false);
+                                uid=preferences.getString("globalD","");
+                                eg.clear();
+                                eg.apply();
+                                eg.commit();
 
                                 Toast.makeText(getContext(), "Logout Sucessfully", Toast.LENGTH_SHORT).show();
-                                reFragment(new HomeFragment());
+                                reFragment(new LoginScreen());
 
                             }
 

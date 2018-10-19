@@ -30,7 +30,6 @@ public class CollectionFragment extends android.support.v4.app.Fragment {
         recyclerView1.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_offset);
         recyclerView1.addItemDecoration(new CollectionFragment.GridSpacingItemDecoration(1, spacingInPixels, true, 0));
-        // recyclerView1.addItemDecoration(itemDecoration);
         recyclerView1.setHasFixedSize(true);
         recyclerView1.setNestedScrollingEnabled(false);
 

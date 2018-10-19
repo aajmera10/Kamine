@@ -1,6 +1,7 @@
 package com.example.xina.kamine.Fragments;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
@@ -33,8 +34,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.OptionalPendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -50,7 +55,7 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
-public class LoginScreen extends Fragment {
+public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
 LinearLayout Login;
 TextView signup,forgot_password;
 RadioButton otp;
@@ -58,6 +63,7 @@ String password,user;
 ProgressDialog pDialog;
 String userName,userLName,userDOB,userGender,userMobile,userID,userEmail,apiemail;
 SharedPreferences sp;
+    private ProgressDialog mProgressDialog;
 TextInputEditText enter_passwd,enter_mail;
 
 //Google Sign in//
@@ -89,9 +95,10 @@ TextInputEditText enter_passwd,enter_mail;
                 {
                     password = enter_passwd.getText().toString().trim();
                     user = enter_mail.getText().toString().trim();
-                    new ProgressDialog(getActivity());
-                    pDialog.setTitle("Akshat The Designer");
-                    pDialog.show();
+                  //  new ProgressDialog(getActivity());
+                    //pDialog.setTitle("Akshat The Designer");
+                   // pDialog.show();
+                    showProgressDialog();
                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                     Call<LoginModel> call = apiInterface.getLogin(password,user);
                   //  Call<LoginModel> call = apiInterface.getLogin(password,user);
@@ -101,7 +108,8 @@ TextInputEditText enter_passwd,enter_mail;
                             if (response.body().getSuccess()==200)
                             {
 
-                                pDialog.dismiss();
+                                //pDialog.dismiss();
+                                hideProgressDialog();
                                 Toast.makeText(getActivity(),response.toString(), Toast.LENGTH_SHORT).show();
                                 userName  =  response.body().getLoginDetail().getFname();
                                 userDOB =    response.body().getLoginDetail().getDob();
@@ -134,7 +142,8 @@ TextInputEditText enter_passwd,enter_mail;
 
                         @Override
                         public void onFailure(Call<LoginModel> call, Throwable t) {
-                            pDialog.dismiss();
+                            //pDialog.dismiss();
+                            hideProgressDialog();
                             Toast.makeText(getActivity(),t.toString(), Toast.LENGTH_SHORT).show();
                         }
                     });
@@ -174,109 +183,134 @@ TextInputEditText enter_passwd,enter_mail;
                 .build();
 
         mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage(getActivity(), (GoogleApiClient.OnConnectionFailedListener) getContext())
+                .enableAutoManage(getActivity(),this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+        
 
         googbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signIn();
-            }
+                Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+                startActivityForResult(signInIntent, RC_SIGN_IN);            }
         });
 
 
 
         return view;
     }
-         public void onStart() {
-             super.onStart();
-             if(mAuth.getCurrentUser() != null){
+    @Override
+    public void onStart() {
+        super.onStart();
 
-             }
+        OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
+        if (opr.isDone()) {
+            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
+            // and the GoogleSignInResult will be available instantly.
+            Log.d(TAG, "Got cached sign-in");
+            GoogleSignInResult result = opr.get();
+            handleSignInResult(result);
+        } else {
+            // If the user has not previously signed in on this device or the sign-in has expired,
+            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
+            // single sign-on will occur in this branch.
+            showProgressDialog();
+            opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
+                @Override
+                public void onResult(GoogleSignInResult googleSignInResult) {
+                    hideProgressDialog();
+                    handleSignInResult(googleSignInResult);
+                }
+            });
         }
+    }
+
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        //if the requestCode is the Google Sign In code that we defined at starting
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
-
-            //Getting the GoogleSignIn Task
-            Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            try {
-                //Google Sign In was successful, authenticate with Firebase
-                GoogleSignInAccount account = task.getResult(ApiException.class);
-
-                //authenticating with firebase
-                firebaseAuthWithGoogle(account);
-            } catch (ApiException e) {
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct){
-
-        goolname = acct.getDisplayName();
-        gooId = acct.getId();
-        Uri proURL = (acct.getPhotoUrl());
-
-
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            new ProgressDialog(getActivity());
-                            pDialog.setTitle("Akshat The Designer");
-                            pDialog.show();
-                            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                          Call<SocialLoginModel> call = apiInterface.getsociallogin(gooName,userMobile,googender,goodob,gooemail);
-                          call.enqueue(new Callback<SocialLoginModel>() {
-                              @Override
-                              public void onResponse(Call<SocialLoginModel> call, Response<SocialLoginModel> response) {
-                               if(response.body()("200")){
-
-                               }
-                              }
-
-                              @Override
-                              public void onFailure(Call<SocialLoginModel> call, Throwable t) {
-
-                              }
-                          });
-
-
-
-
-
-
-                            Toast.makeText(getContext(), "User Signed In", Toast.LENGTH_SHORT).show();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getContext(), "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-
-                        }
-
-                    }
-                });
+    public void onPause() {
+        super.onPause();
+        mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();
     }
 
+    private void handleSignInResult(GoogleSignInResult result) {
+        Log.d(TAG, "handleSignInResult:" + result.isSuccess());
+        if (result.isSuccess()) {
+            // Signed in successfully, show authenticated UI.
+            hideProgressDialog();
+            GoogleSignInAccount acct = result.getSignInAccount();
+
+            Log.e(TAG, "display name: " + acct.getDisplayName());
+
+             gooName = acct.getDisplayName();
+            String personPhotoUrl = acct.getPhotoUrl().toString();
+            gooemail = acct.getEmail();
+            int idx = gooName.lastIndexOf(' ');
+            if (idx == -1)
+                throw new IllegalArgumentException("Only a single name: " + gooName);
+            userName = gooName.substring(0, idx);
+            userLName   = gooName.substring(idx + 1);
+            googender="";
+            goodob = "";
+            userMobile="";
 
 
-    private void signIn() {
-        //getting the google signin intent
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+          /*  Log.e(TAG, "Name: " + personName + ", email: " + email
+                    + ", Image: " + personPhotoUrl);*/
+          showProgressDialog();
+            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+            Call<SocialLoginModel>call = apiInterface.getsociallogin(gooName,userMobile,googender,goodob,gooemail);
+            call.enqueue(new Callback<SocialLoginModel>() {
+                @Override
+                public void onResponse(Call<SocialLoginModel> call, Response<SocialLoginModel> response) {
+                    hideProgressDialog();
+                    Toast.makeText(getActivity(),response.body().getMessage() , Toast.LENGTH_SHORT).show();
 
-        //starting the activity for result
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+                    sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+                    SharedPreferences.Editor eg = sp.edit();
+                    eg.putString("globalname",userName);
+                    eg.putString("globaldob",goodob);
+                    eg.putString("globalgender",googender);
+                    eg.putString("globalLname",userLName);
+                    eg.putString("globalMobile",userMobile);
+                    eg.putString("globalemail",gooemail);
+                    eg.putString("globalD",gooId);
+                    eg.putBoolean("hasloggedIN",true);
+                    //eg.commit();
+                    eg.apply();
+
+
+                }
+
+                @Override
+                public void onFailure(Call<SocialLoginModel> call, Throwable t) {
+                        hideProgressDialog();
+
+                    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+
+
+            removefragment(new AccountFragment());
+
+
+        } else {
+            // Signed out, show unauthenticated UI.
+            //updateUI(false);
+            Toast.makeText(getContext(), "sign in failed", Toast.LENGTH_SHORT).show();
+
+        }
     }
-
 
 
 
@@ -293,8 +327,32 @@ TextInputEditText enter_passwd,enter_mail;
         fragmentTransaction.commit();
         // getActivity().onBackPressed();
     }
-}
 
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.d(TAG, "onConnectionFailed:" + connectionResult);
+        Toast.makeText(getContext(), "onConnectionFailed:" + connectionResult, Toast.LENGTH_SHORT).show();
+    }
+
+
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(getActivity());
+            mProgressDialog.setMessage("loading...");
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
+
+
+    }}
 
 
 
