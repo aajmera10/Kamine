@@ -20,7 +20,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.example.xina.kamine.Utils.PoppinsMedium
-            android:id="@+id/poppinsMedium"
+            android:id="@+id/up_otp_no"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -58,7 +58,7 @@
             app:inputType="number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/poppinsMedium"
+            app:layout_constraintTop_toBottomOf="@+id/up_otp_no"
             app:password="true"
             app:pinHeight="40dp"
             app:pinLength="4"

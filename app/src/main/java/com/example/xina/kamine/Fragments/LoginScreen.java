@@ -65,7 +65,7 @@ String password,user;
 ProgressDialog pDialog;
 String userName,userLName,userDOB,userGender,userMobile,userID,userEmail,apiemail;
 SharedPreferences sp;
-    private ProgressDialog mProgressDialog;
+private ProgressDialog mProgressDialog;
 EditText enter_passwd,enter_mail;
 
 //Google Sign in//

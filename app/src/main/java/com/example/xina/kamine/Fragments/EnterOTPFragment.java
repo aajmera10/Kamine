@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -34,7 +35,7 @@ public class EnterOTPFragment extends Fragment {
     private Pinview pv;
 
     String OTP_firstname,OTP_lastname,OTP_gender,OTP_dob,OTP_mobile,OTP_email,OTP_password,pinValue;
-
+    private ProgressDialog mProgressDialog;
     SharedPreferences sp;
 
     @Nullable
@@ -46,55 +47,60 @@ public class EnterOTPFragment extends Fragment {
         submit = view.findViewById(R.id.sub_otp);
         usr_no = view.findViewById(R.id.otp_no);
        // pinValue = pv.getValue();
-        /*sp=getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
-        OTP_firstname = sp.getString("firstName_signup",null);
-        OTP_lastname = sp.getString("lastname_signup",null);
-        OTP_gender = sp.getString("gender_signup",null);
-        OTP_dob = sp.getString("dob_signup",null);
-        OTP_mobile =sp.getString("mobile_signup",null);
-        OTP_email = sp.getString("email_signup",null);
-        OTP_password = sp.getString("password_signup",null);*/
+        sp=getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+        //OTP_firstname = sp.getString("firstName_signup","");
+       // OTP_lastname = sp.getString("lastname_signup","");
+       // OTP_gender = sp.getString("gender_signup","");
+       // OTP_dob = sp.getString("dob_signup","");
+        OTP_mobile =sp.getString("mobile_signup","");
+       // OTP_email = sp.getString("email_signup","");
+       // OTP_password = sp.getString("password_signup","");
         usr_no.setText(OTP_mobile);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sp=getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
-                OTP_firstname = sp.getString("firstName_signup",null);
-                OTP_lastname = sp.getString("lastname_signup",null);
-                OTP_gender = sp.getString("gender_signup",null);
-                OTP_dob = sp.getString("dob_signup",null);
-                OTP_mobile =sp.getString("mobile_signup",null);
-                OTP_email = sp.getString("email_signup",null);
-                OTP_password = sp.getString("password_signup",null);
+                OTP_firstname = sp.getString("firstName_signup","");
+                OTP_lastname = sp.getString("lastname_signup","");
+                OTP_gender = sp.getString("gender_signup","");
+                OTP_dob = sp.getString("dob_signup","");
+                OTP_mobile =sp.getString("mobile_signup","");
+                OTP_email = sp.getString("email_signup","");
+                OTP_password = sp.getString("password_signup","");
                 pinValue = pv.getValue();
 
-                final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setTitle("Loading...");
-                progressDialog.show();
+             if(pinValue.isEmpty()){
+                 Toast.makeText(getContext(), "Please Enter a Valid OTP", Toast.LENGTH_SHORT).show();
 
-                ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                Call<SignUpDetailModel>signUpDetailModelCall = apiInterface.getSignupDetail(OTP_firstname,OTP_lastname,
-                        OTP_gender,OTP_email,OTP_mobile,OTP_dob,OTP_password,pinValue);
-                signUpDetailModelCall.enqueue(new Callback<SignUpDetailModel>() {
-                    @Override
-                    public void onResponse(Call<SignUpDetailModel> call, Response<SignUpDetailModel> response) {
-                       if(response.body().getSuccess()==200){
-                           removefragment(new LoginScreen());
-                           Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
+             }else {
 
-                       }
-                       if(response.body().getSuccess()==201){
-                           Toast.makeText(getContext(), "Oops", Toast.LENGTH_SHORT).show();
-                       }
+                 showProgressDialog();
+                 ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                 Call<SignUpDetailModel>signUpDetailModelCall = apiInterface.getSignupDetail(OTP_firstname,OTP_lastname,
+                         OTP_gender,OTP_email,OTP_mobile,OTP_dob,OTP_password,pinValue);
+                 signUpDetailModelCall.enqueue(new Callback<SignUpDetailModel>() {
+                     @Override
+                     public void onResponse(Call<SignUpDetailModel> call, Response<SignUpDetailModel> response) {
+                         if(response.body().getSuccess()==200){
+                             hideProgressDialog();
+                             removefragment(new LoginScreen());
+                             Toast.makeText(getContext(), response.message(), Toast.LENGTH_SHORT).show();
 
-                    }
+                         }
+                         if(response.body().getSuccess()==201){
+                             hideProgressDialog();
+                             Toast.makeText(getContext(), "Oops", Toast.LENGTH_SHORT).show();
+                         }
 
-                    @Override
-                    public void onFailure(Call<SignUpDetailModel> call, Throwable t) {
-                        Toast.makeText(getContext(), "Doobara Start Karo..", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                     }
+
+                     @Override
+                     public void onFailure(Call<SignUpDetailModel> call, Throwable t) {
+                         Toast.makeText(getContext(), "Doobara Start Karo..", Toast.LENGTH_SHORT).show();
+                     }
+                 });
+             }
             }
         });
 
@@ -129,5 +135,23 @@ public class EnterOTPFragment extends Fragment {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         // getActivity().onBackPressed();
+    }
+
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(getActivity());
+            mProgressDialog.setMessage("loading...");
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
+
+
     }
 }

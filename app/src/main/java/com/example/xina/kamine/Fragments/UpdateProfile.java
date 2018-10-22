@@ -42,6 +42,7 @@ public class UpdateProfile extends Fragment {
     DatePickerDialog datePickerDialog;
     SharedPreferences sharedPreferences,sp;
     RadioButton button_male,button_female;
+    private ProgressDialog mProgressDialog;
     String gender,first_name,last_name,email_str,psswd,dateofbirth,signupID,gen,phone;
 
     @Nullable
@@ -59,6 +60,56 @@ public class UpdateProfile extends Fragment {
         button_male = view.findViewById(R.id.rd_upfemale);
         submit = view.findViewById(R.id.sub_updt);
         forgot = view.findViewById(R.id.cpsswd);
+
+
+        first_name = fname.getText().toString().trim();
+        last_name = lname.getText().toString().trim();
+        dateofbirth = dob.getText().toString().trim();
+        email_str = email.getText().toString().trim();
+        phone = mobile.getText().toString().trim();
+
+
+        if (first_name.isEmpty()) {
+            fname.setError("Please Fill Your Name");
+
+
+        }else if(last_name.isEmpty()){
+            lname.setError("Please Fill Your Name");
+
+        } else if (phone.isEmpty()) {
+
+            mobile.setError("Please Fill Your Phone Number");
+        }
+
+        else if (phone.length() != 10 && phone.length() != 0) {
+
+            mobile.setError("please Enter 10 Digits");
+        }
+        for (int i = 0; i < phone.length(); i++) {
+            char c = phone.charAt(i);
+            if (!(c >= '0' && c <= '9')) {
+
+                mobile.setError("Please enter a valid Number");
+            }
+        }
+
+        for (int i = 0; i < first_name.length(); i++) {
+            char c = first_name.charAt(i);
+
+            if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))) {
+
+                fname.setError("Please enter a valid name");
+            }
+        }
+        for (int i = 0; i < last_name.length(); i++) {
+            char c = last_name.charAt(i);
+
+            if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))) {
+
+                lname.setError("Please enter a valid name");
+            }
+        }
+
 
         forgot.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,82 +192,46 @@ public class UpdateProfile extends Fragment {
                 }
 
 
+            if(fname.getText().toString().trim().isEmpty()&&lname.getText().toString().trim().isEmpty()&&dob.getText().toString().isEmpty()
+                    &&email.getText().toString().isEmpty()&&mobile.getText().toString().isEmpty()){
+                Toast.makeText(getContext(), "Please Fill in The Required Fields", Toast.LENGTH_SHORT).show();
+                }else{
+             showProgressDialog();
 
-                if (first_name.isEmpty()) {
-                    fname.setError("Please Fill Your Name");
-
-
-                }else if(last_name.isEmpty()){
-                    lname.setError("Please Fill Your Name");
-
-                } else if (phone.isEmpty()) {
-
-                    mobile.setError("Please Fill Your Phone Number");
-                }
-
-                else if (phone.length() != 10 && phone.length() != 0) {
-
-                    mobile.setError("please Enter 10 Digits");
-                }
-                for (int i = 0; i < phone.length(); i++) {
-                    char c = phone.charAt(i);
-                    if (!(c >= '0' && c <= '9')) {
-
-                        mobile.setError("Please enter a valid Number");
-                    }
-                }
-
-                for (int i = 0; i < first_name.length(); i++) {
-                    char c = first_name.charAt(i);
-
-                    if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))) {
-
-                        fname.setError("Please enter a valid name");
-                    }
-                }
-                for (int i = 0; i < last_name.length(); i++) {
-                    char c = last_name.charAt(i);
-
-                    if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))) {
-
-                        lname.setError("Please enter a valid name");
-                    }
-                }
-
-
-                final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setTitle("Loading...");
-                progressDialog.show();
-
-                ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                 ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                 Call<UpadteProfileModel>call = apiInterface.getUpdateProfie(signupID,first_name,last_name,gender,email_str,phone,dateofbirth);
                 call.enqueue(new Callback<UpadteProfileModel>() {
-                    @Override
-                    public void onResponse(Call<UpadteProfileModel> call, Response<UpadteProfileModel> response) {
-                        if (response.body().getSuccess()==200){
+        @Override
+        public void onResponse(Call<UpadteProfileModel> call, Response<UpadteProfileModel> response) {
+            if (response.body().getSuccess()==200){
 
-                            progressDialog.dismiss();
-                            sp = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor eg = sp.edit();
-                            eg.putString("globalname",first_name);
-                            eg.putString("globaldob",last_name);
-                            eg.putString("globalgender",dateofbirth);
-                            eg.putString("globalLname",last_name);
-                            eg.putString("globalMobile",phone);
-                            eg.putString("globalgender",gender);
-                            eg.apply();
+                // progressDialog.dismiss();
+                hideProgressDialog();
+                sp = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+                SharedPreferences.Editor eg = sp.edit();
+                eg.putString("globalname",first_name);
+                eg.putString("globaldob",last_name);
+                eg.putString("globalgender",dateofbirth);
+                eg.putString("globalLname",last_name);
+                eg.putString("globalMobile",phone);
+                eg.putString("globalgender",gender);
+                eg.apply();
 
-                            Toast.makeText(getContext(), "Sucessfully Updated", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+                Toast.makeText(getContext(), "Sucessfully Updated", Toast.LENGTH_SHORT).show();
+            }
+        }
 
-                    @Override
-                    public void onFailure(Call<UpadteProfileModel> call, Throwable t) {
+        @Override
+        public void onFailure(Call<UpadteProfileModel> call, Throwable t) {
 
-                        progressDialog.dismiss();
-                        Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+            // progressDialog.dismiss();
+            hideProgressDialog();
+            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    });
+
+
+}
 
 
 
@@ -244,5 +259,22 @@ public class UpdateProfile extends Fragment {
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
         // getActivity().onBackPressed();
+    }
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(getActivity());
+            mProgressDialog.setMessage("loading...");
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
+
+
     }
 }
