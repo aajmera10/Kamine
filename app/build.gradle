@@ -10,6 +10,7 @@ android {
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        //activator: 'none'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -31,7 +32,7 @@ dependencies {
     implementation 'com.github.d-max:spots-dialog:1.1@aar'
     implementation 'com.google.apis:google-api-services-people:v1-rev255-1.23.0'
     implementation 'com.android.support:multidex:1.0.3'
-
+    implementation 'com.facebook.android:facebook-android-sdk:4.36.1'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

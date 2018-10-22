@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -40,6 +41,7 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.OptionalPendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -55,7 +57,7 @@ import retrofit2.Response;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 
-public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectionFailedListener {
+public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectionFailedListener,GoogleApiClient.ConnectionCallbacks{
 LinearLayout Login;
 TextView signup,forgot_password;
 RadioButton otp;
@@ -64,14 +66,14 @@ ProgressDialog pDialog;
 String userName,userLName,userDOB,userGender,userMobile,userID,userEmail,apiemail;
 SharedPreferences sp;
     private ProgressDialog mProgressDialog;
-TextInputEditText enter_passwd,enter_mail;
+EditText enter_passwd,enter_mail;
 
 //Google Sign in//
     ImageView googbtn;
     private static final int RC_SIGN_IN = 234;
     GoogleSignInClient mGoogleSignInClient;
     FirebaseAuth mAuth;
-    private GoogleApiClient mGoogleApiClient;
+     private GoogleApiClient mGoogleApiClient;
     String gooName,gooId,goolname,googender,goodob,gooemail;
 
     @Nullable
@@ -88,69 +90,73 @@ TextInputEditText enter_passwd,enter_mail;
         googbtn = view.findViewById(R.id.g_login);
 
 
-        Login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (v==Login)
-                {
-                    password = enter_passwd.getText().toString().trim();
-                    user = enter_mail.getText().toString().trim();
+      Login.setOnClickListener(new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+              if(enter_passwd.getText().toString().isEmpty()&&enter_mail.getText().toString().isEmpty()){
+
+                  Toast.makeText(getActivity(), "Please Enter The Required Values", Toast.LENGTH_SHORT).show();
+
+              }else {
+                  password = enter_passwd.getText().toString().trim();
+                  user = enter_mail.getText().toString().trim();
                   //  new ProgressDialog(getActivity());
-                    //pDialog.setTitle("Akshat The Designer");
-                   // pDialog.show();
-                    showProgressDialog();
-                    ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                    Call<LoginModel> call = apiInterface.getLogin(password,user);
+                  //pDialog.setTitle("Akshat The Designer");
+                  // pDialog.show();
+                  showProgressDialog();
+                  ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                  Call<LoginModel> call = apiInterface.getLogin(password,user);
                   //  Call<LoginModel> call = apiInterface.getLogin(password,user);
-                    call.enqueue(new Callback<LoginModel>() {
-                        @Override
-                        public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
-                            if (response.body().getSuccess()==200)
-                            {
+                  call.enqueue(new Callback<LoginModel>() {
+                      @Override
+                      public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
+                          if (response.body().getSuccess()==200)
+                          {
 
-                                //pDialog.dismiss();
-                                hideProgressDialog();
-                                Toast.makeText(getActivity(),response.toString(), Toast.LENGTH_SHORT).show();
-                                userName  =  response.body().getLoginDetail().getFname();
-                                userDOB =    response.body().getLoginDetail().getDob();
-                                userGender = response.body().getLoginDetail().getGender();
-                                userLName =  response.body().getLoginDetail().getLname();
-                                userMobile = response.body().getLoginDetail().getMobile();
-                                //userEmail = response.body().getLoginDetail().get
-                                userID = response.body().getLoginDetail().getId();
-                                apiemail = response.body().getLoginDetail().getEmail();
-                                //id=response.body().getLoginDetail().get
+                              //pDialog.dismiss();
+                              hideProgressDialog();
+                              Toast.makeText(getActivity(),response.toString(), Toast.LENGTH_SHORT).show();
+                              userName  =  response.body().getLoginDetail().getFname();
+                              userDOB =    response.body().getLoginDetail().getDob();
+                              userGender = response.body().getLoginDetail().getGender();
+                              userLName =  response.body().getLoginDetail().getLname();
+                              userMobile = response.body().getLoginDetail().getMobile();
+                              //userEmail = response.body().getLoginDetail().get
+                              userID = response.body().getLoginDetail().getId();
+                              apiemail = response.body().getLoginDetail().getEmail();
+                              //id=response.body().getLoginDetail().get
 
 
-                                sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
-                                SharedPreferences.Editor eg = sp.edit();
-                                eg.putString("globalname",userName);
-                                eg.putString("globaldob",userDOB);
-                                eg.putString("globalgender",userGender);
-                                eg.putString("globalLname",userLName);
-                                eg.putString("globalMobile",userMobile);
-                                eg.putString("globalemail",apiemail);
-                                eg.putString("globalD",userID);
-                                eg.putBoolean("hasloggedIN",true);
-                                //eg.commit();
-                                eg.apply();
+                              sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+                              SharedPreferences.Editor eg = sp.edit();
+                              eg.putString("globalname",userName);
+                              eg.putString("globaldob",userDOB);
+                              eg.putString("globalgender",userGender);
+                              eg.putString("globalLname",userLName);
+                              eg.putString("globalMobile",userMobile);
+                              eg.putString("globalemail",apiemail);
+                              eg.putString("globalD",userID);
+                              eg.putBoolean("hasloggedIN",true);
+                              //eg.commit();
+                              eg.apply();
 
-                                removefragment(new AccountFragment());
+                              removefragment(new AccountFragment());
 
-                            }
-                        }
+                          }
+                      }
 
-                        @Override
-                        public void onFailure(Call<LoginModel> call, Throwable t) {
-                            //pDialog.dismiss();
-                            hideProgressDialog();
-                            Toast.makeText(getActivity(),t.toString(), Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                      @Override
+                      public void onFailure(Call<LoginModel> call, Throwable t) {
+                          //pDialog.dismiss();
+                          hideProgressDialog();
+                          Toast.makeText(getActivity(),t.toString(), Toast.LENGTH_SHORT).show();
+                      }
+                  });
+              }
+              }
 
-            }
-        });
+      });
+
 
 
         forgot_password.setOnClickListener(new View.OnClickListener() {
@@ -186,13 +192,16 @@ TextInputEditText enter_passwd,enter_mail;
                 .enableAutoManage(getActivity(),this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
+        //mGoogleApiClient.connect();
+
         
 
         googbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-                startActivityForResult(signInIntent, RC_SIGN_IN);            }
+                startActivityForResult(signInIntent, RC_SIGN_IN);
+            }
         });
 
 
@@ -202,7 +211,6 @@ TextInputEditText enter_passwd,enter_mail;
     @Override
     public void onStart() {
         super.onStart();
-
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
             // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
@@ -234,6 +242,7 @@ TextInputEditText enter_passwd,enter_mail;
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
+
         }
     }
 
@@ -241,7 +250,11 @@ TextInputEditText enter_passwd,enter_mail;
         super.onPause();
         mGoogleApiClient.stopAutoManage(getActivity());
         mGoogleApiClient.disconnect();
+
     }
+
+
+
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
@@ -264,7 +277,6 @@ TextInputEditText enter_passwd,enter_mail;
             goodob = "";
             userMobile="";
 
-
           /*  Log.e(TAG, "Name: " + personName + ", email: " + email
                     + ", Image: " + personPhotoUrl);*/
           showProgressDialog();
@@ -286,10 +298,9 @@ TextInputEditText enter_passwd,enter_mail;
                     eg.putString("globalemail",gooemail);
                     eg.putString("globalD",gooId);
                     eg.putBoolean("hasloggedIN",true);
-                    //eg.commit();
+                    eg.putBoolean("hasgooglelogin",true);
+                    eg.commit();
                     eg.apply();
-
-
                 }
 
                 @Override
@@ -303,7 +314,6 @@ TextInputEditText enter_passwd,enter_mail;
 
             removefragment(new AccountFragment());
 
-
         } else {
             // Signed out, show unauthenticated UI.
             //updateUI(false);
@@ -312,7 +322,30 @@ TextInputEditText enter_passwd,enter_mail;
         }
     }
 
-
+    public  void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                       // updateUI(false);
+                        SharedPreferences preferences = getActivity().getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
+                        SharedPreferences.Editor eg = preferences.edit();
+                        preferences.getString("globalname","");
+                        preferences.getString("globaldob","");
+                        preferences.getString("globalgender","");
+                        preferences.getString("globalLname","");
+                        preferences.getString("globalMobile","");
+                        preferences.getString("globalemail","");
+                        preferences.getString("globalD","");
+                        preferences.getBoolean("hasloggedIN",false);
+                        preferences.getBoolean("hasgooglelogin",false);
+                        preferences.getString("globalD","");
+                        eg.clear();
+                        eg.apply();
+                        eg.commit();
+                    }
+                });
+    }
 
 
     void removefragment(android.support.v4.app.Fragment f){
@@ -352,7 +385,24 @@ TextInputEditText enter_passwd,enter_mail;
         }
 
 
-    }}
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+       // signOut();
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+}
 
 
 

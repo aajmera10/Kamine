@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
@@ -25,6 +26,14 @@ import com.example.xina.kamine.Model.LogoutModel;
 import com.example.xina.kamine.R;
 import com.example.xina.kamine.Utils.ApiClient;
 import com.example.xina.kamine.Utils.ApiInterface;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.firebase.auth.FirebaseAuth;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,12 +41,16 @@ import retrofit2.Response;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class AccountFragment extends android.support.v4.app.Fragment {
+public class AccountFragment extends android.support.v4.app.Fragment implements GoogleApiClient.OnConnectionFailedListener {
 ConstraintLayout orders,adddresses,credits;
 TextView user_name,user_email,user_mobile_no,logout;
 ImageView edit;
 String uid;
 SharedPreferences preferences;
+    final int RC_SIGN_IN = 234;
+    GoogleSignInClient mGoogleSignInClient;
+    FirebaseAuth mAuth;
+    GoogleApiClient mGoogleApiClient;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -113,6 +126,25 @@ SharedPreferences preferences;
             }
         });
 
+
+
+        mAuth = FirebaseAuth.getInstance(); //firebase Object Initailization
+
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)//Google Sign IN Options Object
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .enableAutoManage(getActivity(),this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
+        mGoogleApiClient.connect();
+        //mGoogleApiClient.disconnect();
+
+
+
+
         logout = view.findViewById(R.id.Logout_account);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,37 +155,44 @@ SharedPreferences preferences;
                 builder.setPositiveButton("Logout", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        if(preferences.getBoolean("hasgooglelogin",true)){
 
-                        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                        Call<LogoutModel> call = apiInterface.getlogout(uid);
-                        call.enqueue(new Callback<LogoutModel>() {
-                            @Override
-                            public void onResponse(Call<LogoutModel> call, Response<LogoutModel> response) {
-                                preferences = getActivity().getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
-                                SharedPreferences.Editor eg = preferences.edit();
-                                preferences.getString("globalname","");
-                                preferences.getString("globaldob","");
-                                preferences.getString("globalgender","");
-                                preferences.getString("globalLname","");
-                                preferences.getString("globalMobile","");
-                                preferences.getString("globalemail","");
-                                preferences.getString("globalD","");
-                                preferences.getBoolean("hasloggedIN",false);
-                                uid=preferences.getString("globalD","");
-                                eg.clear();
-                                eg.apply();
-                                eg.commit();
+                            signOut();
+                            reFragment(new LoginScreen());
 
-                                Toast.makeText(getContext(), "Logout Sucessfully", Toast.LENGTH_SHORT).show();
-                                reFragment(new LoginScreen());
+                        }else {
+                            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                            Call<LogoutModel> call = apiInterface.getlogout(uid);
+                            call.enqueue(new Callback<LogoutModel>() {
+                                @Override
+                                public void onResponse(Call<LogoutModel> call, Response<LogoutModel> response) {
+                                    preferences = getActivity().getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
+                                    SharedPreferences.Editor eg = preferences.edit();
+                                    preferences.getString("globalname", "");
+                                    preferences.getString("globaldob", "");
+                                    preferences.getString("globalgender", "");
+                                    preferences.getString("globalLname", "");
+                                    preferences.getString("globalMobile", "");
+                                    preferences.getString("globalemail", "");
+                                    preferences.getString("globalD", "");
+                                    preferences.getBoolean("hasloggedIN", false);
+                                    preferences.getBoolean("hasgooglelogin",false);
+                                    uid = preferences.getString("globalD", "");
+                                    eg.clear();
+                                    eg.apply();
+                                    eg.commit();
 
-                            }
+                                    Toast.makeText(getContext(), "Logout Sucessfully", Toast.LENGTH_SHORT).show();
+                                    reFragment(new LoginScreen());
 
-                            @Override
-                            public void onFailure(Call<LogoutModel> call, Throwable t) {
-                                Toast.makeText(getContext(), "Problem Logging Out", Toast.LENGTH_SHORT).show();
-                            }
-                        });
+                                }
+
+                                @Override
+                                public void onFailure(Call<LogoutModel> call, Throwable t) {
+                                    Toast.makeText(getContext(), "Problem Logging Out", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
 
                         dialog.cancel();
 
@@ -173,6 +212,31 @@ SharedPreferences preferences;
 
 
         return view;
+    }
+
+    public  void signOut() {
+        Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
+                new ResultCallback<Status>() {
+                    @Override
+                    public void onResult(Status status) {
+                        // updateUI(false);
+                        SharedPreferences preferences = getActivity().getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
+                        SharedPreferences.Editor eg = preferences.edit();
+                        preferences.getString("globalname","");
+                        preferences.getString("globaldob","");
+                        preferences.getString("globalgender","");
+                        preferences.getString("globalLname","");
+                        preferences.getString("globalMobile","");
+                        preferences.getString("globalemail","");
+                        preferences.getString("globalD","");
+                        preferences.getBoolean("hasloggedIN",false);
+                        preferences.getBoolean("hasgooglelogin",false);
+                        preferences.getString("globalD","");
+                        eg.clear();
+                        eg.apply();
+                        eg.commit();
+                    }
+                });
     }
 
 
@@ -203,5 +267,16 @@ SharedPreferences preferences;
         fragmentTransaction.disallowAddToBackStack();
         fragmentTransaction.commit();
         // getActivity().onBackPressed()
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+    @Override
+    public void onPause() {
+        super.onPause();
+        mGoogleApiClient.stopAutoManage(getActivity());
+        mGoogleApiClient.disconnect();
     }
 }
