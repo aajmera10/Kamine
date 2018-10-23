@@ -156,7 +156,6 @@ SharedPreferences preferences;
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(preferences.getBoolean("hasgooglelogin",true)){
-
                             signOut();
                             reFragment(new LoginScreen());
 

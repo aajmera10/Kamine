@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.xina.kamine.Activities.MainHomeActivity;
+import com.example.xina.kamine.Model.SendOTPModel;
 import com.example.xina.kamine.Model.UpadteProfileModel;
 import com.example.xina.kamine.R;
 import com.example.xina.kamine.Utils.ApiClient;
@@ -43,7 +46,7 @@ public class UpdateProfile extends Fragment {
     SharedPreferences sharedPreferences,sp;
     RadioButton button_male,button_female;
     private ProgressDialog mProgressDialog;
-    String gender,first_name,last_name,email_str,psswd,dateofbirth,signupID,gen,phone;
+    String gender,first_name,last_name,email_str,psswd,dateofbirth,signupID,gen,phone,phonechange;
 
     @Nullable
     @Override
@@ -68,47 +71,9 @@ public class UpdateProfile extends Fragment {
         email_str = email.getText().toString().trim();
         phone = mobile.getText().toString().trim();
 
+        //final String pedt = mobile.getText().toString().trim();
+        //phonechange = mobile.getText().toString().trim();
 
-        if (first_name.isEmpty()) {
-            fname.setError("Please Fill Your Name");
-
-
-        }else if(last_name.isEmpty()){
-            lname.setError("Please Fill Your Name");
-
-        } else if (phone.isEmpty()) {
-
-            mobile.setError("Please Fill Your Phone Number");
-        }
-
-        else if (phone.length() != 10 && phone.length() != 0) {
-
-            mobile.setError("please Enter 10 Digits");
-        }
-        for (int i = 0; i < phone.length(); i++) {
-            char c = phone.charAt(i);
-            if (!(c >= '0' && c <= '9')) {
-
-                mobile.setError("Please enter a valid Number");
-            }
-        }
-
-        for (int i = 0; i < first_name.length(); i++) {
-            char c = first_name.charAt(i);
-
-            if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))) {
-
-                fname.setError("Please enter a valid name");
-            }
-        }
-        for (int i = 0; i < last_name.length(); i++) {
-            char c = last_name.charAt(i);
-
-            if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))) {
-
-                lname.setError("Please enter a valid name");
-            }
-        }
 
 
         forgot.setOnClickListener(new View.OnClickListener() {
@@ -127,15 +92,31 @@ public class UpdateProfile extends Fragment {
         gen = sharedPreferences.getString("globalgender","");
         sharedPreferences.getString("globalD","");
 
+        /*mobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });*/
             if (gen.equals("male")){
                 button_male.setChecked(true);
             }else if (gen.equals("female")){
                 button_female.setChecked(true);
-                }/*else{
-                button_female.setChecked(false);
-                button_male.setChecked(false);
-            }*/
+                }
 
         dob.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -161,20 +142,57 @@ public class UpdateProfile extends Fragment {
         }else{
             gender="female";
         }*/
+       /* mobile.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence phone, int start, int before, int count) {
+                phone = mobile.getText().toString().trim();
+
+
+                if(phonechange.equals(String.valueOf(phone))){
+                    sharedPreferences = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor eg = sharedPreferences.edit();
+                    eg.putBoolean("phonechanged",false);
+                    eg.apply();
+                }else {
+                    sharedPreferences = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor eg = sharedPreferences.edit();
+                    eg.putBoolean("phonechanged",true);
+                    eg.apply();
+
+                }
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+*/
+
         /*dob.setText(sharedPreferences.getInt("",null));
         email.setText(sharedPreferences.getInt("",null));
         mobile.setText(sharedPreferences.getInt("globalMobile", Integer.parseInt(null)));*/
-       // group.setText(sharedPreferences.getInt("",null));
+        // group.setText(sharedPreferences.getInt("",null));
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
+
                 /*sharedPreferences = getActivity().getSharedPreferences("pref",0);
                 fname.setText(sharedPreferences.getString("globalname",null));
                 lname.setText(sharedPreferences.getString("globalLname",null));
                 dob.setText(sharedPreferences.getString("globaldob",null));
                 email.setText(sharedPreferences.getString("globalemail",null));
-                mobile.setText(sharedPreferences.getString("globalMobile",null));*/
+                */
                 gen = sharedPreferences.getString("globalgender","");
                 signupID = sharedPreferences.getString("globalD","");
 
@@ -183,6 +201,25 @@ public class UpdateProfile extends Fragment {
                 dateofbirth = dob.getText().toString().trim();
                 email_str = email.getText().toString().trim();
                 phone = mobile.getText().toString().trim();
+
+                mobile.setText(sharedPreferences.getString("globalMobile",null));
+                if(phone.equals(sharedPreferences.getString("globalMobile",""))){
+                    sharedPreferences = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor eg = sharedPreferences.edit();
+                    eg.putBoolean("phonechanged",false);
+                    eg.apply();
+                }else {
+                    sharedPreferences = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor eg = sharedPreferences.edit();
+                    eg.putBoolean("phonechanged",true);
+                    eg.apply();
+
+                }
+                //phonechange = mobile.getText().toString().trim();
+
+
+
+
 
                 int gendr = group.getCheckedRadioButtonId();
                 if(gendr==R.id.rd_upfemale){
@@ -193,49 +230,80 @@ public class UpdateProfile extends Fragment {
 
 
             if(fname.getText().toString().trim().isEmpty()&&lname.getText().toString().trim().isEmpty()&&dob.getText().toString().isEmpty()
-                    &&email.getText().toString().isEmpty()&&mobile.getText().toString().isEmpty()){
+                    &&email.getText().toString().isEmpty()&&mobile.getText().toString().isEmpty()&&mobile.getText().toString().length() != 10
+                    && mobile.getText().toString().length() != 0&&!Patterns.EMAIL_ADDRESS.matcher(email_str).matches()&&Patterns.PHONE.matcher(phone).matches()&&
+                    Patterns.PHONE.matcher(phonechange).matches()){
+
                 Toast.makeText(getContext(), "Please Fill in The Required Fields", Toast.LENGTH_SHORT).show();
-                }else{
-             showProgressDialog();
+                } else {
 
-                 ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                Call<UpadteProfileModel>call = apiInterface.getUpdateProfie(signupID,first_name,last_name,gender,email_str,phone,dateofbirth);
-                call.enqueue(new Callback<UpadteProfileModel>() {
-        @Override
-        public void onResponse(Call<UpadteProfileModel> call, Response<UpadteProfileModel> response) {
-            if (response.body().getSuccess()==200){
+                if(sharedPreferences.getBoolean("phonechanged",true)){
+                    showProgressDialog();
+                    ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                    Call<SendOTPModel>call = apiInterface.getSendOTPDetail(phone);
+                    call.enqueue(new Callback<SendOTPModel>() {
+                        @Override
+                        public void onResponse(Call<SendOTPModel> call, Response<SendOTPModel> response) {
+                            if (response.body().getSuccess()==200){
+                                removefragment(new UpdateProfileOTP());
+                                // progressDialog.dismiss();
+                                hideProgressDialog();
+                                sp = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor eg = sp.edit();
+                                eg.putString("globalname",first_name);
+                                eg.putString("globaldob",dateofbirth);
+                                eg.putString("globalLname",last_name);
+                                eg.putString("globalMobile",phone);
+                                eg.putString("globalgender",gender);
+                                eg.apply();
 
-                // progressDialog.dismiss();
-                hideProgressDialog();
-                sp = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
-                SharedPreferences.Editor eg = sp.edit();
-                eg.putString("globalname",first_name);
-                eg.putString("globaldob",last_name);
-                eg.putString("globalgender",dateofbirth);
-                eg.putString("globalLname",last_name);
-                eg.putString("globalMobile",phone);
-                eg.putString("globalgender",gender);
-                eg.apply();
+                                // Toast.makeText(getContext(), "Sucessfully Updated", Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
-                Toast.makeText(getContext(), "Sucessfully Updated", Toast.LENGTH_SHORT).show();
-            }
-        }
+                        @Override
+                        public void onFailure(Call<SendOTPModel> call, Throwable t) {
+                            // progressDialog.dismiss();
+                            hideProgressDialog();
+                            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    }else{
 
-        @Override
-        public void onFailure(Call<UpadteProfileModel> call, Throwable t) {
+                    showProgressDialog();
+                    ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                    Call<UpadteProfileModel>call = apiInterface.getUpdateProfie(signupID,first_name,last_name,gender,email_str,phone,dateofbirth);
+                    call.enqueue(new Callback<UpadteProfileModel>() {
+                        @Override
+                        public void onResponse(Call<UpadteProfileModel> call, Response<UpadteProfileModel> response) {
+                            if (response.body().getSuccess()==200){
 
-            // progressDialog.dismiss();
-            hideProgressDialog();
-            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-        }
-    });
+                                // progressDialog.dismiss();
+                                hideProgressDialog();
+                                sp = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor eg = sp.edit();
+                                eg.putString("globalname",first_name);
+                                eg.putString("globaldob",dateofbirth);
+                                eg.putString("globalLname",last_name);
+                                eg.putString("globalMobile",phone);
+                                eg.putString("globalgender",gender);
+                                eg.apply();
 
+                                Toast.makeText(getContext(), "Sucessfully Updated", Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
-}
+                        @Override
+                        public void onFailure(Call<UpadteProfileModel> call, Throwable t) {
 
+                            // progressDialog.dismiss();
+                            hideProgressDialog();
+                            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
 
-
-
+                }
 
             }
         });

@@ -77,5 +77,16 @@ public interface ApiInterface {
                                        @Field("dob")String dob,
                                        @Field("email")String email);
 
+  @POST("update_profile.php")
+  @FormUrlEncoded
+  Call<UpadteProfileModel>getUpdateProfieOTP(@Field("id")String id,
+                                          @Field("firstname") String firstname,
+                                          @Field("lastname") String lastname,
+                                          @Field("gender")String gender,
+                                          @Field("email")String Email,
+                                          @Field("dob")String dob,
+                                          @Field("mobile")String mobile,
+                                          @Field("otp")String OTP);
+
 
 }

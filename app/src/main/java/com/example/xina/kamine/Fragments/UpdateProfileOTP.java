@@ -15,7 +15,7 @@ import com.goodiebag.pinview.Pinview;
 
 import org.apache.http.ConnectionReuseStrategy;
 
-public class UpdateProfile_OTP extends Fragment {
+public class UpdateProfileOTP extends Fragment {
 
     Pinview pview;
     TextView mobilechange;
@@ -32,7 +32,18 @@ public class UpdateProfile_OTP extends Fragment {
         otpupdatev = view.findViewById(R.id.sub_otp_update);
 
 
+otpupdatev.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        if(pview.getValue().isEmpty()){
 
+
+        }else{
+
+
+        }
+    }
+});
 
 
 

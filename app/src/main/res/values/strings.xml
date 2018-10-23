@@ -7,4 +7,5 @@
     <string name="empty_new_pswd">Your New Password Cannot Be Empty</string>
     <string name="empty_confirm_pswd">This Field Cannot Be Empty</string>
     <string name="pswd_not_match">Passwords Do Not Match</string>
+    <string name="facebook_app_id">301838683757612</string>
 </resources>

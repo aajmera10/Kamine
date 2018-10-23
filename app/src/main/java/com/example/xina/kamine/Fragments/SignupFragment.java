@@ -47,6 +47,7 @@ public class SignupFragment extends Fragment {
     RadioGroup group;
     DatePickerDialog datePickerDialog;
     RadioButton button_male,button_female;
+    private ProgressDialog mProgressDialog;
 
     @SuppressLint("NewApi")
     @Nullable
@@ -76,6 +77,62 @@ public class SignupFragment extends Fragment {
         mobile = phone.getText().toString().trim();
 
 
+        if (first_name.isEmpty()) {
+            firestname.setError("Please Fill Your Name");
+
+
+        }
+        if(last_name.isEmpty()){
+            lastname.setError("Please Fill Your Name");
+
+        }
+        if (mobile.isEmpty()) {
+
+            phone.setError("Please Fill Your Phone Number");
+        }
+        if (psswd.isEmpty()) {
+
+            password.setError("Please Fill Your Password");
+        }
+        if (email_str.isEmpty()) {
+
+            email.setError("Please Fill Your Email");
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email_str).matches()) {
+
+            email.setError("Should be a Valid Email Address");
+        }
+        if (mobile.length() != 10 && mobile.length() != 0) {
+
+            phone.setError("please Enter 10 Digits");
+        }
+        for (int i = 0; i < mobile.length(); i++) {
+            char c = mobile.charAt(i);
+            if (!(c >= '0' && c <= '9')) {
+
+                phone.setError("Please enter a valid Number");
+            }
+        }
+        if (psswd.length() < 6 && psswd.length() != 0) {
+
+            password.setError("Password Can not be less than 6 letters");
+        }
+        for (int i = 0; i < first_name.length(); i++) {
+            char c = first_name.charAt(i);
+
+            if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))) {
+
+                firestname.setError("Please enter a valid name");
+            }
+        }
+        for (int i = 0; i < last_name.length(); i++) {
+            char c = last_name.charAt(i);
+
+            if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))) {
+
+                lastname.setError("Please enter a valid name");
+            }
+        }
 
 
 
@@ -123,116 +180,66 @@ public class SignupFragment extends Fragment {
                 mobile = phone.getText().toString().trim();
                 dateofbirth=dob.getText().toString().trim();
 
-
-                if (first_name.isEmpty()) {
-                    firestname.setError("Please Fill Your Name");
-
-
-                }else if(last_name.isEmpty()){
-                    lastname.setError("Please Fill Your Name");
-
-                } else if (mobile.isEmpty()) {
-
-                    phone.setError("Please Fill Your Phone Number");
-                }
-                else if (psswd.isEmpty()) {
-
-                    password.setError("Please Fill Your Password");
-                }
-                else if (email_str.isEmpty()) {
-
-                    email.setError("Please Fill Your Email");
-                }
-                else if (!Patterns.EMAIL_ADDRESS.matcher(email_str).matches()) {
-
-                    email.setError("Should be a Valid Email Address");
-                } else if (mobile.length() != 10 && mobile.length() != 0) {
-
-                    phone.setError("please Enter 10 Digits");
-                }
-                for (int i = 0; i < mobile.length(); i++) {
-                    char c = mobile.charAt(i);
-                    if (!(c >= '0' && c <= '9')) {
-
-                        phone.setError("Please enter a valid Number");
-                    }
-                }
-                if (psswd.length() < 6 && psswd.length() != 0) {
-
-                    password.setError("Password Can not be less than 6 letters");
-                }
-                for (int i = 0; i < first_name.length(); i++) {
-                    char c = first_name.charAt(i);
-
-                    if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))) {
-
-                        firestname.setError("Please enter a valid name");
-                    }
-                }
-                for (int i = 0; i < last_name.length(); i++) {
-                    char c = last_name.charAt(i);
-
-                    if (!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c == ' '))) {
-
-                        lastname.setError("Please enter a valid name");
-                    }
-                }
-
-
                 int gen = group.getCheckedRadioButtonId();
                 if(gen==R.id.radioButton4){
                     gender="male";
                 }else{
                     gender="female";
                 }
+                if(first_name.isEmpty()&&last_name.isEmpty()&&email_str.isEmpty()&&psswd.isEmpty()
+                        &&mobile.isEmpty()&&dateofbirth.isEmpty()){
+                    Toast.makeText(getContext(), "Please Fill in all the Fields to Continue", Toast.LENGTH_SHORT).show();
+
+                }else{
+                  showProgressDialog();
+                    ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                    retrofit2.Call<SendOTPModel>call = apiInterface.getSendOTPDetail(mobile);
+                    call.enqueue(new Callback<SendOTPModel>() {
+                        @Override
+                        public void onResponse(retrofit2.Call<SendOTPModel> call, Response<SendOTPModel>  response) {
+
+                            // signupID=response.body().getSendOTPDetail().getId();
+
+                            //x = response.body().getSendOTPDetail().getOtp();
+                            if (response.body().getSuccess()==200){
+                               hideProgressDialog();
+                                Toast.makeText(getActivity(),response.body().getMessage() , Toast.LENGTH_SHORT).show();
+                                SharedPreferences sp = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor= sp.edit();
+                                editor.putString("firstName_signup",first_name);
+                                editor.putString("lastname_signup",last_name);
+                                editor.putString("gender_signup",gender);
+                                editor.putString("dob_signup",dateofbirth);
+                                editor.putString("mobile_signup",mobile);
+                                editor.putString("email_signup",email_str);
+                                editor.putString("password_signup",psswd);
+                                editor.apply();
 
 
-                final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setTitle("Loading...");
-                progressDialog.show();
-
-                ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                retrofit2.Call<SendOTPModel>call = apiInterface.getSendOTPDetail(mobile);
-                call.enqueue(new Callback<SendOTPModel>() {
-                    @Override
-                    public void onResponse(retrofit2.Call<SendOTPModel> call, Response<SendOTPModel>  response) {
-
-                       // signupID=response.body().getSendOTPDetail().getId();
-
-                        //x = response.body().getSendOTPDetail().getOtp();
-                        if (response.body().getSuccess()==200){
-                            progressDialog.dismiss();
-                            Toast.makeText(getActivity(),response.body().getMessage() , Toast.LENGTH_SHORT).show();
-                            SharedPreferences sp = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
-                            SharedPreferences.Editor editor= sp.edit();
-                            editor.putString("firstName_signup",first_name);
-                            editor.putString("lastname_signup",last_name);
-                            editor.putString("gender_signup",gender);
-                            editor.putString("dob_signup",dateofbirth);
-                            editor.putString("mobile_signup",mobile);
-                            editor.putString("email_signup",email_str);
-                            editor.putString("password_signup",psswd);
-                            editor.apply();
+                                removefragment(new EnterOTPFragment());
 
 
-                            removefragment(new EnterOTPFragment());
+                            }else if(response.body().getSuccess()==201){
+                                hideProgressDialog();
 
+                                Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
 
-                        }else if(response.body().getSuccess()==201){
-                            progressDialog.dismiss();
-
-                            Toast.makeText(getActivity(), response.message(), Toast.LENGTH_SHORT).show();
+                            }
 
                         }
 
-                    }
-
-                    @Override
-                    public void onFailure(retrofit2.Call<SendOTPModel> call, Throwable t) {
-                        progressDialog.dismiss();
+                        @Override
+                        public void onFailure(retrofit2.Call<SendOTPModel> call, Throwable t) {
+                            hideProgressDialog();
                         Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                        }
+                    });
+
+                }
+
+
+
+
             }
         });
 
@@ -368,8 +375,21 @@ public class SignupFragment extends Fragment {
         // getActivity().onBackPressed();
     }
 
-    private void datemethodpro() {
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(getActivity());
+            mProgressDialog.setMessage("loading...");
+            mProgressDialog.setIndeterminate(true);
+        }
 
+        mProgressDialog.show();
     }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
+
+}
 
 }
