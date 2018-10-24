@@ -9,6 +9,7 @@ import com.example.xina.kamine.Model.SendOTPModel;
 import com.example.xina.kamine.Model.SignUpDetailModel;
 import com.example.xina.kamine.Model.SocialLoginModel;
 import com.example.xina.kamine.Model.UpadteProfileModel;
+import com.example.xina.kamine.Model.UpdateProfileOTPModel;
 
 
 import retrofit2.Call;
@@ -79,14 +80,14 @@ public interface ApiInterface {
 
   @POST("update_profile.php")
   @FormUrlEncoded
-  Call<UpadteProfileModel>getUpdateProfieOTP(@Field("id")String id,
-                                          @Field("firstname") String firstname,
-                                          @Field("lastname") String lastname,
-                                          @Field("gender")String gender,
-                                          @Field("email")String Email,
-                                          @Field("dob")String dob,
-                                          @Field("mobile")String mobile,
-                                          @Field("otp")String OTP);
+  Call<UpdateProfileOTPModel>getUpdateProfieOTP(@Field("id")String id,
+                                                @Field("firstname") String firstname,
+                                                @Field("lastname") String lastname,
+                                                @Field("gender")String gender,
+                                                @Field("email")String Email,
+                                                @Field("dob")String dob,
+                                                @Field("mobile")String mobile,
+                                                @Field("otp")String OTP);
 
 
 }

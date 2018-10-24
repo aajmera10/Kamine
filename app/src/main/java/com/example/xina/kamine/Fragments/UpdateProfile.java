@@ -202,6 +202,8 @@ public class UpdateProfile extends Fragment {
                 email_str = email.getText().toString().trim();
                 phone = mobile.getText().toString().trim();
 
+
+
                 mobile.setText(sharedPreferences.getString("globalMobile",null));
                 if(phone.equals(sharedPreferences.getString("globalMobile",""))){
                     sharedPreferences = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);

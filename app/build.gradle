@@ -33,6 +33,7 @@ dependencies {
     implementation 'com.google.apis:google-api-services-people:v1-rev255-1.23.0'
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.facebook.android:facebook-android-sdk:4.36.1'
+    implementation 'com.facebook.android:facebook-login:[4,5)'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
