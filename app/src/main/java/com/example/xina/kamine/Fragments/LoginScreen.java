@@ -30,6 +30,18 @@ import com.example.xina.kamine.Model.SocialLoginModel;
 import com.example.xina.kamine.R;
 import com.example.xina.kamine.Utils.ApiInterface;
 import com.example.xina.kamine.Utils.ApiClient;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -50,37 +62,52 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Arrays;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
+import static com.facebook.FacebookSdk.getApplicationContext;
 
-public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectionFailedListener,GoogleApiClient.ConnectionCallbacks{
-LinearLayout Login;
-TextView signup,forgot_password;
-RadioButton otp;
-String password,user;
-ProgressDialog pDialog;
-String userName,userLName,userDOB,userGender,userMobile,userID,userEmail,apiemail;
-SharedPreferences sp;
-private ProgressDialog mProgressDialog;
-EditText enter_passwd,enter_mail;
+public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectionFailedListener,GoogleApiClient.ConnectionCallbacks {
+    LinearLayout Login;
+    TextView signup, forgot_password;
+    RadioButton otp;
+    String password, user;
+    String userName, userLName, userDOB, userGender, userMobile, userID, userEmail, apiemail;
+    SharedPreferences sp;
+    private ProgressDialog mProgressDialog;
+    EditText enter_passwd, enter_mail;
+    //Facebook//
+    ImageView fbbtn;
+    private CallbackManager callbackManager;
+    private LoginManager mLoginManager;
+    private AccessTokenTracker mAccessTokenTracker;
 
-//Google Sign in//
+    String fbname, fbId, fbemail, fbgender, fbdob;
+
+
+    //Google Sign in//
     ImageView googbtn;
     private static final int RC_SIGN_IN = 234;
     GoogleSignInClient mGoogleSignInClient;
     FirebaseAuth mAuth;
-     private GoogleApiClient mGoogleApiClient;
-    String gooName,gooId,goolname,googender,goodob,gooemail;
+    private GoogleApiClient mGoogleApiClient;
+    String gooName, gooId, googender, goodob, gooemail;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.login_screen,container,false);
-        ((MainHomeActivity)getActivity()).removeBottom();
+        //FacebookSdk.sdkInitialize(getApplicationContext());
+        //AppEventsLogger.activateApp(getContext());
+        View view = inflater.inflate(R.layout.login_screen, container, false);
+        ((MainHomeActivity) getActivity()).removeBottom();
         Login = view.findViewById(R.id.linearLayout2);
         enter_passwd = view.findViewById(R.id.enter_password);
         enter_mail = view.findViewById(R.id.enter_email);
@@ -90,73 +117,71 @@ EditText enter_passwd,enter_mail;
         googbtn = view.findViewById(R.id.g_login);
 
 
-      Login.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-              if(enter_passwd.getText().toString().isEmpty()&&enter_mail.getText().toString().isEmpty()){
+        Login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (enter_passwd.getText().toString().isEmpty() && enter_mail.getText().toString().isEmpty()) {
 
-                  Toast.makeText(getActivity(), "Please Enter The Required Values", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Please Enter The Required Values", Toast.LENGTH_SHORT).show();
 
-              }else {
-                  password = enter_passwd.getText().toString().trim();
-                  user = enter_mail.getText().toString().trim();
-                  //  new ProgressDialog(getActivity());
-                  //pDialog.setTitle("Akshat The Designer");
-                  // pDialog.show();
-                  showProgressDialog();
-                  ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                  Call<LoginModel> call = apiInterface.getLogin(password,user);
-                  //  Call<LoginModel> call = apiInterface.getLogin(password,user);
-                  call.enqueue(new Callback<LoginModel>() {
-                      @Override
-                      public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
-                          if (response.body().getSuccess()==200)
-                          {
+                } else {
+                    password = enter_passwd.getText().toString().trim();
+                    user = enter_mail.getText().toString().trim();
+                    //  new ProgressDialog(getActivity());
+                    //pDialog.setTitle("Akshat The Designer");
+                    // pDialog.show();
+                    showProgressDialog();
+                    ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                    Call<LoginModel> call = apiInterface.getLogin(password, user);
+                    //  Call<LoginModel> call = apiInterface.getLogin(password,user);
+                    call.enqueue(new Callback<LoginModel>() {
+                        @Override
+                        public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
+                            if (response.body().getSuccess() == 200) {
 
-                              //pDialog.dismiss();
-                              hideProgressDialog();
-                              Toast.makeText(getActivity(),response.toString(), Toast.LENGTH_SHORT).show();
-                              userName  =  response.body().getLoginDetail().getFname();
-                              userDOB =    response.body().getLoginDetail().getDob();
-                              userGender = response.body().getLoginDetail().getGender();
-                              userLName =  response.body().getLoginDetail().getLname();
-                              userMobile = response.body().getLoginDetail().getMobile();
-                              //userEmail = response.body().getLoginDetail().get
-                              userID = response.body().getLoginDetail().getId();
-                              apiemail = response.body().getLoginDetail().getEmail();
-                              //id=response.body().getLoginDetail().get
+                                //pDialog.dismiss();
+                                hideProgressDialog();
+                                Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
+                                userName = response.body().getLoginDetail().getFname();
+                                userDOB = response.body().getLoginDetail().getDob();
+                                userGender = response.body().getLoginDetail().getGender();
+                                userLName = response.body().getLoginDetail().getLname();
+                                userMobile = response.body().getLoginDetail().getMobile();
+                                //userEmail = response.body().getLoginDetail().get
+                                userID = response.body().getLoginDetail().getId();
+                                apiemail = response.body().getLoginDetail().getEmail();
+                                //id=response.body().getLoginDetail().get
 
 
-                              sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
-                              SharedPreferences.Editor eg = sp.edit();
-                              eg.putString("globalname",userName);
-                              eg.putString("globaldob",userDOB);
-                              eg.putString("globalgender",userGender);
-                              eg.putString("globalLname",userLName);
-                              eg.putString("globalMobile",userMobile);
-                              eg.putString("globalemail",apiemail);
-                              eg.putString("globalD",userID);
-                              eg.putBoolean("hasloggedIN",true);
-                              //eg.commit();
-                              eg.apply();
+                                sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+                                SharedPreferences.Editor eg = sp.edit();
+                                eg.putString("globalname", userName);
+                                eg.putString("globaldob", userDOB);
+                                eg.putString("globalgender", userGender);
+                                eg.putString("globalLname", userLName);
+                                eg.putString("globalMobile", userMobile);
+                                eg.putString("globalemail", apiemail);
+                                eg.putString("globalD", userID);
+                                eg.putBoolean("hasloggedIN", true);
+                                //eg.commit();
+                                eg.apply();
 
-                              removefragment(new AccountFragment());
+                                removefragment(new AccountFragment());
 
-                          }
-                      }
+                            }
+                        }
 
-                      @Override
-                      public void onFailure(Call<LoginModel> call, Throwable t) {
-                          //pDialog.dismiss();
-                          hideProgressDialog();
-                          Toast.makeText(getActivity(),t.toString(), Toast.LENGTH_SHORT).show();
-                      }
-                  });
-              }
-              }
+                        @Override
+                        public void onFailure(Call<LoginModel> call, Throwable t) {
+                            //pDialog.dismiss();
+                            hideProgressDialog();
+                            Toast.makeText(getActivity(), t.toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
 
-      });
-
+        });
 
 
         forgot_password.setOnClickListener(new View.OnClickListener() {
@@ -177,6 +202,50 @@ EditText enter_passwd,enter_mail;
                 removefragment(new GetOTP());
             }
         });
+
+        /////fcebook/////
+
+        mAccessTokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+                //updateFacebookButtonUI();
+            }
+        };
+
+        fbbtn = view.findViewById(R.id.fb_login);
+
+        mLoginManager = LoginManager.getInstance();
+        callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                updateFacebookUser(loginResult);
+                Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+
+
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(getContext(), "onCancel", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                Toast.makeText(getContext(), "onError :" + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        fbbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                handleFacebookLogin();
+            }
+        });
+
+
+
 
 
         /////Google SignIn///////
@@ -213,15 +282,12 @@ EditText enter_passwd,enter_mail;
         super.onStart();
         OptionalPendingResult<GoogleSignInResult> opr = Auth.GoogleSignInApi.silentSignIn(mGoogleApiClient);
         if (opr.isDone()) {
-            // If the user's cached credentials are valid, the OptionalPendingResult will be "done"
-            // and the GoogleSignInResult will be available instantly.
+
             Log.d(TAG, "Got cached sign-in");
             GoogleSignInResult result = opr.get();
             handleSignInResult(result);
         } else {
-            // If the user has not previously signed in on this device or the sign-in has expired,
-            // this asynchronous branch will attempt to sign in the user silently.  Cross-device
-            // single sign-on will occur in this branch.
+
             showProgressDialog();
             opr.setResultCallback(new ResultCallback<GoogleSignInResult>() {
                 @Override
@@ -234,17 +300,31 @@ EditText enter_passwd,enter_mail;
     }
 
 
-    @Override
+   /* @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+       // callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == RC_SIGN_IN) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             handleSignInResult(result);
 
         }
+    }*/
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+            Toast.makeText(getContext(), result.toString(), Toast.LENGTH_SHORT).show();
+        }
     }
+
+
 
     public void onPause() {
         super.onPause();
@@ -266,8 +346,11 @@ EditText enter_passwd,enter_mail;
             Log.e(TAG, "display name: " + acct.getDisplayName());
 
              gooName = acct.getDisplayName();
+
             String personPhotoUrl = acct.getPhotoUrl().toString();
+
             gooemail = acct.getEmail();
+
             int idx = gooName.lastIndexOf(' ');
             if (idx == -1)
                 throw new IllegalArgumentException("Only a single name: " + gooName);
@@ -322,6 +405,8 @@ EditText enter_passwd,enter_mail;
         }
     }
 
+
+
     public  void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {
@@ -345,6 +430,16 @@ EditText enter_passwd,enter_mail;
                         eg.commit();
                     }
                 });
+    }
+
+
+    private void handleFacebookLogin() {
+        if (AccessToken.getCurrentAccessToken() != null) {
+            mLoginManager.logOut();
+        } else {
+            mAccessTokenTracker.startTracking();
+            mLoginManager.logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
+        }
     }
 
 
@@ -386,6 +481,69 @@ EditText enter_passwd,enter_mail;
 
 
     }
+
+
+    private void updateFacebookUser(final LoginResult loginResult) {
+        GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response) {
+                if (response.getError() != null) {
+                    Log.d("FB ERROR", response.getError().toString());
+                } else {
+
+                    try {
+                        fbname = object.getString("name");
+
+                        fbemail = object.getString("email");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+
+                    /*SocialLoginModel socialModel = new SocialLoginModel();
+                    SocialLoginModel.class("FACEBOOK");
+                    if (object.has("id")) {
+                        socialModel.setId(object.getString("id"));
+                    }
+                    if (object.has("name")) {
+                        socialModel.setName(object.getString("name"));
+                    }
+                    if (object.has("email")) {
+                        socialModel.setEmail(object.getString("email"));
+
+                    }
+                    if (object.has("mobile")) {
+                        socialModel.setId(object.getString("mobile"));
+                    }*//*
+                    sp = getSharedPreferences("pref", MODE_PRIVATE);
+                    SharedPreferences.Editor ed = sp.edit();
+                    String idFB = (object.getString("id"));
+                    String nameFB   = (object.getString("name"));
+                    String emailFB =  (object.getString("email"));
+                    ed.putString("FBid",idFB);
+                    ed.putString("FBname",nameFB);
+                    ed.putString("FBemail",emailFB);
+                    ed.putString("flag",facebookFlag);
+                    ed.apply();
+                    Intent intent =new Intent(getApplicationContext(),HomeActivity.class);
+                    startActivity(intent);
+                    if (AccessToken.getCurrentAccessToken() != null) {
+                        if (mLoginManager != null)
+                            mLoginManager.logOut();
+                    }
+                    checkSocialUserExists(socialModel);*/
+                }
+            }
+        });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", "id,name,email,gender,birthday,first_name,last_name");
+        graphRequest.setParameters(parameters);
+        graphRequest.executeAsync();
+    }
+
+
+
+
 
     @Override
     public void onDestroy() {

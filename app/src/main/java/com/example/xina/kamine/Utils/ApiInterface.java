@@ -2,6 +2,7 @@ package com.example.xina.kamine.Utils;
 
 import com.example.xina.kamine.Model.ChangePswdModel;
 import com.example.xina.kamine.Model.ForgotPasswordModel;
+import com.example.xina.kamine.Model.HomeSliderMainModel;
 import com.example.xina.kamine.Model.LoginModel;
 import com.example.xina.kamine.Model.LogoutModel;
 import com.example.xina.kamine.Model.MainHomeCategoryListModel;
@@ -88,6 +89,12 @@ public interface ApiInterface {
                                                 @Field("dob")String dob,
                                                 @Field("mobile")String mobile,
                                                 @Field("otp")String OTP);
+
+
+  @POST("slider.php")
+  @FormUrlEncoded
+  Call<HomeSliderMainModel>getMainHomeSlider();
+
 
 
 }

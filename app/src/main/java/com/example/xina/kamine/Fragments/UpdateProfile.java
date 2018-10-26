@@ -202,9 +202,7 @@ public class UpdateProfile extends Fragment {
                 email_str = email.getText().toString().trim();
                 phone = mobile.getText().toString().trim();
 
-
-
-                mobile.setText(sharedPreferences.getString("globalMobile",null));
+                mobile.setText(sharedPreferences.getString("globalMobile",""));
                 if(phone.equals(sharedPreferences.getString("globalMobile",""))){
                     sharedPreferences = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
                     SharedPreferences.Editor eg = sharedPreferences.edit();
@@ -217,11 +215,6 @@ public class UpdateProfile extends Fragment {
                     eg.apply();
 
                 }
-                //phonechange = mobile.getText().toString().trim();
-
-
-
-
 
                 int gendr = group.getCheckedRadioButtonId();
                 if(gendr==R.id.rd_upfemale){

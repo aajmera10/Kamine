@@ -70,20 +70,15 @@ public class MainHomeActivity extends AppCompatActivity {
 */
 
         Menu menu = bottomNavigationView.getMenu();
-      // menu.findItem(R.id.navigation_account).setIcon(R.drawable.iconred3);
-        //menu.findItem(R.id.navigation_collections).setIcon(R.drawable.iconred);
-       // menu.findItem(R.id.navigation_home).setIcon(R.drawable.iconkamine);
-        //menu.findItem(R.id.navigation_closet).setIcon(R.drawable.iconred);
-       // menu.findItem(R.id.navigation_cart).setIcon(R.drawable.sho);
-       //BottomNavigationViewHelper.removeShiftMode(bottomNavigationView);
+
         sp = getSharedPreferences("pref",MODE_PRIVATE);
-        final String name = sp.getString("globalname", null);
-        String date = sp.getString("globaldob", null);
-        String gender = sp.getString("globalgender", null);
-        String lname = sp.getString("globalLname", null);
-        final String mobile = sp.getString("globalMobile", null);
-        final String email = sp.getString("globalemail", null);
-        String ID = sp.getString("globalD", null);
+        final String name = sp.getString("globalname", "");
+        String date = sp.getString("globaldob", "");
+        String gender = sp.getString("globalgender", "");
+        String lname = sp.getString("globalLname", "");
+        final String mobile = sp.getString("globalMobile", "");
+        final String email = sp.getString("globalemail", "");
+        String ID = sp.getString("globalD", "");
         sp.getBoolean("hasloggedIN",true);
 
 
