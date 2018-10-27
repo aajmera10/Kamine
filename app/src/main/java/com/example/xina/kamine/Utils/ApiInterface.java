@@ -93,7 +93,7 @@ public interface ApiInterface {
 
   @POST("slider.php")
   @FormUrlEncoded
-  Call<HomeSliderMainModel>getMainHomeSlider();
+  Call<HomeSliderMainModel>getMainHomeSlider(@Field("id")String id);
 
 
 

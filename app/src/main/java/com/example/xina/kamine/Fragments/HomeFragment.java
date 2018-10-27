@@ -2,6 +2,7 @@ package com.example.xina.kamine.Fragments;
 
 import android.app.Fragment;
 import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -23,6 +24,8 @@ import com.example.xina.kamine.Adapter.MainHomeAdapterDisplay;
 import com.example.xina.kamine.Adapter.MainHomeSliderAdapter;
 import com.example.xina.kamine.Adapter.PicassoImageLoadingService;
 import com.example.xina.kamine.Model.HomeDisplayModel;
+import com.example.xina.kamine.Model.HomeSliderMainDetail;
+import com.example.xina.kamine.Model.HomeSliderMainModel;
 import com.example.xina.kamine.Model.MainHomeCategoryListModel;
 import com.example.xina.kamine.R;
 import com.example.xina.kamine.Utils.ApiClient;
@@ -37,12 +40,18 @@ import retrofit2.Response;
 import ss.com.bannerslider.Slider;
 import ss.com.bannerslider.event.OnSlideClickListener;
 
+import static android.content.Context.MODE_PRIVATE;
+
 public class HomeFragment extends android.support.v4.app.Fragment {
         RecyclerView recyclerView_horizontal_display,recyclerView_best_mens,
                 recyclerView_best_womens,recyclerView_bestsellers,recyclerView_whats_new;
         List<HomeDisplayModel>horizontallist,menslist,womenslist,whatsnewlist,bestsellerlist;
         LinearLayout women,men,matching,best;
+        private ProgressDialog mProgressDialog;
         Slider home_slider;
+        String id;
+         SharedPreferences sp;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -57,15 +66,40 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         //((AppCompatActivity)getActivity()).getSupportActionBar().isHideOnContentScrollEnabled();
 //        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         home_slider = view.findViewById(R.id.slider_horizontal_display);
-        Slider.init(new PicassoImageLoadingService(getActivity()));
-        home_slider.setAdapter(new MainHomeSliderAdapter());
-        home_slider.setOnSlideClickListener(new OnSlideClickListener() {
+        //Slider.init(new PicassoImageLoadingService(getActivity()));
+       // home_slider.setAdapter();
+
+
+        /*sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        id = sp.getString("globalD","");*/
+showProgressDialog();
+        id = "1";
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<HomeSliderMainModel>call = apiInterface.getMainHomeSlider(id);
+        call.enqueue(new Callback<HomeSliderMainModel>() {
             @Override
-            public void onSlideClick(int position) {
-                replaceFragment(new ClosetFragment());
+            public void onResponse(Call<HomeSliderMainModel> call, Response<HomeSliderMainModel> response) {
+
+                hideProgressDialog();
+                List<HomeSliderMainDetail> HomeSliderMainModel = response.body().getDetail();
+
+                Slider.init(new PicassoImageLoadingService(getActivity()));
+                home_slider.setAdapter(new MainHomeSliderAdapter(getContext(),HomeSliderMainModel));
+                home_slider.setOnSlideClickListener(new OnSlideClickListener() {
+                    @Override
+                    public void onSlideClick(int position) {
+                        replaceFragment(new ClosetFragment());
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFailure(Call<HomeSliderMainModel> call, Throwable t) {
+                hideProgressDialog();
+                Toast.makeText(getContext(), "Unable to Display the Data", Toast.LENGTH_SHORT).show();
             }
         });
-
 
         recyclerView_best_mens = view.findViewById(R.id.recyclerView_best_mens);
         recyclerView_best_mens.setLayoutManager(new GridLayoutManager(getActivity(), 1));
@@ -151,12 +185,10 @@ public class HomeFragment extends android.support.v4.app.Fragment {
      women.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-             String idw = "2";
-             String woo = "Women";
+             final String idw = "2";
+             final String woo = "Women";
 
-             final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-             progressDialog.setTitle("Loading...");
-             progressDialog.show();
+             showProgressDialog();
 
              ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
              Call<MainHomeCategoryListModel>call = apiInterface.getMainHomeCategory(idw,woo);
@@ -164,21 +196,26 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                  @Override
                  public void onResponse(Call<MainHomeCategoryListModel> call, Response<MainHomeCategoryListModel> response) {
                      if (response.body().getSuccess().equals("200")){
-                         progressDialog.dismiss();
+                         hideProgressDialog();
                          //Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-
-                         String c  = response.body().getClass().getName();
-                         Toast.makeText(getContext(), "women", Toast.LENGTH_SHORT).show();
-                         Toast.makeText(getContext(), c, Toast.LENGTH_SHORT).show();
+                         sp = getActivity().getSharedPreferences("Pref",0);
+                         SharedPreferences.Editor eg = sp.edit();
+                         eg.putString("first",idw);
+                         eg.putString("women",woo);
+                         eg.apply();
+                         replaceFragment(new WomenMainDisplay());
+                         //String c  = response.body().getClass().getName();
+                         //Toast.makeText(getContext(), "women", Toast.LENGTH_SHORT).show();
+                         //Toast.makeText(getContext(), c, Toast.LENGTH_SHORT).show();
+                         Toast.makeText(getContext(),response.body().getSuccess(),Toast.LENGTH_SHORT).show();
 
                      }
                  }
-
                  @Override
                  public void onFailure(Call<MainHomeCategoryListModel> call, Throwable t) {
 
-                     progressDialog.dismiss();
-                     Toast.makeText(getContext(),"oops", Toast.LENGTH_SHORT).show();
+                    hideProgressDialog();
+                    Toast.makeText(getContext(),"oops", Toast.LENGTH_SHORT).show();
                  }
              });
          }
@@ -187,12 +224,10 @@ public class HomeFragment extends android.support.v4.app.Fragment {
      men.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-             String idm = "1";
-             String man = "Men";
+             final String idm = "1";
+             final String man = "Men";
 
-             final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-             progressDialog.setTitle("Loading...");
-             progressDialog.show();
+            showProgressDialog();
 
              ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
              Call<MainHomeCategoryListModel>call = apiInterface.getMainHomeCategory(idm,man);
@@ -200,8 +235,13 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                  @Override
                  public void onResponse(Call<MainHomeCategoryListModel> call, Response<MainHomeCategoryListModel> response) {
                      if (response.body().getSuccess().equals("200")){
-                         progressDialog.dismiss();
-                         //Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                         hideProgressDialog();
+                         replaceFragment(new ManMainDiaplay());
+                         sp = getActivity().getSharedPreferences("Pref",0);
+                         SharedPreferences.Editor eg = sp.edit();
+                         eg.putString("second",idm);
+                         eg.putString("men",man);
+                         eg.apply();                         //Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                          Toast.makeText(getContext(), "men", Toast.LENGTH_SHORT).show();
 
 
@@ -211,7 +251,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                  @Override
                  public void onFailure(Call<MainHomeCategoryListModel> call, Throwable t) {
 
-                     progressDialog.dismiss();
+                     hideProgressDialog();
                      Toast.makeText(getContext(),"oops", Toast.LENGTH_SHORT).show();
                  }
              });
@@ -220,12 +260,10 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         matching.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String matc = "3";
-                String match = "Matching T-shirts";
+                final String matc = "3";
+                final String match = "Matching T-shirts";
 
-                final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setTitle("Loading...");
-                progressDialog.show();
+                showProgressDialog();
 
                 ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                 Call<MainHomeCategoryListModel>call = apiInterface.getMainHomeCategory(matc,match);
@@ -233,8 +271,13 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                     @Override
                     public void onResponse(Call<MainHomeCategoryListModel> call, Response<MainHomeCategoryListModel> response) {
                         if (response.body().getSuccess().equals("200")){
-                            progressDialog.dismiss();
-                            //Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                            hideProgressDialog();
+                            replaceFragment(new ManMainDiaplay());
+                            sp = getActivity().getSharedPreferences("Pref",0);
+                            SharedPreferences.Editor eg = sp.edit();
+                            eg.putString("third",matc);
+                            eg.putString("matching",match);
+                            eg.apply();
                             Toast.makeText(getContext(), "matching", Toast.LENGTH_SHORT).show();
 
                         }
@@ -243,7 +286,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                     @Override
                     public void onFailure(Call<MainHomeCategoryListModel> call, Throwable t) {
 
-                        progressDialog.dismiss();
+                        hideProgressDialog();
                         Toast.makeText(getContext(),"oops", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -252,12 +295,10 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         best.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String sel4 = "4";
-                String month = "T-shirt of the month";
+                final String sel4 = "4";
+                final String month = "T-shirt of the month";
 
-                final ProgressDialog progressDialog = new ProgressDialog(getActivity());
-                progressDialog.setTitle("Loading...");
-                progressDialog.show();
+                showProgressDialog();
 
                 ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                 Call<MainHomeCategoryListModel>call = apiInterface.getMainHomeCategory(sel4,month);
@@ -265,9 +306,16 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                     @Override
                     public void onResponse(Call<MainHomeCategoryListModel> call, Response<MainHomeCategoryListModel> response) {
                         if (response.body().getSuccess().equals("200")){
-                            progressDialog.dismiss();
+                            hideProgressDialog();
+                            replaceFragment(new TShirtofMonthDisplay());
                             //Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                             Toast.makeText(getContext(), "Tshirt", Toast.LENGTH_SHORT).show();
+replaceFragment(new TShirtofMonthDisplay());
+                            sp = getActivity().getSharedPreferences("Pref",0);
+                            SharedPreferences.Editor eg = sp.edit();
+                            eg.putString("forth",sel4);
+                            eg.putString("forthname",month);
+                            eg.apply();
 
                         }
                     }
@@ -275,16 +323,12 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                     @Override
                     public void onFailure(Call<MainHomeCategoryListModel> call, Throwable t) {
 
-                        progressDialog.dismiss();
+                        hideProgressDialog();
                         Toast.makeText(getContext(),"oops", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
         });
-
-
-
-
 
         return view;
 
@@ -302,7 +346,31 @@ public class HomeFragment extends android.support.v4.app.Fragment {
              transaction.addToBackStack(null);
              transaction.commit();
 
-         }}
+         }
+
+
+    private void showProgressDialog() {
+
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(getActivity());
+            mProgressDialog.setMessage("loading...");
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
+
+
+    }
+
+
+
+}
 
 
 

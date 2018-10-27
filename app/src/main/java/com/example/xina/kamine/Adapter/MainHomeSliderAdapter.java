@@ -3,12 +3,16 @@ package com.example.xina.kamine.Adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.util.AttributeSet;
 
+import com.example.xina.kamine.Model.HomeSliderMainDetail;
 import com.example.xina.kamine.Model.HomeSliderMainModel;
 import com.example.xina.kamine.R;
 import com.example.xina.kamine.Utils.ApiClient;
 import com.example.xina.kamine.Utils.ApiInterface;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,65 +22,27 @@ import ss.com.bannerslider.adapters.SliderAdapter;
 import ss.com.bannerslider.viewholder.ImageSlideViewHolder;
 
 public class MainHomeSliderAdapter extends SliderAdapter {
+    private Context mCtx;
+    private List<HomeSliderMainDetail> HomeSliderMainModel;
 
-
-
-    ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-    Call<HomeSliderMainModel> call = apiInterface.getMainHomeSlider();
-
-    public Call<HomeSliderMainModel> getCall() {
-        call.enqueue(new Callback<HomeSliderMainModel>() {
-            @Override
-            public void onResponse(Call<HomeSliderMainModel> call, Response<HomeSliderMainModel> response) {
-                response.body().getDetail();
-            }
-
-            @Override
-            public void onFailure(Call<HomeSliderMainModel> call, Throwable t) {
-
-            }
-        });
-        return call;
+    public MainHomeSliderAdapter(Context mCtx, List<HomeSliderMainDetail> homeSliderMainModel) {
+        this.mCtx = mCtx;
+        this.HomeSliderMainModel = homeSliderMainModel;
     }
 
+
+
+
     public int getItemCount() {
-        return 10;
+        return HomeSliderMainModel.size();
     }
 
     public void onBindImageSlide(int position, ImageSlideViewHolder imageSlideViewHolder) {
 
-        switch (position) {
-            case 0:
-                imageSlideViewHolder.bindImageSlide("http://xinatechnologies.com/kamine/img/1.png");
-                break;
-            case 1:
-                imageSlideViewHolder.bindImageSlide("http://xinatechnologies.com/kamine/img/2.png");
-                break;
-            case 2:
-                imageSlideViewHolder.bindImageSlide("http://xinatechnologies.com/kamine/img/3.png");
-                break;
-            case 3:
-                imageSlideViewHolder.bindImageSlide("http://xinatechnologies.com/kamine/img/4.png");
-                break;
-            case 4:
-                imageSlideViewHolder.bindImageSlide("http://xinatechnologies.com/kamine/img/4.png");
-                break;
-            case 5:
-                imageSlideViewHolder.bindImageSlide("http://xinatechnologies.com/kamine/img/5.png");
-                break;
-            case 6:
-                imageSlideViewHolder.bindImageSlide("http://xinatechnologies.com/kamine/img/6.png");
-                break;
-            case 7:
-                imageSlideViewHolder.bindImageSlide("http://xinatechnologies.com/kamine/img/7.png");
-                break;
-            case 8:
-                imageSlideViewHolder.bindImageSlide("http://xinatechnologies.com/kamine/img/8.png");
-                break;
-            case 9:
-                imageSlideViewHolder.bindImageSlide("http://xinatechnologies.com/kamine/img/.9png");
-                break;
-        }
+        HomeSliderMainDetail hero = HomeSliderMainModel.get(position);
+        //imageSlideViewHolder.bindImageSlide(hero.getId());
+        imageSlideViewHolder.bindImageSlide(hero.getImage());
+
     }
 
 }

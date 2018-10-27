@@ -220,7 +220,7 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
         LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                updateFacebookUser(loginResult);
+
                 Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
 
 
@@ -244,6 +244,9 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
             }
         });
 
+
+      //  AccessToken accessToken = AccessToken.getCurrentAccessToken();
+       // boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
 
 
@@ -439,6 +442,9 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
         } else {
             mAccessTokenTracker.startTracking();
             mLoginManager.logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
+
+
+            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
         }
     }
 
@@ -482,69 +488,6 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
 
     }
 
-
-    private void updateFacebookUser(final LoginResult loginResult) {
-        GraphRequest graphRequest = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
-            @Override
-            public void onCompleted(JSONObject object, GraphResponse response) {
-                if (response.getError() != null) {
-                    Log.d("FB ERROR", response.getError().toString());
-                } else {
-
-                    try {
-                        fbname = object.getString("name");
-
-                        fbemail = object.getString("email");
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-
-                    /*SocialLoginModel socialModel = new SocialLoginModel();
-                    SocialLoginModel.class("FACEBOOK");
-                    if (object.has("id")) {
-                        socialModel.setId(object.getString("id"));
-                    }
-                    if (object.has("name")) {
-                        socialModel.setName(object.getString("name"));
-                    }
-                    if (object.has("email")) {
-                        socialModel.setEmail(object.getString("email"));
-
-                    }
-                    if (object.has("mobile")) {
-                        socialModel.setId(object.getString("mobile"));
-                    }*//*
-                    sp = getSharedPreferences("pref", MODE_PRIVATE);
-                    SharedPreferences.Editor ed = sp.edit();
-                    String idFB = (object.getString("id"));
-                    String nameFB   = (object.getString("name"));
-                    String emailFB =  (object.getString("email"));
-                    ed.putString("FBid",idFB);
-                    ed.putString("FBname",nameFB);
-                    ed.putString("FBemail",emailFB);
-                    ed.putString("flag",facebookFlag);
-                    ed.apply();
-                    Intent intent =new Intent(getApplicationContext(),HomeActivity.class);
-                    startActivity(intent);
-                    if (AccessToken.getCurrentAccessToken() != null) {
-                        if (mLoginManager != null)
-                            mLoginManager.logOut();
-                    }
-                    checkSocialUserExists(socialModel);*/
-                }
-            }
-        });
-        Bundle parameters = new Bundle();
-        parameters.putString("fields", "id,name,email,gender,birthday,first_name,last_name");
-        graphRequest.setParameters(parameters);
-        graphRequest.executeAsync();
-    }
-
-
-
-
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -561,22 +504,3 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
 
     }
 }
-
-
-
-
-
-//@SuppressLint("ResourceType")
-    /*private void replaceFragment(android.app.Fragment f) {
-        android.app.FragmentManager manager = getFragmentManager();
-        android.app.FragmentTransaction transaction  = manager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
-                R.anim.fragment_slide_left_exit,
-                R.anim.fragment_slide_right_enter,
-                R.anim.fragment_slide_right_exit);
-        //bottomNavigationView.setVisibility(View.VISIBLE);
-        transaction.replace(R.id.frag_container,f);
-        transaction.addToBackStack(null);
-        transaction.commit();
-
-    */
