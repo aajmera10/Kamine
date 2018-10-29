@@ -9,6 +9,7 @@ import com.example.xina.kamine.Model.MainHomeCategoryListModel;
 import com.example.xina.kamine.Model.SendOTPModel;
 import com.example.xina.kamine.Model.SignUpDetailModel;
 import com.example.xina.kamine.Model.SocialLoginModel;
+import com.example.xina.kamine.Model.SubcategoryMainModel;
 import com.example.xina.kamine.Model.UpadteProfileModel;
 import com.example.xina.kamine.Model.UpdateProfileOTPModel;
 
@@ -16,10 +17,7 @@ import com.example.xina.kamine.Model.UpdateProfileOTPModel;
 import retrofit2.Call;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface ApiInterface {
 
@@ -53,6 +51,10 @@ public interface ApiInterface {
   @FormUrlEncoded
   Call<MainHomeCategoryListModel>getMainHomeCategory(@Field("id") String id,
                                                      @Field("name") String ItemName);
+
+  @POST("show_subcategory.php")
+  @FormUrlEncoded
+  Call<SubcategoryMainModel> getMainHomeSubcategory(@Field("categoryid")String id);
 
   @POST("logout.php")
   @FormUrlEncoded

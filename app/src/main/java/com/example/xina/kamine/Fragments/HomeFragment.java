@@ -47,10 +47,13 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                 recyclerView_best_womens,recyclerView_bestsellers,recyclerView_whats_new;
         List<HomeDisplayModel>horizontallist,menslist,womenslist,whatsnewlist,bestsellerlist;
         LinearLayout women,men,matching,best;
+
         private ProgressDialog mProgressDialog;
         Slider home_slider;
-        String id;
-         SharedPreferences sp;
+        String id,idm,man,matc,match,sel4,month,idw,woo;
+
+
+    SharedPreferences sp;
 
     @Nullable
     @Override
@@ -63,16 +66,9 @@ public class HomeFragment extends android.support.v4.app.Fragment {
             matching = view.findViewById(R.id.home_matching);
             best = view.findViewById(R.id.home_clearance);
 
-        //((AppCompatActivity)getActivity()).getSupportActionBar().isHideOnContentScrollEnabled();
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().show();
         home_slider = view.findViewById(R.id.slider_horizontal_display);
-        //Slider.init(new PicassoImageLoadingService(getActivity()));
-       // home_slider.setAdapter();
 
-
-        /*sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
-        id = sp.getString("globalD","");*/
-showProgressDialog();
+        showProgressDialog();
         id = "1";
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<HomeSliderMainModel>call = apiInterface.getMainHomeSlider(id);
@@ -185,9 +181,13 @@ showProgressDialog();
      women.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-             final String idw = "2";
-             final String woo = "Women";
-
+              idw = "2";
+              woo = "Women";
+             sp = getActivity().getSharedPreferences("Pref",0);
+             SharedPreferences.Editor eg = sp.edit();
+             eg.putString("first",idw);
+             eg.putString("women",woo);
+             eg.apply();
              showProgressDialog();
 
              ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -198,11 +198,7 @@ showProgressDialog();
                      if (response.body().getSuccess().equals("200")){
                          hideProgressDialog();
                          //Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-                         sp = getActivity().getSharedPreferences("Pref",0);
-                         SharedPreferences.Editor eg = sp.edit();
-                         eg.putString("first",idw);
-                         eg.putString("women",woo);
-                         eg.apply();
+
                          replaceFragment(new WomenMainDisplay());
                          //String c  = response.body().getClass().getName();
                          //Toast.makeText(getContext(), "women", Toast.LENGTH_SHORT).show();
@@ -224,10 +220,14 @@ showProgressDialog();
      men.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-             final String idm = "1";
-             final String man = "Men";
-
-            showProgressDialog();
+            idm = "1";
+              man = "Men";
+             sp = getActivity().getSharedPreferences("Pref",0);
+             SharedPreferences.Editor eg = sp.edit();
+             eg.putString("second",idm);
+             eg.putString("men",man);
+             eg.apply();
+             showProgressDialog();
 
              ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
              Call<MainHomeCategoryListModel>call = apiInterface.getMainHomeCategory(idm,man);
@@ -237,11 +237,7 @@ showProgressDialog();
                      if (response.body().getSuccess().equals("200")){
                          hideProgressDialog();
                          replaceFragment(new ManMainDiaplay());
-                         sp = getActivity().getSharedPreferences("Pref",0);
-                         SharedPreferences.Editor eg = sp.edit();
-                         eg.putString("second",idm);
-                         eg.putString("men",man);
-                         eg.apply();                         //Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                               //Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                          Toast.makeText(getContext(), "men", Toast.LENGTH_SHORT).show();
 
 
@@ -260,9 +256,13 @@ showProgressDialog();
         matching.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String matc = "3";
-                final String match = "Matching T-shirts";
-
+                 matc = "3";
+                 match = "Matching T-shirts";
+                sp = getActivity().getSharedPreferences("Pref",0);
+                SharedPreferences.Editor eg = sp.edit();
+                eg.putString("third",matc);
+                eg.putString("matching",match);
+                eg.apply();
                 showProgressDialog();
 
                 ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -272,12 +272,8 @@ showProgressDialog();
                     public void onResponse(Call<MainHomeCategoryListModel> call, Response<MainHomeCategoryListModel> response) {
                         if (response.body().getSuccess().equals("200")){
                             hideProgressDialog();
-                            replaceFragment(new ManMainDiaplay());
-                            sp = getActivity().getSharedPreferences("Pref",0);
-                            SharedPreferences.Editor eg = sp.edit();
-                            eg.putString("third",matc);
-                            eg.putString("matching",match);
-                            eg.apply();
+                            replaceFragment(new MatchingMainDisplay());
+
                             Toast.makeText(getContext(), "matching", Toast.LENGTH_SHORT).show();
 
                         }
@@ -295,9 +291,14 @@ showProgressDialog();
         best.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String sel4 = "4";
-                final String month = "T-shirt of the month";
-
+               sel4 = "4";
+               month = "T-shirt of the month";
+                replaceFragment(new TShirtofMonthDisplay());
+                sp = getActivity().getSharedPreferences("Pref",0);
+                SharedPreferences.Editor eg = sp.edit();
+                eg.putString("forth",sel4);
+                eg.putString("forthname",month);
+                eg.apply();
                 showProgressDialog();
 
                 ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -310,12 +311,7 @@ showProgressDialog();
                             replaceFragment(new TShirtofMonthDisplay());
                             //Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                             Toast.makeText(getContext(), "Tshirt", Toast.LENGTH_SHORT).show();
-replaceFragment(new TShirtofMonthDisplay());
-                            sp = getActivity().getSharedPreferences("Pref",0);
-                            SharedPreferences.Editor eg = sp.edit();
-                            eg.putString("forth",sel4);
-                            eg.putString("forthname",month);
-                            eg.apply();
+
 
                         }
                     }
