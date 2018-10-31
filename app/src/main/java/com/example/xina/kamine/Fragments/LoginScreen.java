@@ -38,6 +38,7 @@ import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -217,13 +218,89 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
         mLoginManager = LoginManager.getInstance();
         callbackManager = CallbackManager.Factory.create();
 
-        LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+        mLoginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-
+                showProgressDialog();
                 Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
+                AccessToken accessToken = loginResult.getAccessToken();
+                Profile profile = Profile.getCurrentProfile();
+
+                GraphRequest request = GraphRequest.newMeRequest(
+                        loginResult.getAccessToken(),
+                        new GraphRequest.GraphJSONObjectCallback() {
+                            @Override
+                            public void onCompleted(
+                                    JSONObject object,
+                                    GraphResponse response) {
+                                hideProgressDialog();
+                               // Log.v("LoginActivity Response ", response.toString());
+
+                                try {
+                                    fbname = object.getString("name");
+                                    fbemail = object.getString("email");
+                                   /* fbgender = object.getString("gender");
+                                    fbdob = object.getString("birthday");*/
+                                    fbId = object.getString("id");
+                                    //Log.d("Email = ", " " + fbemail);
+                                    //Toast.makeText(getApplicationContext(), "Name " + fbname, Toast.LENGTH_LONG).show();
+                                    if (AccessToken.getCurrentAccessToken() != null) {
+                                        if (mLoginManager != null)
+                                            mLoginManager.logOut();
+                                    }
+
+                                    int idx = fbname.lastIndexOf(' ');
+                                    if (idx == -1)
+                                        throw new IllegalArgumentException("Only a single name: " + gooName);
+                                    userName = fbname.substring(0, idx);
+                                    userLName   = fbname.substring(idx + 1);
+                                    fbdob = "";
+                                    fbgender = "";
+                                    userMobile="";
 
 
+                                    ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                                    Call<SocialLoginModel>call = apiInterface.getsociallogin(fbname,userMobile,fbgender,fbdob,fbemail);
+                                    call.enqueue(new Callback<SocialLoginModel>() {
+                                        @Override
+                                        public void onResponse(Call<SocialLoginModel> call, Response<SocialLoginModel> response) {
+
+                                            hideProgressDialog();
+                                            Toast.makeText(getActivity(),response.body().getMessage() , Toast.LENGTH_SHORT).show();
+
+                                            sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+                                            SharedPreferences.Editor eg = sp.edit();
+                                            eg.putString("globalname",userName);
+                                            eg.putString("globaldob",fbdob);
+                                            eg.putString("globalgender",fbdob);
+                                            eg.putString("globalLname",userLName);
+                                            eg.putString("globalMobile",userMobile);
+                                            eg.putString("globalemail",fbemail);
+                                            eg.putString("globalD",gooId);
+                                            eg.putBoolean("hasloggedIN",true);
+                                            eg.putBoolean("hasfaceblogin",true);
+                                            eg.commit();
+                                            eg.apply();
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<SocialLoginModel> call, Throwable t) {
+
+                                        }
+                                    });
+                                    removefragment(new AccountFragment());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(getContext(), "err...", Toast.LENGTH_SHORT).show();
+
+                                }
+                            }
+                        });
+                Bundle parameters = new Bundle();
+                parameters.putString("fields", "id,name,email,gender,birthday,first_name,last_name");
+                request.setParameters(parameters);
+                request.executeAsync();
             }
 
             @Override
@@ -441,10 +518,10 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
             mLoginManager.logOut();
         } else {
             mAccessTokenTracker.startTracking();
-            mLoginManager.logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
+            //mLoginManager.logInWithReadPermissions(getActivity(), Arrays.asList("email", "public_profile"));
 
+            mLoginManager.logInWithReadPermissions(this, Arrays.asList("email","public_profile"));
 
-            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
         }
     }
 

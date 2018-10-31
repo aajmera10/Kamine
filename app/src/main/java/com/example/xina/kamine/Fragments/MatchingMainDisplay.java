@@ -61,7 +61,7 @@ public class MatchingMainDisplay extends Fragment {
             @Override
             public void onResponse(Call<SubcategoryMainModel> call, Response<SubcategoryMainModel> response) {
                 hideProgressDialog();
-                //listcategory = response.body().getDetail();
+                //listcategory = response.body().getSaveAddressDetail();
                 listcategory = response.body().getDetail();
                 recyclerAdapter.setCategorylist(listcategory);
                 recyclerView.setAdapter(recyclerAdapter);

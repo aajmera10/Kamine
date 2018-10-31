@@ -60,7 +60,6 @@ public class SignupFragment extends Fragment {
         phone = view.findViewById(R.id.signup_phone);
         password= view.findViewById(R.id.signup_password);
         dob= view.findViewById(R.id.signup_dob);
-        //dobt = view.findViewById(R.id.textInputLayout18);
         email= view.findViewById(R.id.signup_email);
         imgback = view.findViewById(R.id.img_sign_back);
         group = view.findViewById(R.id.radioGroup2);

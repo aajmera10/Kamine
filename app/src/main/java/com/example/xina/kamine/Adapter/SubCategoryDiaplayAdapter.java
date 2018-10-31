@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.xina.kamine.Model.SubcategoryMainDetail;
@@ -59,7 +60,25 @@ public class SubCategoryDiaplayAdapter extends RecyclerView.Adapter<SubCategoryD
             catename = itemView.findViewById(R.id.category_name);
             image = itemView.findViewById(R.id.imageView1123);
 
+            itemView.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View v) {
+                    // get position
+                    int pos = getAdapterPosition();
+
+                    // check if item still exists
+                    if(pos != RecyclerView.NO_POSITION){
+                        SubcategoryMainDetail clickedDataItem = listcategory.get(pos);
+
+                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getId(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
         }
+
+
     }
 
 }

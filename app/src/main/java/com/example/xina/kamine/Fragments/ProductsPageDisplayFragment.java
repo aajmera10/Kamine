@@ -52,7 +52,7 @@ public class ProductsPageDisplayFragment extends Fragment {
         slider = view.findViewById(R.id.banner_slider1);
         slider.setAdapter(new ProductSliderAdapter());
 
-        rec_seemore = (RecyclerView) view.findViewById(R.id.see_more);
+        rec_seemore = view.findViewById(R.id.see_more);
         rec_seemore.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false));
         // ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(getActivity(), R.dimen.item_offset);
         //int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_offset);

@@ -6,6 +6,7 @@ import com.example.xina.kamine.Model.HomeSliderMainModel;
 import com.example.xina.kamine.Model.LoginModel;
 import com.example.xina.kamine.Model.LogoutModel;
 import com.example.xina.kamine.Model.MainHomeCategoryListModel;
+import com.example.xina.kamine.Model.SaveAddressModel;
 import com.example.xina.kamine.Model.SendOTPModel;
 import com.example.xina.kamine.Model.SignUpDetailModel;
 import com.example.xina.kamine.Model.SocialLoginModel;
@@ -96,6 +97,24 @@ public interface ApiInterface {
   @POST("slider.php")
   @FormUrlEncoded
   Call<HomeSliderMainModel>getMainHomeSlider(@Field("id")String id);
+
+
+  @POST("saved_address.php")
+  @FormUrlEncoded
+  Call<SaveAddressModel>getSavedAddress(@Field("userid")String id,
+                                        @Field("firstname")String firstname,
+                                        @Field("lastman")String lastname,
+                                        @Field("address")String address,
+                                        @Field("landmark")String landmark,
+                                        @Field("mobile")String mobile,
+                                        @Field("pincode")String pincode,
+                                        @Field("city")String city,
+                                        @Field("state")String state,
+                                        @Field("country")String country);
+
+  /*@POST("product_list.php")
+  @FormUrlEncoded
+  Call<>*/
 
 
 

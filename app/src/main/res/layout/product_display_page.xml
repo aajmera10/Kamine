@@ -36,7 +36,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar_display_page"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
+                android:layout_height="50dp"
                 app:popupTheme="@style/Theme.AppCompat.Light"
                 android:title="Theadore"
                 app:layout_collapseMode="pin">
@@ -154,6 +154,7 @@
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/constraintLayout18"
                     android:layout_width="0dp"
+                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="#DCDCDC"
@@ -588,6 +589,7 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/see_more"
                     android:layout_width="0dp"
+                    android:layout_marginBottom="40dp"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="16dp"
                     android:layout_marginLeft="16dp"
@@ -595,8 +597,7 @@
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="8dp"
                     android:background="#DCDCDC"
-                    android:paddingBottom="60dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
+
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView172" />
