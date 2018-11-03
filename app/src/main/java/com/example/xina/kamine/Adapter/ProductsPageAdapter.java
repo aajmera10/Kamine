@@ -81,9 +81,9 @@ public class ProductsPageAdapter extends RecyclerView.Adapter<ProductsPageAdapte
         public MyProductAdapter(View itemView) {
             super(itemView);
             product_name = itemView.findViewById(R.id.design_name);
-            product_dis_price = itemView.findViewById(R.id.textView12);
-            product_original_price = itemView.findViewById(R.id.textView13);
-            product_off = itemView.findViewById(R.id.textView14);
+            product_dis_price = itemView.findViewById(R.id.textView108);
+            product_original_price = itemView.findViewById(R.id.textView165);
+            product_off = itemView.findViewById(R.id.textView179);
             product_description = itemView.findViewById(R.id.textView10);
             product_image = itemView.findViewById(R.id.item_image);
 

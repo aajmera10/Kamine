@@ -16,6 +16,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
+        <View
+            android:id="@+id/view26"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/item_image"
             android:layout_width="0dp"
@@ -59,52 +69,15 @@
             app:layout_constraintTop_toBottomOf="@+id/design_name" />
 
         <com.example.xina.kamine.Utils.PoppinsRegular
-            android:id="@+id/textView12"
+            android:id="@+id/textView57"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:text="Rs 580"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/textView13"
-            app:layout_constraintEnd_toStartOf="@+id/textView13"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintHorizontal_chainStyle="packed"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-        <com.example.xina.kamine.Utils.PoppinsRegular
-            android:id="@+id/textView13"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginStart="8dp"
-            android:background="@drawable/strike_through"
-            android:text="Rs 650"
-            app:layout_constraintEnd_toStartOf="@+id/textView14"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView12"
-            app:layout_constraintTop_toTopOf="@+id/textView14" />
-
-        <com.example.xina.kamine.Utils.PoppinsRegular
-            android:id="@+id/textView14"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
-            android:text="50% off"
-            android:textSize="14sp"
-            android:textStyle="bold"
+            android:layout_marginBottom="2dp"
+            android:layout_marginTop="6dp"
+            android:text="Rs"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textView13"
+            app:layout_constraintEnd_toStartOf="@+id/textView108"
+            app:layout_constraintStart_toStartOf="@+id/view26"
             app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
         <ImageView
@@ -117,6 +90,66 @@
             android:src="@drawable/add_to_wishlist"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <com.example.xina.kamine.Utils.PoppinsRegular
+            android:id="@+id/textView108"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="250"
+            app:layout_constraintBottom_toBottomOf="@+id/textView57"
+            app:layout_constraintEnd_toStartOf="@+id/textView109"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView57"
+            app:layout_constraintTop_toTopOf="@+id/textView57" />
+
+        <com.example.xina.kamine.Utils.PoppinsRegular
+            android:id="@+id/textView109"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/strike_through"
+            android:text="Rs"
+            app:layout_constraintBottom_toBottomOf="@+id/textView108"
+            app:layout_constraintEnd_toStartOf="@+id/textView165"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView108"
+            app:layout_constraintTop_toTopOf="@+id/textView108" />
+
+        <com.example.xina.kamine.Utils.PoppinsRegular
+            android:id="@+id/textView165"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/strike_through"
+            android:text="300"
+            app:layout_constraintBottom_toBottomOf="@+id/textView109"
+            app:layout_constraintEnd_toStartOf="@+id/textView179"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView109"
+            app:layout_constraintTop_toTopOf="@+id/textView109" />
+
+        <com.example.xina.kamine.Utils.PoppinsRegular
+            android:id="@+id/textView179"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:text="50"
+            app:layout_constraintBottom_toBottomOf="@+id/textView165"
+            app:layout_constraintEnd_toStartOf="@+id/textView181"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textView165"
+            app:layout_constraintTop_toTopOf="@+id/textView165" />
+
+        <com.example.xina.kamine.Utils.PoppinsRegular
+            android:id="@+id/textView181"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="% Off"
+            app:layout_constraintBottom_toBottomOf="@+id/textView179"
+            app:layout_constraintEnd_toEndOf="@+id/imageView26"
+            app:layout_constraintStart_toEndOf="@+id/textView179"
+            app:layout_constraintTop_toTopOf="@+id/textView179" />
 
     </android.support.constraint.ConstraintLayout>
 </android.support.constraint.ConstraintLayout>

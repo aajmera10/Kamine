@@ -1,7 +1,11 @@
 package com.example.xina.kamine.Adapter;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.xina.kamine.Fragments.ProductListDisplayFragment;
 import com.example.xina.kamine.Model.SubcategoryMainDetail;
 import com.example.xina.kamine.R;
 
@@ -69,9 +74,20 @@ public class SubCategoryDiaplayAdapter extends RecyclerView.Adapter<SubCategoryD
                     // check if item still exists
                     if(pos != RecyclerView.NO_POSITION){
                         SubcategoryMainDetail clickedDataItem = listcategory.get(pos);
-
                         Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getName(), Toast.LENGTH_SHORT).show();
                         Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getId(), Toast.LENGTH_SHORT).show();
+
+                        FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
+                        FragmentTransaction transaction = manager.beginTransaction();
+                        transaction.replace(R.id.frag_container, new ProductListDisplayFragment());
+                        transaction.addToBackStack(null);
+                        transaction.commit();
+
+                        SharedPreferences sp = context.getSharedPreferences("pref",0);
+                        SharedPreferences.Editor ed = sp.edit();
+                        ed.putString("idvallist",clickedDataItem.getId());
+                        ed.putString("idnamelist",clickedDataItem.getName());
+                        ed.apply();
                     }
                 }
             });

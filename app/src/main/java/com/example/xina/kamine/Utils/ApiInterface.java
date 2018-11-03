@@ -6,6 +6,7 @@ import com.example.xina.kamine.Model.HomeSliderMainModel;
 import com.example.xina.kamine.Model.LoginModel;
 import com.example.xina.kamine.Model.LogoutModel;
 import com.example.xina.kamine.Model.MainHomeCategoryListModel;
+import com.example.xina.kamine.Model.ProductListModel;
 import com.example.xina.kamine.Model.SaveAddressModel;
 import com.example.xina.kamine.Model.SendOTPModel;
 import com.example.xina.kamine.Model.SignUpDetailModel;
@@ -112,9 +113,9 @@ public interface ApiInterface {
                                         @Field("state")String state,
                                         @Field("country")String country);
 
-  /*@POST("product_list.php")
+  @POST("product_list.php")
   @FormUrlEncoded
-  Call<>*/
+  Call<ProductListModel>getProductList(@Field("sub_categoryid")String Category_ID);
 
 
 

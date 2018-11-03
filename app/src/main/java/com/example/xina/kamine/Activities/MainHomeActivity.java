@@ -72,6 +72,9 @@ public class MainHomeActivity extends AppCompatActivity {
         Menu menu = bottomNavigationView.getMenu();
 
         sp = getSharedPreferences("pref",MODE_PRIVATE);
+        /*SharedPreferences.Editor eg = sp.edit();
+        eg.putBoolean("hasloggedIN",false);
+        eg.apply();*/
         final String name = sp.getString("globalname", "");
         String date = sp.getString("globaldob", "");
         String gender = sp.getString("globalgender", "");
@@ -79,7 +82,7 @@ public class MainHomeActivity extends AppCompatActivity {
         final String mobile = sp.getString("globalMobile", "");
         final String email = sp.getString("globalemail", "");
         String ID = sp.getString("globalD", "");
-        sp.getBoolean("hasloggedIN",true);
+       // sp.getBoolean("hasloggedIN",false);
 
 
 
@@ -89,14 +92,11 @@ public class MainHomeActivity extends AppCompatActivity {
                     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                         switch (item.getItemId()) {
                             case R.id.navigation_account:
-                                if (sp.getBoolean("hasloggedIN",false)){
+                                if (sp.getBoolean("hasloggedIN",true)){
                                     removefragment(new AccountFragment());
-                                }
-                             // item.setIcon(R.drawable.iconred3);
-                                else if(sp.getBoolean("hasloggedIN",true)){
+                                }else{
                                     removefragment(new LoginScreen());
                                 }
-                               // bottomNavigationView.setVisibility(View.GONE);
                                 break;
                             case R.id.navigation_collections:
              //                   item.setIcon(R.drawable.iconred3);

@@ -37,17 +37,17 @@ public class CollectionFragment extends android.support.v4.app.Fragment {
 
         productsinpage = new ArrayList<>();
 
-        productsinpage.add(new ProductsPageModel("Kamine","Rs.590","Rs.750","25% off","the best design at the price",R.drawable.image));
-        productsinpage.add(new ProductsPageModel("Kamine","Rs.590","RS.750","25% off","the best design at the price",R.drawable.im1));
-        productsinpage.add(new ProductsPageModel("Kamine","Rs.590","RS.750","25% off","the best design at the price",R.drawable.im3));
-        productsinpage.add(new ProductsPageModel("Kamine","Rs.590","RS.750","25% off","the best design at the price",R.drawable.im7));
-        productsinpage.add(new ProductsPageModel("Kamine","Rs.590","RS.750","25% off","the best design at the price",R.drawable.im5));
-        productsinpage.add(new ProductsPageModel("Kamine","Rs.590","RS.750","25% off","the best design at the price",R.drawable.im4));
-        productsinpage.add(new ProductsPageModel("Kamine","Rs.590","RS.750","25% off","the best design at the price",R.drawable.im8));
-        productsinpage.add(new ProductsPageModel("Kamine","Rs.590","RS.750","25% off","the best design at the price",R.drawable.im5));
-        productsinpage.add(new ProductsPageModel("Kamine","Rs.590","RS.750","25% off","the best design at the price",R.drawable.im4));
-        productsinpage.add(new ProductsPageModel("Kamine","Rs.590","RS.750","25% off","the best design at the price",R.drawable.im11));
-        productsinpage.add(new ProductsPageModel("Kamine","Rs.590","RS.750","25% off","the best design at the price",R.drawable.im9));
+        productsinpage.add(new ProductsPageModel("Kamine","590","750","25","the best design at the price",R.drawable.image));
+        productsinpage.add(new ProductsPageModel("Kamine","590","750","25","the best design at the price",R.drawable.im1));
+        productsinpage.add(new ProductsPageModel("Kamine","590","750","25","the best design at the price",R.drawable.im3));
+        productsinpage.add(new ProductsPageModel("Kamine","590","750","25","the best design at the price",R.drawable.im7));
+        productsinpage.add(new ProductsPageModel("Kamine","590","750","25","the best design at the price",R.drawable.im5));
+        productsinpage.add(new ProductsPageModel("Kamine","590","750","25","the best design at the price",R.drawable.im4));
+        productsinpage.add(new ProductsPageModel("Kamine","590","750","25","the best design at the price",R.drawable.im8));
+        productsinpage.add(new ProductsPageModel("Kamine","590","750","25","the best design at the price",R.drawable.im5));
+        productsinpage.add(new ProductsPageModel("Kamine","590","750","25","the best design at the price",R.drawable.im4));
+        productsinpage.add(new ProductsPageModel("Kamine","590","750","25","the best design at the price",R.drawable.im11));
+        productsinpage.add(new ProductsPageModel("Kamine","590","750","25","the best design at the price",R.drawable.im9));
 
 
 

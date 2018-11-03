@@ -20,6 +20,7 @@
             android:layout_height="wrap_content">
 
             <ImageView
+                android:visibility="invisible"
                 android:id="@+id/imageView27"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

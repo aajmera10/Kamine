@@ -2,6 +2,7 @@ package com.example.xina.kamine.Activities;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -11,12 +12,25 @@ import com.example.xina.kamine.R;
 
 public class SplashActivity extends Activity {
 
+    SharedPreferences sp;
     private static int SPLASH_TIME_OUT = 3000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splashscreen);
+
+        sp = getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
+        SharedPreferences.Editor eg = sp.edit();
+       String c = sp.getString("globalname","");
+
+       if (c.isEmpty()){
+           eg.putBoolean("hasloggedIN",false);
+           eg.apply();
+       }else {
+           eg.putBoolean("hasloggedIN",true);
+           eg.apply();
+       }
 
         new Handler().postDelayed(new Runnable() {
 

@@ -52,7 +52,7 @@ public class WomenMainDisplay extends android.support.v4.app.Fragment{
         recyclerView.setNestedScrollingEnabled(false);
         recyclerAdapter = new SubCategoryDiaplayAdapter(getContext(),listcategory);
         mainname.setText(cate);
-        //idno = "1";
+
 
         showProgressDialog();
 

@@ -134,7 +134,6 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                     showProgressDialog();
                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                     Call<LoginModel> call = apiInterface.getLogin(password, user);
-                    //  Call<LoginModel> call = apiInterface.getLogin(password,user);
                     call.enqueue(new Callback<LoginModel>() {
                         @Override
                         public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
@@ -153,7 +152,6 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                                 apiemail = response.body().getLoginDetail().getEmail();
                                 //id=response.body().getLoginDetail().get
 
-
                                 sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
                                 SharedPreferences.Editor eg = sp.edit();
                                 eg.putString("globalname", userName);
@@ -164,7 +162,6 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                                 eg.putString("globalemail", apiemail);
                                 eg.putString("globalD", userID);
                                 eg.putBoolean("hasloggedIN", true);
-                                //eg.commit();
                                 eg.apply();
 
                                 removefragment(new AccountFragment());
@@ -221,6 +218,12 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
         mLoginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
+                sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+                SharedPreferences.Editor eg = sp.edit();
+                eg.putBoolean("hasloggedIN",true);
+                eg.putBoolean("hasfaceblogin",true);
+                eg.apply();
+
                 showProgressDialog();
                 Toast.makeText(getContext(), "Login Successful", Toast.LENGTH_SHORT).show();
                 AccessToken accessToken = loginResult.getAccessToken();
@@ -277,9 +280,6 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                                             eg.putString("globalMobile",userMobile);
                                             eg.putString("globalemail",fbemail);
                                             eg.putString("globalD",gooId);
-                                            eg.putBoolean("hasloggedIN",true);
-                                            eg.putBoolean("hasfaceblogin",true);
-                                            eg.commit();
                                             eg.apply();
 
                                         }
@@ -341,7 +341,7 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                 .enableAutoManage(getActivity(),this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        //mGoogleApiClient.connect();
+        mGoogleApiClient.connect();
 
         
 
@@ -419,6 +419,14 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
         if (result.isSuccess()) {
+
+            sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+            SharedPreferences.Editor eg = sp.edit();
+            eg.putBoolean("hasloggedIN",true);
+            eg.putBoolean("hasgooglelogin",true);
+            eg.commit();
+            eg.apply();
+
             // Signed in successfully, show authenticated UI.
             hideProgressDialog();
             GoogleSignInAccount acct = result.getSignInAccount();
