@@ -48,7 +48,7 @@ public class ProductListDisplayFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        View view = inflater.inflate(R.layout.product_list_display,container,false);
-       tv= view.findViewById(R.id.popinsBold1011);
+        tv= view.findViewById(R.id.popinsBold1011);
         recview = view.findViewById(R.id.productrec);
         recview.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_offset);
@@ -59,8 +59,7 @@ public class ProductListDisplayFragment extends Fragment {
 
         sp = getActivity().getSharedPreferences("pref",0);
         idx = sp.getString("idvallist","");
-
-         text = sp.getString("idnamelist","");
+        text = sp.getString("idnamelist","");
         tv.setText(text);
 
         showProgressDialog();

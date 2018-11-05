@@ -83,11 +83,13 @@ public class SubCategoryDiaplayAdapter extends RecyclerView.Adapter<SubCategoryD
                         transaction.addToBackStack(null);
                         transaction.commit();
 
+                       // String c = clickedDataItem.get
                         SharedPreferences sp = context.getSharedPreferences("pref",0);
                         SharedPreferences.Editor ed = sp.edit();
                         ed.putString("idvallist",clickedDataItem.getId());
                         ed.putString("idnamelist",clickedDataItem.getName());
                         ed.apply();
+                        ed.commit();
                     }
                 }
             });

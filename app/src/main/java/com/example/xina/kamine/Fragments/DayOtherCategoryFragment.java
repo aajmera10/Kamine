@@ -44,16 +44,19 @@ public class DayOtherCategoryFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.day_category_show,container,false);
 
-        sp = getContext().getSharedPreferences("Pref",0);
-        idno =  sp.getString("idvallist","");
-        cate = sp.getString("idnamelist","");
-
+        //idno = getArguments().getString("idday");
+       // cate = getArguments().getString("nameday");
+        //Toast.makeText(getContext(), idno, Toast.LENGTH_SHORT).show();
         mainname = view.findViewById(R.id.daynameid);
         recyclerView = view.findViewById(R.id.displaycategoryday);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setHasFixedSize(true);
         recyclerView.setNestedScrollingEnabled(false);
         recyclerAdapter = new SubCategoryDiaplayAdapter(getContext(),listcategory);
+
+        sp = getActivity().getSharedPreferences("pref",0);
+        idno =  sp.getString("idday","");
+        cate = sp.getString("nameday","");
         mainname.setText(cate);
 
 
@@ -71,6 +74,7 @@ public class DayOtherCategoryFragment extends Fragment {
                 recyclerView.setAdapter(recyclerAdapter);
 
                 Toast.makeText(getContext(), "Sucessful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "done", Toast.LENGTH_SHORT).show();
             }
 
             @Override
