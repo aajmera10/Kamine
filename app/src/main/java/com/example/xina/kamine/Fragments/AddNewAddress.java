@@ -59,7 +59,6 @@ public class AddNewAddress extends android.support.v4.app.Fragment {
                     firstn = fname.getText().toString().trim();
                     lastn = lname.getText().toString().trim();
                     pin = pincode.getText().toString().trim();
-                    //cit,stat,cou,land,mobile,address
                     cit = city.getText().toString().trim();
                     stat = state.getText().toString().trim();
                     cou = country.getText().toString().trim();
@@ -69,20 +68,25 @@ public class AddNewAddress extends android.support.v4.app.Fragment {
                     addtwo = add2.getText().toString().trim();
                     address = addone.concat(addtwo);
 
-                    SharedPreferences sharedPreferences = getActivity().getSharedPreferences("pref",0);
-                   String id =  sharedPreferences.getString("globalID","");
+                      SharedPreferences sp = getActivity().getSharedPreferences("pref",0);
+                      String id =  sp.getString("globalD","");
 
                     showProgressDialog();
                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                    Call<SaveAddressModel>call = apiInterface.getSavedAddress(id,firstn,lastn,address,land,mobile,pin,cit,stat,cou);
+                    Call<SaveAddressModel>call = apiInterface.getSavedAddress(id,firstn,lastn,
+                            address,land,mobile,pin,cit,stat,cou);
                     call.enqueue(new Callback<SaveAddressModel>() {
                         @Override
                         public void onResponse(Call<SaveAddressModel> call, Response<SaveAddressModel> response) {
                             hideProgressDialog();
                             if(response.body().getSuccess()==200){
-                                Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "sucess", Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(getContext(), "there is something wrong", Toast.LENGTH_SHORT).show();
+                               // Toast.makeText(getContext(),response.body().getSuccess(),Toast.LENGTH_SHORT).show();
                             }
                         }
+
                         @Override
                         public void onFailure(Call<SaveAddressModel> call, Throwable t) {
                             Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();

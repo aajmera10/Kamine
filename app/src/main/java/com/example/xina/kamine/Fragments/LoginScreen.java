@@ -85,7 +85,6 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
     SharedPreferences sp;
     private ProgressDialog mProgressDialog;
     EditText enter_passwd, enter_mail;
-    //Facebook//
     ImageView fbbtn;
     private CallbackManager callbackManager;
     private LoginManager mLoginManager;
@@ -279,7 +278,7 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                                             eg.putString("globalLname",userLName);
                                             eg.putString("globalMobile",userMobile);
                                             eg.putString("globalemail",fbemail);
-                                            eg.putString("globalD",gooId);
+                                            eg.putString("globalD",fbId);
                                             eg.apply();
 
                                         }
@@ -433,11 +432,13 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
 
             Log.e(TAG, "display name: " + acct.getDisplayName());
 
-             gooName = acct.getDisplayName();
+            gooName = acct.getDisplayName();
+            gooId = acct.getId();
+            gooemail = acct.getEmail();
 
             String personPhotoUrl = acct.getPhotoUrl().toString();
 
-            gooemail = acct.getEmail();
+
 
             int idx = gooName.lastIndexOf(' ');
             if (idx == -1)

@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "282210529118-o2oni8anjs5g369qcij7gomqbk5e1kdi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.xina.kamine",
+            "certificate_hash": "347fd50464b1dd48ecc581a716b600f08db00652"
+          }
+        },
+        {
           "client_id": "282210529118-ql7qsk4bddr7gt1f3el0o4lffc6t5sv8.apps.googleusercontent.com",
           "client_type": 3
         }

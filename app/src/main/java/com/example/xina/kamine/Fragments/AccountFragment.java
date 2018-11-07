@@ -151,7 +151,7 @@ SharedPreferences preferences;
                 .enableAutoManage(getActivity(),this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        mGoogleApiClient.connect();
+        //mGoogleApiClient.connect();
         //mGoogleApiClient.disconnect();
 
 

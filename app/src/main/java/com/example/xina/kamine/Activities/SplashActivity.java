@@ -23,9 +23,24 @@ public class SplashActivity extends Activity {
         sp = getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
         SharedPreferences.Editor eg = sp.edit();
        String c = sp.getString("globalname","");
-
+        /*eg.putString("globalname", userName);
+        eg.putString("globaldob", userDOB);
+        eg.putString("globalgender", userGender);
+        eg.putString("globalLname", userLName);
+        eg.putString("globalMobile", userMobile);
+        eg.putString("globalemail", apiemail);
+        eg.putString("globalD", userID);
+        eg.putBoolean("hasloggedIN", true);
+        eg.apply();*/
        if (c.isEmpty()){
            eg.putBoolean("hasloggedIN",false);
+           eg.putString("globalname", "");
+           eg.putString("globaldob", "");
+           eg.putString("globalgender", "");
+           eg.putString("globalLname", "");
+           eg.putString("globalMobile", "");
+           eg.putString("globalemail", "");
+           eg.putString("globalD", "");
            eg.apply();
        }else {
            eg.putBoolean("hasloggedIN",true);
