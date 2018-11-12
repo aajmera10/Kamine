@@ -66,7 +66,7 @@ public class AddNewAddress extends android.support.v4.app.Fragment {
                     mobile = phone.getText().toString().trim();
                     addone = add1.getText().toString().trim();
                     addtwo = add2.getText().toString().trim();
-                    address = addone.concat(addtwo);
+                    address = addone+" "+addtwo;
 
                       SharedPreferences sp = getActivity().getSharedPreferences("pref",0);
                       String id =  sp.getString("globalD","");

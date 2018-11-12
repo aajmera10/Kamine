@@ -10,25 +10,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.xina.kamine.Model.SelectAddressCardModel;
+import com.example.xina.kamine.Model.ShowAddressItem;
+import com.example.xina.kamine.Model.SubcategoryMainDetail;
 import com.example.xina.kamine.R;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SelectAddressCardAdapter extends RecyclerView.Adapter<SelectAddressCardAdapter.MyViewHolderOrder> {
 
 
     private Context selectaddressAdapterContext;
-    private List<SelectAddressCardModel> selectaddresslist;
-    //private final String[] list;
-    private int lastCheckedPosition = -1;
+    private List<ShowAddressItem> selectaddresslist;
+    private int mSelectedItem = -1;
 
-
-    public SelectAddressCardAdapter(Context selectaddressAdapter, List<SelectAddressCardModel> selectaddresslist) {
+    public void selectaddresslist(List<ShowAddressItem> selectaddresslist) {
+        this.selectaddresslist = selectaddresslist;
+    }
+    public SelectAddressCardAdapter(Context selectaddressAdapter, List<ShowAddressItem> selectaddresslist) {
         this.selectaddressAdapterContext = selectaddressAdapter;
         this.selectaddresslist = selectaddresslist;
-        //this.list = list;
     }
 
     @NonNull
@@ -41,25 +45,20 @@ public class SelectAddressCardAdapter extends RecyclerView.Adapter<SelectAddress
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final SelectAddressCardAdapter.MyViewHolderOrder holder, int position) {
-        SelectAddressCardModel savedaddress = selectaddresslist.get(position);
-        holder.name.setText(savedaddress.getCust_name());
-        holder.addline1.setText(savedaddress.getAddressline1());
-        holder.addressline2.setText(savedaddress.getAddressline2());
-        holder.addressline3.setText(savedaddress.getAddressline3());
-        holder.phone.setText(savedaddress.getMobileno());
+    public void onBindViewHolder(@NonNull final SelectAddressCardAdapter.MyViewHolderOrder holder, final int position) {
+        ShowAddressItem savedaddress = selectaddresslist.get(position);
+        String x = savedaddress.getFirstname();
+        String c = savedaddress.getLastname();
+        String z = x+" "+c;
+        holder.name.setText(z);
+        holder.addressline.setText(savedaddress.getAddress());
+        holder.mobile.setText(savedaddress.getMobile());
         holder.pincode.setText(savedaddress.getPincode());
-        holder.selectAddress.setChecked(position == lastCheckedPosition);
-       /* holder.selectAddress.setOnClickListener(new View.OnClickListener() {
-    @Override
-    public void onClick(View v) {
-        holder.color_it_red.setBackgroundColor(Color.parseColor("#800000"));
-        holder.selectAddress.setTextColor(Color.parseColor("#ffffff"));
-        holder.selectAddress.setHighlightColor(Color.parseColor("#ffffff"));
-
-    }
-});*/
-        //holder.selectAddress.setChecked(false);
+        holder.country.setText(savedaddress.getCountry());
+        holder.city.setText(savedaddress.getCity());
+        holder.state.setText(savedaddress.getState());
+        holder.landmark.setText(savedaddress.getLandmark());
+        holder.selectAddress.setChecked(mSelectedItem == position);
 
     }
 
@@ -69,35 +68,30 @@ public class SelectAddressCardAdapter extends RecyclerView.Adapter<SelectAddress
     }
 
     class MyViewHolderOrder extends RecyclerView.ViewHolder{
-        TextView name,addline1,addressline2,addressline3,phone,pincode;
+        TextView name,addressline,landmark,state,city,pincode,mobile,country;
         RadioButton selectAddress;
-        ConstraintLayout edit,remove,color_it_red;
         public MyViewHolderOrder(View itemView) {
             super(itemView);
-           name = itemView.findViewById(R.id.textView80);
-            addline1 = itemView.findViewById(R.id.textView93);
-            addressline2 = itemView.findViewById(R.id.textView94);
-            addressline3 = itemView.findViewById(R.id.textView95);
-            phone = itemView.findViewById(R.id.textView98);
+            name = itemView.findViewById(R.id.textView80);
+            addressline = itemView.findViewById(R.id.textView93);
             pincode = itemView.findViewById(R.id.textView96);
             selectAddress = itemView.findViewById(R.id.radioButton9);
-            edit = itemView.findViewById(R.id.select_address_edit);
-            remove = itemView.findViewById(R.id.select_address_remove);
-            color_it_red=itemView.findViewById(R.id.constraintLayout22);
-           // color_it_red.setBackgroundColor(R.color.mainappcolor);
+            landmark = itemView.findViewById(R.id.landmark_show);
+            city = itemView.findViewById(R.id.city_show_name);
+            state = itemView.findViewById(R.id.textView95);
+            mobile = itemView.findViewById(R.id.textView98);
+            country = itemView.findViewById(R.id.x86);
 
             selectAddress.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                   color_it_red.setBackgroundColor(Color.parseColor("#800000"));
-                   selectAddress.setTextColor(Color.parseColor("#ffffff"));
-                   selectAddress.setButtonDrawable(R.color.white);
-                    lastCheckedPosition = getAdapterPosition();
+                    mSelectedItem = getAdapterPosition();
                     notifyDataSetChanged();
-
+                    ShowAddressItem clickedDataItem = selectaddresslist.get(mSelectedItem);
+                    Toast.makeText(selectaddressAdapterContext,clickedDataItem.getId(), Toast.LENGTH_SHORT).show();
                 }
             });
 
         }
-    }
+        }
 }

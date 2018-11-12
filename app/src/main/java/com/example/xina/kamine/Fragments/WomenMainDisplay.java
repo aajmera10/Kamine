@@ -69,7 +69,6 @@ public class WomenMainDisplay extends android.support.v4.app.Fragment{
 
                 Toast.makeText(getContext(), "Sucessful", Toast.LENGTH_SHORT).show();
             }
-
             @Override
             public void onFailure(Call<SubcategoryMainModel> call, Throwable t) {
 

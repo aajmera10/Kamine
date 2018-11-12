@@ -243,7 +243,7 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                                     fbemail = object.getString("email");
                                    /* fbgender = object.getString("gender");
                                     fbdob = object.getString("birthday");*/
-                                    fbId = object.getString("id");
+                                    //fbId = object.getString("id");
                                     //Log.d("Email = ", " " + fbemail);
                                     //Toast.makeText(getApplicationContext(), "Name " + fbname, Toast.LENGTH_LONG).show();
                                     if (AccessToken.getCurrentAccessToken() != null) {
@@ -266,10 +266,9 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                                     call.enqueue(new Callback<SocialLoginModel>() {
                                         @Override
                                         public void onResponse(Call<SocialLoginModel> call, Response<SocialLoginModel> response) {
-
                                             hideProgressDialog();
                                             Toast.makeText(getActivity(),response.body().getMessage() , Toast.LENGTH_SHORT).show();
-
+                                            fbId = response.body().getSocialLoginDetail().getId();
                                             sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
                                             SharedPreferences.Editor eg = sp.edit();
                                             eg.putString("globalname",userName);
@@ -340,13 +339,14 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                 .enableAutoManage(getActivity(),this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        mGoogleApiClient.connect();
+
 
         
 
         googbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mGoogleApiClient.connect();
                 Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
                 startActivityForResult(signInIntent, RC_SIGN_IN);
             }
@@ -459,6 +459,7 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                 public void onResponse(Call<SocialLoginModel> call, Response<SocialLoginModel> response) {
                     hideProgressDialog();
                     Toast.makeText(getActivity(),response.body().getMessage() , Toast.LENGTH_SHORT).show();
+                    gooId = response.body().getSocialLoginDetail().getId();
 
                     sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
                     SharedPreferences.Editor eg = sp.edit();

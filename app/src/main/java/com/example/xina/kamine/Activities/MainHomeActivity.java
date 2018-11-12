@@ -101,6 +101,7 @@ public class MainHomeActivity extends AppCompatActivity {
                             case R.id.navigation_collections:
              //                   item.setIcon(R.drawable.iconred3);
                                 removefragment(new CollectionFragment());
+
                                 break;
                             case R.id.navigation_home:
                               //  item.setIcon(R.drawable.iconkamine);

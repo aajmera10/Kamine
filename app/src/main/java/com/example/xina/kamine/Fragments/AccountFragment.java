@@ -175,7 +175,7 @@ SharedPreferences preferences;
 
                         if(preferences.getBoolean("hasgooglelogin",true)){
                             signOut();
-                            reFragment(new LoginScreen());
+                            reFragment(new HomeFragment());
                             mGoogleApiClient.disconnect();
 
 
@@ -184,8 +184,8 @@ SharedPreferences preferences;
                             if (LoginManager.getInstance() != null)
                                     LoginManager.getInstance().logOut();
                                 Toast.makeText(getContext(), "logged out", Toast.LENGTH_SHORT).show();
-                            reFragment(new LoginScreen());
-                            mGoogleApiClient.disconnect();
+                            reFragment(new HomeFragment());
+                           // mGoogleApiClient.disconnect();
 
                         }else {
                             ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -206,8 +206,8 @@ SharedPreferences preferences;
                                     preferences.edit().clear().apply();
 
                                     Toast.makeText(getContext(), "Logout Sucessfully", Toast.LENGTH_SHORT).show();
-                                    reFragment(new LoginScreen());
-                                    mGoogleApiClient.disconnect();
+                                    reFragment(new HomeFragment());
+                                   // mGoogleApiClient.disconnect();
 
                                 }
 

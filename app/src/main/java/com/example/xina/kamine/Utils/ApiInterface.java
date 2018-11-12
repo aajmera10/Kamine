@@ -1,5 +1,6 @@
 package com.example.xina.kamine.Utils;
 
+import com.example.xina.kamine.Model.AddToWishlistModel;
 import com.example.xina.kamine.Model.ChangePswdModel;
 import com.example.xina.kamine.Model.ForgotPasswordModel;
 import com.example.xina.kamine.Model.HomeSliderMainModel;
@@ -10,6 +11,7 @@ import com.example.xina.kamine.Model.OtherCategoryModel;
 import com.example.xina.kamine.Model.ProductListModel;
 import com.example.xina.kamine.Model.SaveAddressModel;
 import com.example.xina.kamine.Model.SendOTPModel;
+import com.example.xina.kamine.Model.ShowAddressesModel;
 import com.example.xina.kamine.Model.SignUpDetailModel;
 import com.example.xina.kamine.Model.SocialLoginModel;
 import com.example.xina.kamine.Model.SubcategoryMainModel;
@@ -105,7 +107,7 @@ public interface ApiInterface {
   @FormUrlEncoded
   Call<SaveAddressModel>getSavedAddress(@Field("userid")String id,
                                         @Field("firstname")String firstname,
-                                        @Field("lastman")String lastname,
+                                        @Field("lastname")String lastname,
                                         @Field("address")String address,
                                         @Field("landmark")String landmark,
                                         @Field("mobile")String mobile,
@@ -121,6 +123,16 @@ public interface ApiInterface {
   @POST("other_category.php")
   @FormUrlEncoded
   Call<OtherCategoryModel>getothercategory(@Field("id") String id);
+
+
+  @POST("wishlist.php")
+  @FormUrlEncoded
+  Call<AddToWishlistModel>getaddtowishlist(@Field("userid")String id,
+                                        @Field("productid")String productid);
+
+  @POST("show_address.php")
+  @FormUrlEncoded
+  Call<ShowAddressesModel>getshowaddresses(@Field("userid") String id);
 
 
 
