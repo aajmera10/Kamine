@@ -49,6 +49,7 @@ TextView user_name,user_email,user_mobile_no,logout;
 ImageView edit;
 String uid;
 SharedPreferences preferences;
+    ///google logout
     final int RC_SIGN_IN = 234;
     GoogleSignInClient mGoogleSignInClient;
     FirebaseAuth mAuth;
@@ -138,8 +139,7 @@ SharedPreferences preferences;
             }
         });
 
-
-
+        ///google logout
         mAuth = FirebaseAuth.getInstance(); //firebase Object Initailization
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)//Google Sign IN Options Object
@@ -151,8 +151,6 @@ SharedPreferences preferences;
                 .enableAutoManage(getActivity(),this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .build();
-        //mGoogleApiClient.connect();
-        //mGoogleApiClient.disconnect();
 
 
 
@@ -170,22 +168,33 @@ SharedPreferences preferences;
                         preferences = getActivity().getApplicationContext().getSharedPreferences("pref", MODE_PRIVATE);
                         SharedPreferences.Editor eg = preferences.edit();
                         eg.putBoolean("hasloggedIN",false);
-                        eg.putString("globalname","");
                         eg.apply();
-
+                        eg.putString("globalname","");
+                        eg.putString("globalgender"," ");
+                        eg.putString("globalLname"," ");
+                        eg.putString("globalMobile"," ");
+                        eg.putString("globalemail"," ");
+                        eg.putString("globalD"," ");
+                        eg.apply();
+                         ///google logout
                         if(preferences.getBoolean("hasgooglelogin",true)){
                             signOut();
                             reFragment(new HomeFragment());
                             mGoogleApiClient.disconnect();
+                           /* eg.putBoolean("hasgooglelogin",false);
+                            eg.apply();
+*/
+                        }
 
-
-                        }else if(preferences.getBoolean("hasfaceblogin",true)){
+                        if(preferences.getBoolean("hasfaceblogin",true)){
 
                             if (LoginManager.getInstance() != null)
                                     LoginManager.getInstance().logOut();
                                 Toast.makeText(getContext(), "logged out", Toast.LENGTH_SHORT).show();
                             reFragment(new HomeFragment());
                            // mGoogleApiClient.disconnect();
+//                            eg.putBoolean("hasfaceblogin",false);
+//                            eg.apply();
 
                         }else {
                             ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -237,7 +246,7 @@ SharedPreferences preferences;
 
         return view;
     }
-
+    ///google logout
     public  void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
                 new ResultCallback<Status>() {

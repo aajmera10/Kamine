@@ -26,7 +26,9 @@ import android.widget.Toast;
 import com.example.xina.kamine.Activities.MainHomeActivity;
 import com.example.xina.kamine.MainActivity;
 import com.example.xina.kamine.Model.LoginModel;
+import com.example.xina.kamine.Model.SocialLoginDetailApi;
 import com.example.xina.kamine.Model.SocialLoginModel;
+import com.example.xina.kamine.Model.SocialLoginModelApi;
 import com.example.xina.kamine.R;
 import com.example.xina.kamine.Utils.ApiInterface;
 import com.example.xina.kamine.Utils.ApiClient;
@@ -262,13 +264,13 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
 
 
                                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-                                    Call<SocialLoginModel>call = apiInterface.getsociallogin(fbname,userMobile,fbgender,fbdob,fbemail);
-                                    call.enqueue(new Callback<SocialLoginModel>() {
+                                    Call<SocialLoginModelApi>call = apiInterface.getsociallogin(fbname,userMobile,fbgender,fbdob,fbemail);
+                                    call.enqueue(new Callback<SocialLoginModelApi>() {
                                         @Override
-                                        public void onResponse(Call<SocialLoginModel> call, Response<SocialLoginModel> response) {
+                                        public void onResponse(Call<SocialLoginModelApi> call, Response<SocialLoginModelApi> response) {
                                             hideProgressDialog();
                                             Toast.makeText(getActivity(),response.body().getMessage() , Toast.LENGTH_SHORT).show();
-                                            fbId = response.body().getSocialLoginDetail().getId();
+                                           // fbId = response.body().getSocialLoginDetail().getId();
                                             sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
                                             SharedPreferences.Editor eg = sp.edit();
                                             eg.putString("globalname",userName);
@@ -283,7 +285,7 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                                         }
 
                                         @Override
-                                        public void onFailure(Call<SocialLoginModel> call, Throwable t) {
+                                        public void onFailure(Call<SocialLoginModelApi> call, Throwable t) {
 
                                         }
                                     });
@@ -428,14 +430,13 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
 
             // Signed in successfully, show authenticated UI.
             hideProgressDialog();
-            GoogleSignInAccount acct = result.getSignInAccount();
+            final GoogleSignInAccount acct = result.getSignInAccount();
 
             Log.e(TAG, "display name: " + acct.getDisplayName());
 
             gooName = acct.getDisplayName();
             gooId = acct.getId();
             gooemail = acct.getEmail();
-
             String personPhotoUrl = acct.getPhotoUrl().toString();
 
 
@@ -445,21 +446,36 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                 throw new IllegalArgumentException("Only a single name: " + gooName);
             userName = gooName.substring(0, idx);
             userLName   = gooName.substring(idx + 1);
-            googender="";
-            goodob = "";
-            userMobile="";
+            googender=" ";
+            goodob = " ";
+            userMobile=" ";
 
-          /*  Log.e(TAG, "Name: " + personName + ", email: " + email
-                    + ", Image: " + personPhotoUrl);*/
           showProgressDialog();
             ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-            Call<SocialLoginModel>call = apiInterface.getsociallogin(gooName,userMobile,googender,goodob,gooemail);
-            call.enqueue(new Callback<SocialLoginModel>() {
+            Call<SocialLoginModelApi>call = apiInterface.getsociallogin(gooName,userMobile,googender,goodob,gooemail);
+            call.enqueue(new Callback<SocialLoginModelApi>() {
                 @Override
-                public void onResponse(Call<SocialLoginModel> call, Response<SocialLoginModel> response) {
+                public void onResponse(Call<SocialLoginModelApi> call, Response<SocialLoginModelApi> response) {
                     hideProgressDialog();
                     Toast.makeText(getActivity(),response.body().getMessage() , Toast.LENGTH_SHORT).show();
-                    gooId = response.body().getSocialLoginDetail().getId();
+                    SocialLoginDetailApi socialLoginDetailApi = response.body().getSocialLoginDetailApi();
+
+                    if(response.body().getSuccess()==201)
+                    {
+                    userName= socialLoginDetailApi.getFname();
+                    try {
+                        int idx =userName.lastIndexOf(' ');
+                        userName = userName.substring(0, idx);
+                        userLName   = userName.substring(idx + 1);
+                    }catch (StringIndexOutOfBoundsException ex){
+                        ex.printStackTrace();
+                    }
+
+                    goodob = socialLoginDetailApi.getDob();
+                    googender = socialLoginDetailApi.getGender();
+                    userMobile = socialLoginDetailApi.getMobile();
+                    gooemail = socialLoginDetailApi.getEmail();
+                    gooId = socialLoginDetailApi.getId();
 
                     sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
                     SharedPreferences.Editor eg = sp.edit();
@@ -472,12 +488,45 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                     eg.putString("globalD",gooId);
                     eg.putBoolean("hasloggedIN",true);
                     eg.putBoolean("hasgooglelogin",true);
-                    eg.commit();
                     eg.apply();
+                    }
+
+
+                    else if(response.body().getSuccess()==200)
+
+                    {
+                        userName=response.body().getSocialLoginDetailApi().getFname();
+                        int idx =userName.lastIndexOf(' ');
+                        if (idx == -1)
+                            throw new IllegalArgumentException("Only a single name: " + userName);
+                        userName = userName.substring(0, idx);
+                        userLName   = userName.substring(idx + 1);
+                        goodob = socialLoginDetailApi.getDob();
+                        googender = socialLoginDetailApi.getGender();
+                        userMobile =socialLoginDetailApi.getMobile();
+                        gooemail = socialLoginDetailApi.getMobile();
+                        gooId =  socialLoginDetailApi.getId();
+
+                        sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+                        SharedPreferences.Editor eg = sp.edit();
+                        eg.putString("globalname",userName);
+                        eg.putString("globaldob",goodob);
+                        eg.putString("globalgender",googender);
+                        eg.putString("globalLname",userLName);
+                        eg.putString("globalMobile",userMobile);
+                        eg.putString("globalemail",gooemail);
+                        eg.putString("globalD",gooId);
+                        eg.putBoolean("hasloggedIN",true);
+                        eg.putBoolean("hasgooglelogin",true);
+                        eg.apply();
+                    }
+
+                    removefragment(new UpdateProfile());
+
                 }
 
                 @Override
-                public void onFailure(Call<SocialLoginModel> call, Throwable t) {
+                public void onFailure(Call<SocialLoginModelApi> call, Throwable t) {
                         hideProgressDialog();
 
                     Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
@@ -485,7 +534,6 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
             });
 
 
-            removefragment(new AccountFragment());
 
         } else {
             // Signed out, show unauthenticated UI.

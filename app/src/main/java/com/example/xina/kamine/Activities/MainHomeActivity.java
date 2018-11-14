@@ -61,7 +61,7 @@ public class MainHomeActivity extends AppCompatActivity {
 
 
 
-        bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottom_navigation);
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
        // bottomNavigationView.setVisibility(View.INVISIBLE);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
 

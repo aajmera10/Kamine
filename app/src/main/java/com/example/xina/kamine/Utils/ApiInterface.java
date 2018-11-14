@@ -14,6 +14,7 @@ import com.example.xina.kamine.Model.SendOTPModel;
 import com.example.xina.kamine.Model.ShowAddressesModel;
 import com.example.xina.kamine.Model.SignUpDetailModel;
 import com.example.xina.kamine.Model.SocialLoginModel;
+import com.example.xina.kamine.Model.SocialLoginModelApi;
 import com.example.xina.kamine.Model.SubcategoryMainModel;
 import com.example.xina.kamine.Model.UpadteProfileModel;
 import com.example.xina.kamine.Model.UpdateProfileOTPModel;
@@ -78,13 +79,13 @@ public interface ApiInterface {
                                           @Field("email")String Email,
                                           @Field("mobile")String mobile,
                                           @Field("dob")String dob);
-  @POST("social_login.php")
+/*  @POST("social_login.php")
   @FormUrlEncoded
   Call<SocialLoginModel>getsociallogin(@Field("name")String name,
                                        @Field("mobile")String mobile,
                                        @Field("gender")String gender,
                                        @Field("dob")String dob,
-                                       @Field("email")String email);
+                                       @Field("email")String email);*/
 
   @POST("update_profile.php")
   @FormUrlEncoded
@@ -133,6 +134,15 @@ public interface ApiInterface {
   @POST("show_address.php")
   @FormUrlEncoded
   Call<ShowAddressesModel>getshowaddresses(@Field("userid") String id);
+
+
+  @POST("social_login.php")
+  @FormUrlEncoded
+  Call<SocialLoginModelApi>getsociallogin(@Field("name")String fname,
+                                          @Field("mobile")String mobile,
+                                          @Field("gender")String gender,
+                                          @Field("dob")String dob,
+                                          @Field("email")String email);
 
 
 

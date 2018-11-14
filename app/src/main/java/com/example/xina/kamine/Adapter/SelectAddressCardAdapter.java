@@ -25,7 +25,7 @@ public class SelectAddressCardAdapter extends RecyclerView.Adapter<SelectAddress
 
     private Context selectaddressAdapterContext;
     private List<ShowAddressItem> selectaddresslist;
-    private int mSelectedItem = -1;
+    private int mSelectedItem = 0;
 
     public void selectaddresslist(List<ShowAddressItem> selectaddresslist) {
         this.selectaddresslist = selectaddresslist;

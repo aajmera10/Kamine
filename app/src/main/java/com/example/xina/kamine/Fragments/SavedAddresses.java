@@ -69,28 +69,43 @@ public class SavedAddresses extends android.support.v4.app.Fragment {
         selectAddressCardAdapter = new SelectAddressCardAdapter(getContext(),listsaves);
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_offset);
         saved_addresses.addItemDecoration(new SavedAddresses.GridSpacingItemDecoration(1, spacingInPixels, true, 0));
-        sp = getContext().getSharedPreferences("pref",0);
-        idno = sp.getString("globalD","");
 
-        showProgressDialog();
 
-        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
-        Call<ShowAddressesModel> call = apiInterface.getshowaddresses(idno);
-        call.enqueue(new Callback<ShowAddressesModel>() {
-            @Override
-            public void onResponse(Call<ShowAddressesModel> call, Response<ShowAddressesModel> response) {
-                hideProgressDialog();
-                listsaves = response.body().getDetail();
-                selectAddressCardAdapter.selectaddresslist(listsaves);
-                saved_addresses.setAdapter(selectAddressCardAdapter);
-            }
+            sp = getContext().getSharedPreferences("pref",0);
+            idno = sp.getString("globalD","");
 
-            @Override
-            public void onFailure(Call<ShowAddressesModel> call, Throwable t) {
-                hideProgressDialog();
-                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
+            showProgressDialog();
+
+            ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+            Call<ShowAddressesModel> call = apiInterface.getshowaddresses(idno);
+            call.enqueue(new Callback<ShowAddressesModel>() {
+                @Override
+                public void onResponse(Call<ShowAddressesModel> call, Response<ShowAddressesModel> response) {
+                    hideProgressDialog();
+                        listsaves = response.body().getDetail();
+                        try {
+                            if(listsaves.isEmpty()){
+                                Toast.makeText(getContext(), "empty", Toast.LENGTH_SHORT).show();
+                            }else{
+                                selectAddressCardAdapter.selectaddresslist(listsaves);
+                                saved_addresses.setAdapter(selectAddressCardAdapter);
+                            }
+                        }catch (NullPointerException ex){
+                            ex.printStackTrace();
+                        }
+
+
+
+                }
+
+                @Override
+                public void onFailure(Call<ShowAddressesModel> call, Throwable t) {
+                    hideProgressDialog();
+                    Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        //}
+
 
         return view;
     }
