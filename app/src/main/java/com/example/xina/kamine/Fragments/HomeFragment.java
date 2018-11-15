@@ -128,7 +128,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
                 listcategory = response.body().getDetail();
                 homeDisplayCategoryAdapter.setCategoryhomelist(listcategory);
                 rec_home_subcategory.setAdapter(homeDisplayCategoryAdapter);
-                Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+               // Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
             }
 
             @Override

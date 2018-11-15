@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -16,6 +17,8 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -36,17 +39,22 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.VIBRATOR_SERVICE;
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 public class UpdateProfile extends Fragment {
 
     EditText fname,lname,dob,email,mobile;
     RadioGroup group;
     TextView forgot;
+    Vibrator vibrate;
+    Animation shake;
     ConstraintLayout submit;
     DatePickerDialog datePickerDialog;
     SharedPreferences sharedPreferences,sp;
     RadioButton button_male,button_female;
     private ProgressDialog mProgressDialog;
-    String gender,first_name,last_name,email_str,psswd,dateofbirth,signupID,gen,phone,phonechange;
+    String gender,first_name,last_name,email_str,dateofbirth,signupID,gen,phone,phonechange;
 
     @Nullable
     @Override
@@ -64,15 +72,14 @@ public class UpdateProfile extends Fragment {
         submit = view.findViewById(R.id.sub_updt);
         forgot = view.findViewById(R.id.cpsswd);
 
-
+        final Vibrator vibrator = (Vibrator) getActivity().getSystemService(VIBRATOR_SERVICE);
+        final long[] pattern = {0,400};
         first_name = fname.getText().toString().trim();
         last_name = lname.getText().toString().trim();
         dateofbirth = dob.getText().toString().trim();
         email_str = email.getText().toString().trim();
         phone = mobile.getText().toString().trim();
 
-        //final String pedt = mobile.getText().toString().trim();
-        //phonechange = mobile.getText().toString().trim();
 
 
 
@@ -113,66 +120,16 @@ public class UpdateProfile extends Fragment {
                     }
                 },mYear,mMonth,mDay);
                 datePickerDialog.show();
+                datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
             }
         });
-        /*int gen = group.getCheckedRadioButtonId();
 
-        if(gen==R.id.rd_upfemale){
-            gender="male";
-        }else{
-            gender="female";
-        }*/
-       /* mobile.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence phone, int start, int before, int count) {
-                phone = mobile.getText().toString().trim();
-
-
-                if(phonechange.equals(String.valueOf(phone))){
-                    sharedPreferences = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor eg = sharedPreferences.edit();
-                    eg.putBoolean("phonechanged",false);
-                    eg.apply();
-                }else {
-                    sharedPreferences = getActivity().getSharedPreferences("pref", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor eg = sharedPreferences.edit();
-                    eg.putBoolean("phonechanged",true);
-                    eg.apply();
-
-                }
-
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-*/
-
-        /*dob.setText(sharedPreferences.getInt("",null));
-        email.setText(sharedPreferences.getInt("",null));
-        mobile.setText(sharedPreferences.getInt("globalMobile", Integer.parseInt(null)));*/
-        // group.setText(sharedPreferences.getInt("",null));
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
 
-
-                /*sharedPreferences = getActivity().getSharedPreferences("pref",0);
-                fname.setText(sharedPreferences.getString("globalname",null));
-                lname.setText(sharedPreferences.getString("globalLname",null));
-                dob.setText(sharedPreferences.getString("globaldob",null));
-                email.setText(sharedPreferences.getString("globalemail",null));
-                */
                 gen = sharedPreferences.getString("globalgender","");
                 signupID = sharedPreferences.getString("globalD","");
 
@@ -203,14 +160,47 @@ public class UpdateProfile extends Fragment {
                     gender="female";
                 }
 
+                if(first_name.isEmpty()){
+                    vibrator.vibrate(pattern, -1);
+                    shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                    fname.startAnimation(shake);
+                    fname.setError("Please Enter the name");
+                }
+                else if(last_name.isEmpty()){
+                    vibrator.vibrate(pattern, -1);
+                    shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                    fname.startAnimation(shake);
+                    fname.setError("Please Enter the Last Name");
+                }
+                else if(dateofbirth.isEmpty()){
+                    vibrator.vibrate(pattern, -1);
+                    shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                    fname.startAnimation(shake);
+                    fname.setError("Please Enter your Date of Birth");
+                }
 
-            if(fname.getText().toString().trim().isEmpty()&&lname.getText().toString().trim().isEmpty()&&dob.getText().toString().isEmpty()
-                    &&email.getText().toString().isEmpty()&&mobile.getText().toString().isEmpty()&&mobile.getText().toString().length() != 10
-                    && mobile.getText().toString().length() != 0&&!Patterns.EMAIL_ADDRESS.matcher(email_str).matches()&&Patterns.PHONE.matcher(phone).matches()&&
-                    Patterns.PHONE.matcher(phonechange).matches()){
+                else if(phone.length()!=10){
+                    vibrator.vibrate(pattern, -1);
+                    shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                    mobile.startAnimation(shake);
+                    mobile.setError("Please Enter the Mobile Number");
+                }
+                else if(gender.isEmpty()){
+                    vibrator.vibrate(pattern, -1);
+                    shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                    mobile.startAnimation(shake);
+                    mobile.setError("Please Select Your Gender");
+                }
 
-                Toast.makeText(getContext(), "Please Fill in The Required Fields", Toast.LENGTH_SHORT).show();
-                } else {
+
+
+
+           /* if(fname.getText().toString().trim().isEmpty()||lname.getText().toString().trim().isEmpty()||dob.getText().toString().isEmpty()
+                    ||email.getText().toString().isEmpty()||mobile.getText().toString().isEmpty()||mobile.getText().toString().length() != 10
+                    || mobile.getText().toString().length() != 0||!Patterns.EMAIL_ADDRESS.matcher(email_str).matches()||Patterns.PHONE.matcher(phone).matches()
+                    || Patterns.PHONE.matcher(phonechange).matches()){
+                            Toast.makeText(getContext(), "Please Fill in The Required Fields", Toast.LENGTH_SHORT).show();
+                } */else {
 
                 if(sharedPreferences.getBoolean("phonechanged",true)){
                     showProgressDialog();
@@ -280,7 +270,7 @@ public class UpdateProfile extends Fragment {
                     });
                 }
 
-                }
+               }
 
             }
         });

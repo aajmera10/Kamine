@@ -67,7 +67,7 @@ public class UpdateProfileOTP extends Fragment {
 
                 if (pview.getValue().isEmpty()) {
                     hideProgressDialog();
-                    Toast.makeText(getContext(), "Please Pill in the correct OTP", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Please Enter the correct OTP", Toast.LENGTH_SHORT).show();
                 } else {
 
                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -79,7 +79,7 @@ public class UpdateProfileOTP extends Fragment {
                            if(response.body().getSuccess() == 200){
                                hideProgressDialog();
                                Toast.makeText(getContext(), "Credentials Sucessfully Updated", Toast.LENGTH_SHORT).show();
-                               removefragment(new UpdateProfile());
+                               removefragment(new AccountFragment());
                            }
                        }
 

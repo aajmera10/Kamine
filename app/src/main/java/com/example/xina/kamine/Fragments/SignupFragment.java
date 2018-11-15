@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputLayout;
@@ -16,6 +17,8 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -36,6 +39,9 @@ import java.util.Calendar;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static android.content.Context.VIBRATOR_SERVICE;
+import static com.facebook.FacebookSdk.getApplicationContext;
+
 public class SignupFragment extends Fragment {
 
     EditText firestname,lastname,phone,password,email,dob;
@@ -43,6 +49,8 @@ public class SignupFragment extends Fragment {
     TextInputLayout dobt;
     String gender,first_name,last_name,mobile,email_str,psswd,dateofbirth,signupID;
     TextView login;
+    Vibrator vibrate;
+    Animation shake;
     LinearLayout signup;
     RadioGroup group;
     DatePickerDialog datePickerDialog;
@@ -67,7 +75,8 @@ public class SignupFragment extends Fragment {
         button_female = view.findViewById(R.id.radioButton8);
         login=view.findViewById(R.id.signup_login);
         signup= view.findViewById(R.id.signup_lay);
-
+        final Vibrator vibrator = (Vibrator) getActivity().getSystemService(VIBRATOR_SERVICE);
+        final long[] pattern = {0,400};
 
         int gen = group.getCheckedRadioButtonId();
         if(gen==R.id.radioButton4){
@@ -80,26 +89,73 @@ public class SignupFragment extends Fragment {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if( firestname.getText().toString().isEmpty()||lastname.getText().toString().isEmpty()||
-                        email.getText().toString().trim().isEmpty()|| password.getText().toString().isEmpty()
-                        ||phone.getText().toString().isEmpty()|| dob.getText().toString().equals("")) {
-                    Toast.makeText(getContext(), "Fill in All The Values", Toast.LENGTH_SHORT).show();
+                int gen = group.getCheckedRadioButtonId();
+                if(gen==R.id.radioButton4){
+                    gender="male";
                 }else{
-                    first_name = firestname.getText().toString().trim();
-                    last_name = lastname.getText().toString().trim();
-                    email_str = email.getText().toString().trim();
-                    psswd = password.getText().toString().trim();
-                    mobile = phone.getText().toString().trim();
-                    dateofbirth=dob.getText().toString().trim();
+                    gender="female";
+                }
+                first_name = firestname.getText().toString().trim();
+                last_name = lastname.getText().toString().trim();
+                email_str = email.getText().toString().trim();
+                psswd = password.getText().toString().trim();
+                mobile = phone.getText().toString().trim();
+                dateofbirth=dob.getText().toString().trim();
 
-                    int gen = group.getCheckedRadioButtonId();
-                    if(gen==R.id.radioButton4){
-                        gender="male";
-                    }else{
-                        gender="female";
-                    }
+                if (first_name.isEmpty()) {
+                    vibrator.vibrate(pattern, -1);
+                    shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                    firestname.startAnimation(shake);
+                    firestname.setError("Please Fill Your Name");
+                }
+                else if(last_name.isEmpty()){
+                    vibrator.vibrate(pattern, -1);
+                    shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                    lastname.startAnimation(shake);
+                    lastname.setError("Please Fill Your Name");
 
+                }
+                else if (mobile.isEmpty()) {
+                    vibrator.vibrate(pattern, -1);
+                    shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                    phone.startAnimation(shake);
+                    phone.setError("Please Fill Your Phone Number");
+                }
+                else if (psswd.isEmpty()) {
+                    vibrator.vibrate(pattern, -1);
+                    shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                    password.startAnimation(shake);
+                    password.setError("Please Fill Your Password");
+                }
+                else if (email_str.isEmpty()) {
+                    vibrator.vibrate(pattern, -1);
+                    shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                    email.startAnimation(shake);
+                    email.setError("Please Fill Your Email");
+                }
+                else if (!Patterns.EMAIL_ADDRESS.matcher(email_str).matches()) {
+                    vibrator.vibrate(pattern, -1);
+                    shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                    email.startAnimation(shake);
+                    email.setError("Should be a Valid Email Address");
+                }
+                else if (mobile.length() != 10) {
+                    vibrator.vibrate(pattern, -1);
+                    shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                    phone.startAnimation(shake);
+                    phone.setError("please Enter 10 Digits");
+                }
+
+                else if (psswd.length() < 6 && psswd.length() != 0) {
+                    vibrator.vibrate(pattern, -1);
+                    shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
+                    password.startAnimation(shake);
+                    password.setError("Password Can not be less than 6 letters");
+                }
+                else if(gender.isEmpty()){
+                    Toast.makeText(getContext(), "Please Select Your Gender", Toast.LENGTH_SHORT).show();
+                }
+                else{
                     showProgressDialog();
                     ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
                     retrofit2.Call<SendOTPModel>call = apiInterface.getSendOTPDetail(mobile);
@@ -232,6 +288,7 @@ public class SignupFragment extends Fragment {
                     }
                 },mYear,mMonth,mDay);
                 datePickerDialog.show();
+                datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
             }
         });
 

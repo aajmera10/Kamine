@@ -140,7 +140,6 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                         public void onResponse(Call<LoginModel> call, Response<LoginModel> response) {
                             if (response.body().getSuccess() == 200) {
 
-                                //pDialog.dismiss();
                                 hideProgressDialog();
                                 Toast.makeText(getActivity(), response.toString(), Toast.LENGTH_SHORT).show();
                                 userName = response.body().getLoginDetail().getFname();
@@ -148,10 +147,8 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                                 userGender = response.body().getLoginDetail().getGender();
                                 userLName = response.body().getLoginDetail().getLname();
                                 userMobile = response.body().getLoginDetail().getMobile();
-                                //userEmail = response.body().getLoginDetail().get
                                 userID = response.body().getLoginDetail().getId();
                                 apiemail = response.body().getLoginDetail().getEmail();
-                                //id=response.body().getLoginDetail().get
 
                                 sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
                                 SharedPreferences.Editor eg = sp.edit();
