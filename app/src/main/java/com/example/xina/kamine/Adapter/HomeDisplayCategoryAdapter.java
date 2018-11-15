@@ -16,65 +16,57 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.xina.kamine.Fragments.ProductListDisplayFragment;
+import com.example.xina.kamine.Model.HomeDisplayDetail;
 import com.example.xina.kamine.Model.SubcategoryMainDetail;
 import com.example.xina.kamine.R;
 
 import java.util.List;
 
-public class SubCategoryDiaplayAdapter extends RecyclerView.Adapter<SubCategoryDiaplayAdapter.MyViewHolder>{
+public class HomeDisplayCategoryAdapter extends RecyclerView.Adapter<HomeDisplayCategoryAdapter.MyViewHolder> {
+
     Context context;
-    List<SubcategoryMainDetail> listcategory;
+    List<HomeDisplayDetail> listcategory;
 
-    public void setCategorylist(List<SubcategoryMainDetail> listcategory) {
-        this.listcategory = listcategory;
-        //notifyDataSetChanged();
-    }
-
-    public SubCategoryDiaplayAdapter(Context context, List<SubcategoryMainDetail> listcategory) {
+    public HomeDisplayCategoryAdapter(Context context, List<HomeDisplayDetail> listcategory) {
         this.context = context;
         this.listcategory = listcategory;
     }
-
-
+    public void setCategoryhomelist(List<HomeDisplayDetail> listcategory) {
+        this.listcategory = listcategory;
+    }
     @NonNull
     @Override
-    public SubCategoryDiaplayAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.category_display_item,parent,false);
-        return new MyViewHolder(view);
-    }
+    public HomeDisplayCategoryAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(context).inflate(R.layout.home_list_display,parent,false);
+        return new HomeDisplayCategoryAdapter.MyViewHolder(view);    }
 
     @Override
-    public void onBindViewHolder(@NonNull SubCategoryDiaplayAdapter.MyViewHolder holder, int position) {
-
-        holder.catename.setText(listcategory.get(position).getName());
-        Glide.with(context).load(listcategory.get(position).getImage()).into(holder.image);
-
+    public void onBindViewHolder(@NonNull HomeDisplayCategoryAdapter.MyViewHolder holder, int position) {
+        holder.catename.setText(listcategory.get(position).getSubCategoryName());
+        Glide.with(context).load(listcategory.get(position).getImg()).into(holder.image);
     }
 
     @Override
     public int getItemCount() {
-            return listcategory.size();
+        return listcategory.size();
     }
-
     class MyViewHolder extends RecyclerView.ViewHolder{
         TextView catename;
         ImageView image;
         public MyViewHolder(View itemView) {
             super(itemView);
-            catename = itemView.findViewById(R.id.category_name);
-            image = itemView.findViewById(R.id.imageView1123);
+            catename = itemView.findViewById(R.id.home_category_name);
+            image = itemView.findViewById(R.id.home_category_image);
 
             itemView.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    // get position
                     int pos = getAdapterPosition();
 
-                    // check if item still exists
                     if(pos != RecyclerView.NO_POSITION){
-                        SubcategoryMainDetail clickedDataItem = listcategory.get(pos);
-                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getName(), Toast.LENGTH_SHORT).show();
-                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getId(), Toast.LENGTH_SHORT).show();
+                        HomeDisplayDetail clickedDataItem = listcategory.get(pos);
+                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getSubCategoryid(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getSubCategoryName(), Toast.LENGTH_SHORT).show();
 
                         FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
                         FragmentTransaction transaction = manager.beginTransaction();
@@ -82,11 +74,10 @@ public class SubCategoryDiaplayAdapter extends RecyclerView.Adapter<SubCategoryD
                         transaction.addToBackStack(null);
                         transaction.commit();
 
-                       // String c = clickedDataItem.get
                         SharedPreferences sp = context.getSharedPreferences("pref",0);
                         SharedPreferences.Editor ed = sp.edit();
-                        ed.putString("idvallist",clickedDataItem.getId());
-                        ed.putString("idnamelist",clickedDataItem.getName());
+                        ed.putString("idvallist",clickedDataItem.getSubCategoryid());
+                        ed.putString("idnamelist",clickedDataItem.getSubCategoryName());
                         ed.apply();
                         ed.commit();
                     }

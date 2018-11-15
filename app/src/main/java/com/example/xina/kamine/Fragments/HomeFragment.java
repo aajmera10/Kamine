@@ -20,13 +20,19 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.example.xina.kamine.Activities.MainHomeActivity;
+import com.example.xina.kamine.Adapter.HomeDisplayCategoryAdapter;
 import com.example.xina.kamine.Adapter.MainHomeAdapterDisplay;
 import com.example.xina.kamine.Adapter.MainHomeSliderAdapter;
 import com.example.xina.kamine.Adapter.PicassoImageLoadingService;
+import com.example.xina.kamine.Adapter.SubCategoryDiaplayAdapter;
+import com.example.xina.kamine.Model.HomeDisplayDetail;
 import com.example.xina.kamine.Model.HomeDisplayModel;
+import com.example.xina.kamine.Model.HomeDisplayPageModel;
 import com.example.xina.kamine.Model.HomeSliderMainDetail;
 import com.example.xina.kamine.Model.HomeSliderMainModel;
 import com.example.xina.kamine.Model.MainHomeCategoryListModel;
+import com.example.xina.kamine.Model.SubcategoryMainDetail;
+import com.example.xina.kamine.Model.SubcategoryMainModel;
 import com.example.xina.kamine.R;
 import com.example.xina.kamine.Utils.ApiClient;
 import com.example.xina.kamine.Utils.ApiInterface;
@@ -44,8 +50,12 @@ import static android.content.Context.MODE_PRIVATE;
 
 public class HomeFragment extends android.support.v4.app.Fragment {
         RecyclerView recyclerView_horizontal_display,recyclerView_best_mens,
-                recyclerView_best_womens,recyclerView_bestsellers,recyclerView_whats_new;
+                recyclerView_best_womens,recyclerView_bestsellers,recyclerView_whats_new,rec_home_subcategory;
         List<HomeDisplayModel>horizontallist,menslist,womenslist,whatsnewlist,bestsellerlist;
+        HomeDisplayCategoryAdapter homeDisplayCategoryAdapter;
+        String idx;
+        List<HomeDisplayDetail> listcategory;
+
         LinearLayout women,men,matching,best;
 
         private ProgressDialog mProgressDialog;
@@ -67,6 +77,7 @@ public class HomeFragment extends android.support.v4.app.Fragment {
             best = view.findViewById(R.id.home_clearance);
 
         home_slider = view.findViewById(R.id.slider_horizontal_display);
+
 
         showProgressDialog();
         id = "1";
@@ -97,13 +108,45 @@ public class HomeFragment extends android.support.v4.app.Fragment {
             }
         });
 
-        recyclerView_best_mens = view.findViewById(R.id.recyclerView_best_mens);
+        rec_home_subcategory = view.findViewById(R.id.rec_home_subcategory);
+        idx = "1";
+        //rec_home_subcategory = view.findViewById(R.id.rec_view_display_content);
+        rec_home_subcategory.setLayoutManager(new LinearLayoutManager(getActivity()));
+        rec_home_subcategory.setHasFixedSize(true);
+        rec_home_subcategory.setNestedScrollingEnabled(false);
+        homeDisplayCategoryAdapter = new HomeDisplayCategoryAdapter(getContext(),listcategory);
+
+        showProgressDialog();
+
+        ApiInterface apiInterfacex = ApiClient.getClient().create(ApiInterface.class);
+        Call<HomeDisplayPageModel> callx = apiInterfacex.gethomecategorydisplay(idx);
+        callx.enqueue(new Callback<HomeDisplayPageModel>() {
+            @Override
+            public void onResponse(Call<HomeDisplayPageModel> call, Response<HomeDisplayPageModel> response) {
+                hideProgressDialog();
+                //listcategory = response.body().getSaveAddressDetail();
+                listcategory = response.body().getDetail();
+                homeDisplayCategoryAdapter.setCategoryhomelist(listcategory);
+                rec_home_subcategory.setAdapter(homeDisplayCategoryAdapter);
+                Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<HomeDisplayPageModel> call, Throwable t) {
+                hideProgressDialog();
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+
+        /*recyclerView_best_mens = view.findViewById(R.id.recyclerView_best_mens);
         recyclerView_best_mens.setLayoutManager(new GridLayoutManager(getActivity(), 1));
         recyclerView_best_mens.setHasFixedSize(true);
-        recyclerView_best_mens.setNestedScrollingEnabled(false);
+        recyclerView_best_mens.setNestedScrollingEnabled(false);*/
 
 
-        recyclerView_best_womens= view.findViewById(R.id.recyclerView_best_womens);
+ /*       recyclerView_best_womens= view.findViewById(R.id.recyclerView_best_womens);
         recyclerView_best_womens.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView_best_womens.setHasFixedSize(true);
         recyclerView_best_womens.setNestedScrollingEnabled(false);
@@ -115,18 +158,18 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         recyclerView_bestsellers.setNestedScrollingEnabled(false);
 
 
-       /* //recyclerView_horizontal_display=view.findViewById(R.id.recyclerView_horizontal_display);
+       *//* //recyclerView_horizontal_display=view.findViewById(R.id.recyclerView_horizontal_display);
         recyclerView_horizontal_display.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false));
         //recyclerView_horizontal_display.setLayoutManager(new GridLayoutManager(getContext(), 1, GridLayoutManager.HORIZONTAL, false));
         recyclerView_horizontal_display.setHasFixedSize(true);
-        recyclerView_horizontal_display.setNestedScrollingEnabled(false);*/
+        recyclerView_horizontal_display.setNestedScrollingEnabled(false);*//*
 
 
         recyclerView_whats_new=view.findViewById(R.id.recyclerView_whats_new);
         recyclerView_whats_new.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView_whats_new.setHasFixedSize(true);
-        recyclerView_whats_new.setNestedScrollingEnabled(false);
-        menslist = new ArrayList<>();
+        recyclerView_whats_new.setNestedScrollingEnabled(false);*/
+       /* menslist = new ArrayList<>();
 
         menslist.add(new HomeDisplayModel(R.drawable.image,"New Arrivals","new"));
         menslist.add(new HomeDisplayModel(R.drawable.image2,"New Arrivals","new"));
@@ -134,17 +177,17 @@ public class HomeFragment extends android.support.v4.app.Fragment {
 
 
         MainHomeAdapterDisplay mensadapter = new MainHomeAdapterDisplay(getActivity(),menslist);
-        recyclerView_best_mens.setAdapter(mensadapter);
+        recyclerView_best_mens.setAdapter(mensadapter);*/
 
-        womenslist = new ArrayList<>();
+      /*  womenslist = new ArrayList<>();
 
         womenslist.add(new HomeDisplayModel(R.drawable.image,"New Arrivals"," "));
         womenslist.add(new HomeDisplayModel(R.drawable.image2,"New Arrivals"," "));
         womenslist.add(new HomeDisplayModel(R.drawable.image3,"New Arrivals","new"));
 
         MainHomeAdapterDisplay womensadapter = new MainHomeAdapterDisplay(getActivity(),womenslist);
-        recyclerView_best_womens.setAdapter(womensadapter);
-
+        recyclerView_best_womens.setAdapter(womensadapter);*/
+/*
         bestsellerlist = new ArrayList<>();
 
         bestsellerlist.add(new HomeDisplayModel(R.drawable.image,"New Arrivals"," "));
@@ -152,30 +195,17 @@ public class HomeFragment extends android.support.v4.app.Fragment {
         bestsellerlist.add(new HomeDisplayModel(R.drawable.image3,"New Arrivals","new"));
 
         MainHomeAdapterDisplay bestseller = new MainHomeAdapterDisplay(getActivity(),bestsellerlist);
-        recyclerView_bestsellers.setAdapter(bestseller);
+        recyclerView_bestsellers.setAdapter(bestseller);*/
 
-        whatsnewlist = new ArrayList<>();
+      /*  whatsnewlist = new ArrayList<>();
 
         whatsnewlist.add(new HomeDisplayModel(R.drawable.image,"New Arrivals"," "));
         whatsnewlist.add(new HomeDisplayModel(R.drawable.image2,"New Arrivals"," "));
         whatsnewlist.add(new HomeDisplayModel(R.drawable.image3,"New Arrivals","new"));
 
         MainHomeAdapterDisplay whatnewadapter = new MainHomeAdapterDisplay(getActivity(),whatsnewlist);
-        recyclerView_whats_new.setAdapter(whatnewadapter);
+        recyclerView_whats_new.setAdapter(whatnewadapter);*/
 
-     /*   horizontallist = new ArrayList<>();
-        horizontallist.add(new HomeDisplayModel(R.drawable.image,"New Arrivals","new"));
-        horizontallist.add(new HomeDisplayModel(R.drawable.image2,"New Arrivals","new"));
-        horizontallist.add(new HomeDisplayModel(R.drawable.image3,"New Arrivals","new"));
-        horizontallist.add(new HomeDisplayModel(R.drawable.image,"New Arrivals","new"));
-        horizontallist.add(new HomeDisplayModel(R.drawable.image2,"New Arrivals","new"));
-        horizontallist.add(new HomeDisplayModel(R.drawable.image3,"New Arrivals","new"));
-        horizontallist.add(new HomeDisplayModel(R.drawable.image,"New Arrivals","new"));
-        horizontallist.add(new HomeDisplayModel(R.drawable.img1,"New Arrivals","new"));
-        horizontallist.add(new HomeDisplayModel(R.drawable.img2,"New Arrivals","new"));
-        horizontallist.add(new HomeDisplayModel(R.drawable.img1,"New Arrivals","new"));
-        MainHomeAdapterDisplay horizontal = new MainHomeAdapterDisplay(getActivity(),horizontallist);
-        recyclerView_horizontal_display.setAdapter(horizontal);*/
 
 
      women.setOnClickListener(new View.OnClickListener() {

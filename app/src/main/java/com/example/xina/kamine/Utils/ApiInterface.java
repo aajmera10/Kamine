@@ -3,6 +3,7 @@ package com.example.xina.kamine.Utils;
 import com.example.xina.kamine.Model.AddToWishlistModel;
 import com.example.xina.kamine.Model.ChangePswdModel;
 import com.example.xina.kamine.Model.ForgotPasswordModel;
+import com.example.xina.kamine.Model.HomeDisplayPageModel;
 import com.example.xina.kamine.Model.HomeSliderMainModel;
 import com.example.xina.kamine.Model.LoginModel;
 import com.example.xina.kamine.Model.LogoutModel;
@@ -143,6 +144,10 @@ public interface ApiInterface {
                                           @Field("gender")String gender,
                                           @Field("dob")String dob,
                                           @Field("email")String email);
+
+  @POST("home_page.php")
+  @FormUrlEncoded
+  Call<HomeDisplayPageModel>gethomecategorydisplay(@Field("id")String id);
 
 
 

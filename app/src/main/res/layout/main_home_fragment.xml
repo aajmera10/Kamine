@@ -22,6 +22,16 @@
             android:layout_height="match_parent"
             android:nestedScrollingEnabled="false">
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rec_home_subcategory"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/slider_horizontal_display" />
+
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/constraintLayout13"
                 android:layout_width="match_parent"
@@ -166,6 +176,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
+<!--
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView_best_womens"
                 android:layout_width="wrap_content"
@@ -176,7 +187,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+-->
 
+<!--
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView_best_mens"
                 android:layout_width="wrap_content"
@@ -185,7 +198,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+-->
 
+<!--
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView_bestsellers"
                 android:layout_width="wrap_content"
@@ -194,7 +209,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+-->
 
+<!--
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerView_whats_new"
                 android:layout_width="wrap_content"
@@ -203,6 +220,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+-->
 
             <ss.com.bannerslider.Slider
                 android:id="@+id/slider_horizontal_display"
@@ -214,6 +232,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/view2" />
 
+<!--
             <LinearLayout
                 android:id="@+id/linearLayout"
                 android:layout_width="0dp"
@@ -253,7 +272,9 @@
                     android:background="@color/mainappcolor"
                     android:gravity="center" />
             </LinearLayout>
+-->
 
+<!--
             <LinearLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="0dp"
@@ -288,7 +309,9 @@
                     android:background="@color/mainappcolor"
                     android:gravity="center" />
             </LinearLayout>
+-->
 
+<!--
             <LinearLayout
                 android:id="@+id/linearLayout3"
                 android:layout_width="0dp"
@@ -325,7 +348,9 @@
                     android:background="@color/mainappcolor"
                     android:gravity="center" />
             </LinearLayout>
+-->
 
+<!--
             <LinearLayout
                 android:id="@+id/linearLayout4"
                 android:layout_width="0dp"
@@ -362,6 +387,8 @@
                     android:background="@color/mainappcolor"
                     android:gravity="center" />
             </LinearLayout>
+-->
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>
+
 </android.support.constraint.ConstraintLayout>

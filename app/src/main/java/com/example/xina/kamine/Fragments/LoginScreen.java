@@ -243,19 +243,13 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                                 try {
                                     fbname = object.getString("name");
                                     fbemail = object.getString("email");
-                                   /* fbgender = object.getString("gender");
-                                    fbdob = object.getString("birthday");*/
-                                    //fbId = object.getString("id");
-                                    //Log.d("Email = ", " " + fbemail);
-                                    //Toast.makeText(getApplicationContext(), "Name " + fbname, Toast.LENGTH_LONG).show();
                                     if (AccessToken.getCurrentAccessToken() != null) {
                                         if (mLoginManager != null)
                                             mLoginManager.logOut();
                                     }
-
                                     int idx = fbname.lastIndexOf(' ');
-                                    if (idx == -1)
-                                        throw new IllegalArgumentException("Only a single name: " + gooName);
+                                    /*if (idx == -1)
+                                        throw new IllegalArgumentException("Only a single name: " + gooName);*/
                                     userName = fbname.substring(0, idx);
                                     userLName   = fbname.substring(idx + 1);
                                     fbdob = "";
@@ -270,7 +264,9 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                                         public void onResponse(Call<SocialLoginModelApi> call, Response<SocialLoginModelApi> response) {
                                             hideProgressDialog();
                                             Toast.makeText(getActivity(),response.body().getMessage() , Toast.LENGTH_SHORT).show();
-                                           // fbId = response.body().getSocialLoginDetail().getId();
+                                            SocialLoginDetailApi socialLoginDetailApi = response.body().getSocialLoginDetailApi();
+
+
                                             sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
                                             SharedPreferences.Editor eg = sp.edit();
                                             eg.putString("globalname",userName);
@@ -324,9 +320,6 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
 
       //  AccessToken accessToken = AccessToken.getCurrentAccessToken();
        // boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
-
-
-
 
         /////Google SignIn///////
 
@@ -405,17 +398,12 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
         }
     }
 
-
-
     public void onPause() {
         super.onPause();
         mGoogleApiClient.stopAutoManage(getActivity());
         mGoogleApiClient.disconnect();
 
     }
-
-
-
 
     private void handleSignInResult(GoogleSignInResult result) {
         Log.d(TAG, "handleSignInResult:" + result.isSuccess());
@@ -427,23 +415,18 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
             eg.putBoolean("hasgooglelogin",true);
             eg.commit();
             eg.apply();
-
             // Signed in successfully, show authenticated UI.
             hideProgressDialog();
             final GoogleSignInAccount acct = result.getSignInAccount();
-
             Log.e(TAG, "display name: " + acct.getDisplayName());
-
             gooName = acct.getDisplayName();
             gooId = acct.getId();
             gooemail = acct.getEmail();
             String personPhotoUrl = acct.getPhotoUrl().toString();
 
-
-
             int idx = gooName.lastIndexOf(' ');
-            if (idx == -1)
-                throw new IllegalArgumentException("Only a single name: " + gooName);
+            /*if (idx == -1)
+                throw new IllegalArgumentException("Only a single name: " + gooName);*/
             userName = gooName.substring(0, idx);
             userLName   = gooName.substring(idx + 1);
             googender=" ";
@@ -533,8 +516,6 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                 }
             });
 
-
-
         } else {
             // Signed out, show unauthenticated UI.
             //updateUI(false);
@@ -542,8 +523,6 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
 
         }
     }
-
-
 
     public  void signOut() {
         Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(
@@ -570,7 +549,6 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                 });
     }
 
-
     private void handleFacebookLogin() {
         if (AccessToken.getCurrentAccessToken() != null) {
             mLoginManager.logOut();
@@ -582,7 +560,6 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
 
         }
     }
-
 
     void removefragment(android.support.v4.app.Fragment f){
         //MainActivity mainActivity = new MainActivity();r
