@@ -74,7 +74,7 @@
                         app:layout_constraintBottom_toBottomOf="@+id/crt"
                         app:layout_constraintEnd_toStartOf="@+id/crt"
                         app:layout_constraintTop_toTopOf="@+id/crt"
-                        app:srcCompat="@drawable/add_to_wishlist" />
+                        android:src="@drawable/ic_favorite_border_black_24dp" />
                 </android.support.constraint.ConstraintLayout>
 
             </android.support.v7.widget.Toolbar>
@@ -98,21 +98,139 @@
             android:layout_height="match_parent">
 
             <android.support.constraint.ConstraintLayout
+                android:id="@+id/priceand"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <View
+                    android:id="@+id/view29"
+                    android:background="#000"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0.5dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <com.example.xina.kamine.Utils.PopinsBold
+                    android:id="@+id/productname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Sample Name of the Product"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <com.example.xina.kamine.Utils.PoppinsRegular
+                    android:id="@+id/productdescrip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="4dp"
+                    android:maxLines="3"
+                    android:minLines="1"
+                    android:text="Sample Description "
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/productname" />
+
+                <com.example.xina.kamine.Utils.PopinsBold
+                    android:id="@+id/popinsBold10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="2dp"
+                    android:layout_marginRight="2dp"
+                    android:textSize="18sp"
+                    android:text="Rs."
+                    app:layout_constraintEnd_toStartOf="@+id/productsellprice"
+                    app:layout_constraintTop_toTopOf="@+id/productname" />
+
+                <com.example.xina.kamine.Utils.PopinsBold
+                    android:id="@+id/productsellprice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="537"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/popinsBold10"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/popinsBold10" />
+
+                <com.example.xina.kamine.Utils.PoppinsMedium
+                    android:id="@+id/poppinsMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Rs."
+                    android:textSize="16sp"
+                    android:background="@drawable/strike_through"
+                    app:layout_constraintEnd_toEndOf="@+id/popinsBold10"
+                    app:layout_constraintStart_toStartOf="@+id/popinsBold10"
+                    app:layout_constraintTop_toBottomOf="@+id/popinsBold10" />
+
+                <com.example.xina.kamine.Utils.PoppinsMedium
+                    android:id="@+id/productcost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/strike_through"
+                    android:text="699"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/poppinsMedium"
+                    app:layout_constraintEnd_toEndOf="@+id/productsellprice"
+                    app:layout_constraintStart_toStartOf="@+id/productsellprice"
+                    app:layout_constraintTop_toTopOf="@+id/poppinsMedium" />
+
+                <com.example.xina.kamine.Utils.PopinsBold
+                    android:id="@+id/popinsBold12"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:text="% Off"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/productcost" />
+
+                <com.example.xina.kamine.Utils.PopinsBold
+                    android:id="@+id/properoff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:text="40"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/popinsBold12"
+                    app:layout_constraintEnd_toStartOf="@+id/popinsBold12"
+                    app:layout_constraintTop_toTopOf="@+id/popinsBold12" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0">
+                app:layout_constraintTop_toBottomOf="@+id/priceand">
 
                 <com.example.xina.kamine.Utils.PoppinsMedium
                     android:id="@+id/textView172"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="11dp"
                     android:text="See Some More Styles"
                     app:layout_constraintStart_toStartOf="parent"
@@ -133,8 +251,8 @@
                     android:id="@+id/textView166"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="13dp"
                     android:layout_marginStart="13dp"
+                    android:layout_marginLeft="13dp"
                     android:layout_marginTop="16dp"
                     android:text="Easy Returns"
                     app:layout_constraintStart_toEndOf="@+id/imageView35"
@@ -144,8 +262,8 @@
                     android:id="@+id/imageView33"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView163"
@@ -154,10 +272,10 @@
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/constraintLayout18"
                     android:layout_width="0dp"
-                    android:visibility="gone"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:background="#DCDCDC"
+                    android:visibility="gone"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -167,8 +285,8 @@
                         android:id="@+id/textView162"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
                         android:layout_marginStart="24dp"
+                        android:layout_marginLeft="24dp"
                         android:layout_marginTop="16dp"
                         android:text="Hide Care"
                         app:layout_constraintStart_toStartOf="parent"
@@ -178,8 +296,8 @@
                         android:id="@+id/textView161"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
                         android:text="Do Not Iron on Prints"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView31"
                         app:layout_constraintStart_toEndOf="@+id/imageView31"
@@ -189,8 +307,8 @@
                         android:id="@+id/textView160"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
                         android:text="Tumble Dry Low"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView30"
                         app:layout_constraintStart_toEndOf="@+id/imageView30"
@@ -200,8 +318,8 @@
                         android:id="@+id/imageView31"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginLeft="32dp"
                         android:layout_marginStart="32dp"
+                        android:layout_marginLeft="32dp"
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imageView30"
@@ -211,8 +329,8 @@
                         android:id="@+id/imageView30"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginLeft="32dp"
                         android:layout_marginStart="32dp"
+                        android:layout_marginLeft="32dp"
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imageView23"
@@ -222,8 +340,8 @@
                         android:id="@+id/textView104"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
                         android:text="Machine Wash"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView23"
                         app:layout_constraintStart_toEndOf="@+id/imageView23"
@@ -233,8 +351,8 @@
                         android:id="@+id/imageView23"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginLeft="32dp"
                         android:layout_marginStart="32dp"
+                        android:layout_marginLeft="32dp"
                         android:layout_marginTop="8dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imageView22"
@@ -244,8 +362,8 @@
                         android:id="@+id/imageView22"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_marginLeft="32dp"
                         android:layout_marginStart="32dp"
+                        android:layout_marginLeft="32dp"
                         android:layout_marginTop="16dp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -255,8 +373,8 @@
                         android:id="@+id/textView103"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
+                        android:layout_marginLeft="8dp"
                         android:text="Do not Bleach"
                         app:layout_constraintBottom_toBottomOf="@+id/imageView22"
                         app:layout_constraintStart_toEndOf="@+id/imageView22"
@@ -267,9 +385,9 @@
                     android:id="@+id/textView159"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginRight="32dp"
-                    android:layout_marginTop="4dp"
                     android:text="We use the best Materials, Making our Designs perfect fit for your Body"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -280,8 +398,8 @@
                     android:id="@+id/imageView32"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:src="@drawable/ic_centimeter"
                     app:layout_constraintBottom_toBottomOf="@+id/textView159"
@@ -292,8 +410,8 @@
                     android:id="@+id/textView158"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="13dp"
                     android:layout_marginStart="13dp"
+                    android:layout_marginLeft="13dp"
                     android:layout_marginTop="16dp"
                     android:text="Regular Fit"
                     app:layout_constraintStart_toEndOf="@+id/imageView32"
@@ -314,8 +432,8 @@
                     android:id="@+id/textView142"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:text="Select Size"
                     app:layout_constraintStart_toStartOf="parent"
@@ -330,75 +448,46 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/radioGroup5" />
+                    app:layout_constraintTop_toBottomOf="@+id/color_recv" />
 
-                <RadioGroup
-                    android:id="@+id/radioGroup5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginStart="32dp"
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/color_recv"
+                    android:layout_width="0dp"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView156">
 
-                    <RadioButton
-                        android:id="@+id/radioButton15"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
 
-                    <RadioButton
-                        android:id="@+id/radioButton14"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton13"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
-                    <RadioButton
-                        android:id="@+id/radioButton12"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-                </RadioGroup>
+                </android.support.v7.widget.RecyclerView>
 
                 <com.example.xina.kamine.Utils.PoppinsMedium
                     android:id="@+id/textView156"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
-                    android:text="Color:"
+                    android:text="Color"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <com.example.xina.kamine.Utils.PoppinsMedium
-                    android:id="@+id/textView157"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginStart="5dp"
-                    android:text="TextView"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView156"
-                    app:layout_constraintStart_toEndOf="@+id/textView156"
-                    app:layout_constraintTop_toTopOf="@+id/textView156" />
 
                 <RadioGroup
                     android:id="@+id/radioGroup4"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:layout_marginLeft="24dp"
-                    android:layout_marginRight="8dp"
                     android:layout_marginStart="24dp"
+                    android:layout_marginLeft="24dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -459,8 +548,8 @@
                     android:id="@+id/imageView20"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView71"
@@ -470,8 +559,8 @@
                     android:id="@+id/textView71"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="13dp"
                     android:layout_marginStart="13dp"
+                    android:layout_marginLeft="13dp"
                     android:layout_marginTop="16dp"
                     android:text="Single Tee, 100% Cotton"
                     app:layout_constraintStart_toEndOf="@+id/imageView20"
@@ -502,8 +591,8 @@
                     android:id="@+id/textView163"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="13dp"
                     android:layout_marginStart="13dp"
+                    android:layout_marginLeft="13dp"
                     android:layout_marginTop="8dp"
                     android:text="Cashback Info"
                     app:layout_constraintStart_toEndOf="@+id/imageView33"
@@ -513,9 +602,9 @@
                     android:id="@+id/textView164"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginRight="32dp"
-                    android:layout_marginTop="4dp"
                     android:text="Cashback cannot be applied on discounted products"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -526,8 +615,8 @@
                     android:id="@+id/imageView35"
                     android:layout_width="40dp"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/textView166"
@@ -537,9 +626,9 @@
                     android:id="@+id/textView167"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
                     android:layout_marginEnd="32dp"
                     android:layout_marginRight="32dp"
-                    android:layout_marginTop="4dp"
                     android:text="We use a 15 Day Return Policy. If you don't like it return it."
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -550,8 +639,8 @@
                     android:id="@+id/textView168"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="24dp"
                     android:text="Check Delivery/Availibility"
                     app:layout_constraintStart_toStartOf="parent"
@@ -561,8 +650,8 @@
                     android:id="@+id/textView169"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
                     android:hint="Enter Your PinCode"
                     android:textSize="14sp"
@@ -573,8 +662,8 @@
                     android:id="@+id/button2"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
 
                     android:background="@color/mainappcolor"
                     android:fontFamily="@font/poppins_medium"
@@ -589,15 +678,16 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/see_more"
                     android:layout_width="0dp"
-                    android:layout_marginBottom="40dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="40dp"
                     android:background="#DCDCDC"
 
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView172" />
@@ -609,6 +699,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="bottom"
+
         android:background="@color/white">
 
         <android.support.constraint.ConstraintLayout

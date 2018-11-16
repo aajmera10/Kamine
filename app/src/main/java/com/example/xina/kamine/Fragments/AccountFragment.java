@@ -186,7 +186,7 @@ SharedPreferences preferences;
 */
                         }
 
-                        if(preferences.getBoolean("hasfaceblogin",true)){
+                        else if(preferences.getBoolean("hasfaceblogin",true)){
 
                             if (LoginManager.getInstance() != null)
                                     LoginManager.getInstance().logOut();

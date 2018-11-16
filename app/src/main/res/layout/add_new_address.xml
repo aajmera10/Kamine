@@ -97,6 +97,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/saveadd_fname"
+                    android:maxLines="1"
                      />
 
             </android.support.design.widget.TextInputLayout>
@@ -118,6 +119,7 @@
                 <com.example.xina.kamine.Utils.PoppinsEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
                     android:id="@+id/saveadd_lanme"
                      />
             </android.support.design.widget.TextInputLayout>
@@ -139,6 +141,7 @@
                 <com.example.xina.kamine.Utils.PoppinsEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
                     android:id="@+id/saveadd_addline1"
                      />
             </android.support.design.widget.TextInputLayout>
@@ -160,6 +163,7 @@
                 <com.example.xina.kamine.Utils.PoppinsEditText
                     android:layout_width="match_parent"
                     android:id="@+id/saveadd_addline2"
+                    android:maxLines="1"
                     android:layout_height="wrap_content"
                      />
             </android.support.design.widget.TextInputLayout>
@@ -182,6 +186,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/saveadd_phone"
+                    android:maxLines="1"
                      />
             </android.support.design.widget.TextInputLayout>
 
@@ -203,13 +208,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/saveadd_landmark"
+                    android:maxLines="1"
                      />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/textInputLayout21"
                 android:layout_width="0dp"
-                android:layout_height="57dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
@@ -224,7 +230,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/saveadd_pincode"
-                     />
+                    android:maxLines="1"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -245,7 +251,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/saveadd_city"
-                    />
+                    android:maxLines="1"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -266,7 +272,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/saveadd_state"
-                    />
+                    android:maxLines="1"/>
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -285,8 +291,8 @@
                 <android.support.design.widget.TextInputEditText
                     android:layout_width="match_parent"
                     android:id="@+id/saveadd_country"
-                    android:layout_height="wrap_content"
-                    />
+                    android:maxLines="1"
+                    android:layout_height="wrap_content" />
             </android.support.design.widget.TextInputLayout>
         </android.support.constraint.ConstraintLayout>
     </android.support.v4.widget.NestedScrollView>

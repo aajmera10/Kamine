@@ -1,10 +1,13 @@
 package com.example.xina.kamine.Fragments;
 
+import android.app.ProgressDialog;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 
 import android.support.v7.widget.GridLayoutManager;
@@ -15,31 +18,42 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.example.xina.kamine.Adapter.ProductSliderAdapter;
 import com.example.xina.kamine.Adapter.PicassoImageLoadingService;
 import com.example.xina.kamine.Adapter.ProductsPageAdapter;
+import com.example.xina.kamine.Model.ProductDisplayModel;
 import com.example.xina.kamine.Model.ProductsPageModel;
+import com.example.xina.kamine.Model.SendOTPModel;
 import com.example.xina.kamine.R;
+import com.example.xina.kamine.Utils.ApiClient;
+import com.example.xina.kamine.Utils.ApiInterface;
 
 import java.lang.invoke.ConstantCallSite;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 import ss.com.bannerslider.Slider;
 
 public class ProductsPageDisplayFragment extends Fragment {
     Slider slider;
-    RecyclerView rec_seemore;
+    RecyclerView rec_seemore,color_recv;
     List<ProductsPageModel> show_product;
-    TextView show,hide;
+    TextView show,hide,mrp,sellprice,discount,productname,productdescription;
     ConstraintLayout showlay;
+    String x;
+    SharedPreferences sp;
+    private ProgressDialog mProgressDialog;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.product_display_page,container,false);
-
+        showProgressDialog();
         Slider.init(new PicassoImageLoadingService(getActivity()));
         Toolbar toolbar = view.findViewById(R.id.toolbar_display_page);
         AppCompatActivity activity = (AppCompatActivity)getActivity();
@@ -47,12 +61,19 @@ public class ProductsPageDisplayFragment extends Fragment {
         //activity.getSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar();
         if(activity.getSupportActionBar() != null)
+
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         slider = view.findViewById(R.id.banner_slider1);
         slider.setAdapter(new ProductSliderAdapter());
-
+        mrp= view.findViewById(R.id.productcost);
+        sellprice = view.findViewById(R.id.productsellprice);
+        discount = view.findViewById(R.id.properoff);
         rec_seemore = view.findViewById(R.id.see_more);
+        productdescription = view.findViewById(R.id.productdescrip);
+        productname = view.findViewById(R.id.productname);
+        color_recv = view.findViewById(R.id.color_recv);
+
         rec_seemore.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false));
         // ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(getActivity(), R.dimen.item_offset);
         //int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_offset);
@@ -99,8 +120,70 @@ public class ProductsPageDisplayFragment extends Fragment {
             }
         });
 
+        sp = getActivity().getSharedPreferences("pref",0);
+        x = sp.getString("idvalproduct","");
+
+
+        ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+        Call<ProductDisplayModel> call = apiInterface.getprodyctdisplaypage(x);
+        call.enqueue(new Callback<ProductDisplayModel>() {
+            @Override
+            public void onResponse(Call<ProductDisplayModel> call, Response<ProductDisplayModel> response) {
+                hideProgressDialog();
+                //if(response.body().getSuccess() == 200){
+                    productname.setText(response.body().getProductDisplayDetail().getProductName());
+                    discount.setText(response.body().getProductDisplayDetail().getDiscount());
+                    mrp.setText(response.body().getProductDisplayDetail().getMrp());
+                    productdescription.setText(response.body().getProductDisplayDetail().getDescription());
+                    sellprice.setText(response.body().getProductDisplayDetail().getPrice());
+                //}
+                Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onFailure(Call<ProductDisplayModel> call, Throwable t) {
+                hideProgressDialog();
+                Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
 
 
         return view;
+    }
+
+
+    void removefragment(android.support.v4.app.Fragment f){
+        //MainActivity mainActivity = new MainActivity();r
+        // String c = String.valueOf(mainActivity.bottomNavigationView.getMenu());
+        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+        // FragmentTransaction fragmentTransaction = getActivity().getSupp().beginTransaction();
+        fragmentTransaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
+                R.anim.fragment_slide_left_exit,
+                R.anim.fragment_slide_right_enter,
+                R.anim.fragment_slide_right_exit);
+        fragmentTransaction.replace(R.id.frag_container, f);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
+        // getActivity().onBackPressed();
+    }
+    private void showProgressDialog() {
+        if (mProgressDialog == null) {
+            mProgressDialog = new ProgressDialog(getActivity());
+            mProgressDialog.setMessage("loading...");
+            mProgressDialog.setIndeterminate(true);
+        }
+
+        mProgressDialog.show();
+    }
+
+    private void hideProgressDialog() {
+        if (mProgressDialog != null && mProgressDialog.isShowing()) {
+            mProgressDialog.hide();
+        }
+
+
     }
 }

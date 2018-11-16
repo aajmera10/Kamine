@@ -86,6 +86,7 @@ public class UpdateProfileOTP extends Fragment {
                        @Override
                        public void onFailure(Call<UpdateProfileOTPModel> call, Throwable t) {
                             hideProgressDialog();
+                           //pview.setValue();
                            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                        }
                    });

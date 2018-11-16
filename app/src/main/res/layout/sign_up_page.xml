@@ -177,6 +177,7 @@
                 <com.example.xina.kamine.Utils.PoppinsEditText
                     android:id="@+id/signup_first_name"
                     android:layout_width="match_parent"
+                    android:maxLines="1"
                     android:layout_height="wrap_content"
                     />
             </android.support.design.widget.TextInputLayout>
@@ -200,6 +201,7 @@
                     android:id="@+id/signup_last_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -228,6 +230,7 @@
                     android:id="@+id/signup_phone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
                     android:inputType="number" />
             </android.support.design.widget.TextInputLayout>
 
@@ -249,6 +252,7 @@
                     android:id="@+id/signup_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
                     />
             </android.support.design.widget.TextInputLayout>
 
@@ -270,6 +274,7 @@
                 <com.example.xina.kamine.Utils.PoppinsEditText
                     android:id="@+id/signup_password"
                     android:layout_width="match_parent"
+                    android:maxLines="1"
                     android:layout_height="wrap_content"
                     android:inputType="textWebPassword" />
             </android.support.design.widget.TextInputLayout>

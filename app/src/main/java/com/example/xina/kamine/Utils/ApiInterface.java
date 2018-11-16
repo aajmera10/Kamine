@@ -2,6 +2,7 @@ package com.example.xina.kamine.Utils;
 
 import com.example.xina.kamine.Model.AddToWishlistModel;
 import com.example.xina.kamine.Model.ChangePswdModel;
+import com.example.xina.kamine.Model.DeleteAddressModel;
 import com.example.xina.kamine.Model.ForgotPasswordModel;
 import com.example.xina.kamine.Model.HomeDisplayPageModel;
 import com.example.xina.kamine.Model.HomeSliderMainModel;
@@ -9,6 +10,7 @@ import com.example.xina.kamine.Model.LoginModel;
 import com.example.xina.kamine.Model.LogoutModel;
 import com.example.xina.kamine.Model.MainHomeCategoryListModel;
 import com.example.xina.kamine.Model.OtherCategoryModel;
+import com.example.xina.kamine.Model.ProductDisplayModel;
 import com.example.xina.kamine.Model.ProductListModel;
 import com.example.xina.kamine.Model.SaveAddressModel;
 import com.example.xina.kamine.Model.SendOTPModel;
@@ -149,6 +151,11 @@ public interface ApiInterface {
   @FormUrlEncoded
   Call<HomeDisplayPageModel>gethomecategorydisplay(@Field("id")String id);
 
+  @POST("product_detail.php")
+  @FormUrlEncoded
+  Call<ProductDisplayModel>getprodyctdisplaypage(@Field("id")String id);
 
-
+  @POST("delete_address.php")
+  @FormUrlEncoded
+  Call<DeleteAddressModel>getdeleteaddress(@Field("addressid")String id);
 }

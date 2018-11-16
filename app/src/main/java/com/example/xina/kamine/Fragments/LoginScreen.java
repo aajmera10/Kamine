@@ -245,10 +245,8 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                                             mLoginManager.logOut();
                                     }
                                     int idx = fbname.lastIndexOf(' ');
-                                    /*if (idx == -1)
-                                        throw new IllegalArgumentException("Only a single name: " + gooName);*/
                                     userName = fbname.substring(0, idx);
-                                    userLName   = fbname.substring(idx + 1);
+                                    userLName = fbname.substring(idx + 1);
                                     fbdob = "";
                                     fbgender = "";
                                     userMobile="";
@@ -263,23 +261,75 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                                             Toast.makeText(getActivity(),response.body().getMessage() , Toast.LENGTH_SHORT).show();
                                             SocialLoginDetailApi socialLoginDetailApi = response.body().getSocialLoginDetailApi();
 
+                                            if(response.body().getSuccess()==201)
+                                            {
+                                                userName= socialLoginDetailApi.getFname();
+                                                try {
+                                                    int idx =userName.lastIndexOf(' ');
+                                                    userName = userName.substring(0, idx);
+                                                    userLName   = userName.substring(idx + 1);
+                                                }catch (StringIndexOutOfBoundsException ex){
+                                                    ex.printStackTrace();
+                                                }
 
-                                            sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
-                                            SharedPreferences.Editor eg = sp.edit();
-                                            eg.putString("globalname",userName);
-                                            eg.putString("globaldob",fbdob);
-                                            eg.putString("globalgender",fbdob);
-                                            eg.putString("globalLname",userLName);
-                                            eg.putString("globalMobile",userMobile);
-                                            eg.putString("globalemail",fbemail);
-                                            eg.putString("globalD",fbId);
-                                            eg.apply();
+                                                fbdob = socialLoginDetailApi.getDob();
+                                                fbgender = socialLoginDetailApi.getGender();
+                                                userMobile = socialLoginDetailApi.getMobile();
+                                                fbemail = socialLoginDetailApi.getEmail();
+                                                fbId = socialLoginDetailApi.getId();
+
+                                                sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+                                                SharedPreferences.Editor eg = sp.edit();
+                                                eg.putString("globalname",userName);
+                                                eg.putString("globaldob",fbdob);
+                                                eg.putString("globalgender",fbgender);
+                                                eg.putString("globalLname",userLName);
+                                                eg.putString("globalMobile",userMobile);
+                                                eg.putString("globalemail",fbemail);
+                                                eg.putString("globalD",fbId);
+                                                eg.putBoolean("hasloggedIN",true);
+                                                eg.putBoolean("hasfaceblogin",true);
+                                                eg.apply();
+                                                removefragment(new UpdateProfile());
+                                            }
+                                            else if(response.body().getSuccess()==200)
+
+                                            {
+                                                userName= socialLoginDetailApi.getFname();
+                                                try {
+                                                    int idx =userName.lastIndexOf(' ');
+                                                    userName = userName.substring(0, idx);
+                                                    userLName   = userName.substring(idx + 1);
+                                                }catch (StringIndexOutOfBoundsException ex){
+                                                    ex.printStackTrace();
+                                                }
+
+                                                fbdob = socialLoginDetailApi.getDob();
+                                                fbgender = socialLoginDetailApi.getGender();
+                                                userMobile = socialLoginDetailApi.getMobile();
+                                                fbemail = socialLoginDetailApi.getEmail();
+                                                fbId = socialLoginDetailApi.getId();
+
+                                                sp = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+                                                SharedPreferences.Editor eg = sp.edit();
+                                                eg.putString("globalname",userName);
+                                                eg.putString("globaldob",fbdob);
+                                                eg.putString("globalgender",fbgender);
+                                                eg.putString("globalLname",userLName);
+                                                eg.putString("globalMobile",userMobile);
+                                                eg.putString("globalemail",fbemail);
+                                                eg.putString("globalD",fbId);
+                                                eg.putBoolean("hasloggedIN",true);
+                                                eg.putBoolean("hasfaceblogin",true);
+                                                eg.apply();
+                                                removefragment(new UpdateProfile());
+                                            }
 
                                         }
 
                                         @Override
                                         public void onFailure(Call<SocialLoginModelApi> call, Throwable t) {
-
+                                            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     });
                                     removefragment(new AccountFragment());
@@ -469,9 +519,8 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                     eg.putBoolean("hasloggedIN",true);
                     eg.putBoolean("hasgooglelogin",true);
                     eg.apply();
+                        removefragment(new UpdateProfile());
                     }
-
-
                     else if(response.body().getSuccess()==200)
 
                     {
@@ -499,9 +548,9 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
                         eg.putBoolean("hasloggedIN",true);
                         eg.putBoolean("hasgooglelogin",true);
                         eg.apply();
+                        removefragment(new UpdateProfile());
                     }
 
-                    removefragment(new UpdateProfile());
 
                 }
 

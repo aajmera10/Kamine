@@ -95,7 +95,18 @@ public class ProductDisplayListAdapter extends RecyclerView.Adapter<ProductDispl
                         ProductListDetailI clickedDataItem = listcategory.get(pos);
                         Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getId(), Toast.LENGTH_SHORT).show();
                        // Toast.makeText(v.getContext(), "You clicked " + clickedDataItem.getId(), Toast.LENGTH_SHORT).show()
+                        FragmentManager manager = ((AppCompatActivity)context).getSupportFragmentManager();
+                        FragmentTransaction transaction = manager.beginTransaction();
+                        transaction.replace(R.id.frag_container, new ProductsPageDisplayFragment());
+                        transaction.addToBackStack(null);
+                        transaction.commit();
 
+                       String c = clickedDataItem.getId();
+                        SharedPreferences sp = context.getSharedPreferences("pref",0);
+                        SharedPreferences.Editor ed = sp.edit();
+                        ed.putString("idvalproduct",c);
+                        ed.apply();
+                        ed.commit();
                     }
                 }
             });

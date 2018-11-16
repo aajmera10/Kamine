@@ -83,14 +83,13 @@ public class UpdateProfile extends Fragment {
 
 
 
-        forgot.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                removefragment(new ChangePassword());
-            }
-        });
+
 
         sharedPreferences = getActivity().getSharedPreferences("pref",0);
+        if(sharedPreferences.getBoolean("hasgooglelogin",true)
+                ||sharedPreferences.getBoolean("hasfaceblogin",true)){
+            forgot.setVisibility(View.GONE);
+        }
         fname.setText(sharedPreferences.getString("globalname",""));
         lname.setText(sharedPreferences.getString("globalLname",""));
         dob.setText(sharedPreferences.getString("globaldob",""));
@@ -121,9 +120,16 @@ public class UpdateProfile extends Fragment {
                 },mYear,mMonth,mDay);
                 datePickerDialog.show();
                 datePickerDialog.getDatePicker().setMaxDate(c.getTimeInMillis());
+                //datePickerDialog.getDatePicker().getMinDate();
             }
         });
 
+        forgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                removefragment(new ChangePassword());
+            }
+        });
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,14 +175,14 @@ public class UpdateProfile extends Fragment {
                 else if(last_name.isEmpty()){
                     vibrator.vibrate(pattern, -1);
                     shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
-                    fname.startAnimation(shake);
-                    fname.setError("Please Enter the Last Name");
+                    lname.startAnimation(shake);
+                    lname.setError("Please Enter the Last Name");
                 }
                 else if(dateofbirth.isEmpty()){
                     vibrator.vibrate(pattern, -1);
                     shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
-                    fname.startAnimation(shake);
-                    fname.setError("Please Enter your Date of Birth");
+                    dob.startAnimation(shake);
+                    dob.setError("Please Enter your Date of Birth");
                 }
 
                 else if(phone.length()!=10){
@@ -188,8 +194,7 @@ public class UpdateProfile extends Fragment {
                 else if(gender.isEmpty()){
                     vibrator.vibrate(pattern, -1);
                     shake = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.shake);
-                    mobile.startAnimation(shake);
-                    mobile.setError("Please Select Your Gender");
+                    Toast.makeText(getContext(), "Please Select your Gender", Toast.LENGTH_SHORT).show();
                 }
 
 
