@@ -79,26 +79,46 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <android.support.design.widget.TextInputLayout
-                android:id="@+id/textInputLayout11"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:hint="First Name"
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/titlecon"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
+                <com.example.xina.kamine.Utils.PopinsBold
+                    android:id="@+id/popinsBold8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:text="Edit Your Address"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayout11"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:hint="First Name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/titlecon">
+
                 <com.example.xina.kamine.Utils.PoppinsEditText
+                    android:id="@+id/saveadd_fname"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/saveadd_fname"
-                    android:maxLines="1"
-                     />
+                    android:singleLine="true"
+                    android:maxLines="1" />
 
             </android.support.design.widget.TextInputLayout>
 
@@ -120,8 +140,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:id="@+id/saveadd_lanme"
-                     />
+                    />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -133,7 +154,7 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
-                android:hint="Address "
+                android:hint="Address Line 1"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textInputLayout12">
@@ -142,10 +163,33 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:id="@+id/saveadd_addline1"
-                     />
+                    />
             </android.support.design.widget.TextInputLayout>
 
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/textInputLayout14"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:hint="Address Line 2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout13">
+
+                <com.example.xina.kamine.Utils.PoppinsEditText
+                    android:layout_width="match_parent"
+                    android:id="@+id/saveadd_addline2"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:layout_height="wrap_content"
+                    />
+            </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
                 android:id="@+id/textInputLayout15"
@@ -159,14 +203,15 @@
                 android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout13">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout14">
 
                 <com.example.xina.kamine.Utils.PoppinsEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/saveadd_phone"
+                    android:singleLine="true"
                     android:maxLines="1"
-                     />
+                    />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -187,8 +232,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/saveadd_landmark"
+                    android:singleLine="true"
                     android:maxLines="1"
-                     />
+                    />
             </android.support.design.widget.TextInputLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -209,6 +255,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/saveadd_pincode"
+                    android:singleLine="true"
                     android:maxLines="1"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -230,6 +277,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/saveadd_city"
+                    android:singleLine="true"
                     android:maxLines="1"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -251,6 +299,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:id="@+id/saveadd_state"
+                    android:singleLine="true"
                     android:maxLines="1"/>
             </android.support.design.widget.TextInputLayout>
 
@@ -271,6 +320,7 @@
                     android:layout_width="match_parent"
                     android:id="@+id/saveadd_country"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:layout_height="wrap_content" />
             </android.support.design.widget.TextInputLayout>
         </android.support.constraint.ConstraintLayout>

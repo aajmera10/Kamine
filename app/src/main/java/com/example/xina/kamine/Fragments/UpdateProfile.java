@@ -17,6 +17,7 @@ import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.DatePicker;
@@ -61,6 +62,7 @@ public class UpdateProfile extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.update_profile,container,false);
         ((MainHomeActivity)getActivity()).removeBottom();
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
         fname = view.findViewById(R.id.up_name);
         lname = view.findViewById(R.id.up_lname);
         dob = view.findViewById(R.id.up_dob);

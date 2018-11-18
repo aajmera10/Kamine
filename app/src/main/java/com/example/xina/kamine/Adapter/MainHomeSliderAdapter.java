@@ -30,9 +30,6 @@ public class MainHomeSliderAdapter extends SliderAdapter {
         this.HomeSliderMainModel = homeSliderMainModel;
     }
 
-
-
-
     public int getItemCount() {
         return HomeSliderMainModel.size();
     }
@@ -40,7 +37,6 @@ public class MainHomeSliderAdapter extends SliderAdapter {
     public void onBindImageSlide(int position, ImageSlideViewHolder imageSlideViewHolder) {
 
         HomeSliderMainDetail hero = HomeSliderMainModel.get(position);
-        //imageSlideViewHolder.bindImageSlide(hero.getId());
         imageSlideViewHolder.bindImageSlide(hero.getImage());
 
     }

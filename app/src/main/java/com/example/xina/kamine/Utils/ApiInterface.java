@@ -3,6 +3,7 @@ package com.example.xina.kamine.Utils;
 import com.example.xina.kamine.Model.AddToWishlistModel;
 import com.example.xina.kamine.Model.ChangePswdModel;
 import com.example.xina.kamine.Model.DeleteAddressModel;
+import com.example.xina.kamine.Model.EditAddressModel;
 import com.example.xina.kamine.Model.ForgotPasswordModel;
 import com.example.xina.kamine.Model.HomeDisplayPageModel;
 import com.example.xina.kamine.Model.HomeSliderMainModel;
@@ -158,4 +159,17 @@ public interface ApiInterface {
   @POST("delete_address.php")
   @FormUrlEncoded
   Call<DeleteAddressModel>getdeleteaddress(@Field("addressid")String id);
+
+  @POST("edit_address.php")
+  @FormUrlEncoded
+  Call<EditAddressModel>geteditaddress(@Field("addressid")String id,
+                                       @Field("firstname")String name,
+                                       @Field("lastname")String lname,
+                                       @Field("landmark")String landmark,
+                                       @Field("address")String address,
+                                       @Field("city")String city,
+                                       @Field("state")String State,
+                                       @Field("pincode")String pincode,
+                                       @Field("country")String country,
+                                       @Field("mobile")String mobile);
 }

@@ -33,17 +33,7 @@ public class MainHomeActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.home_screen_main);
-       /* getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(R.layout.custom_toolbar);
-        getActionBar().hide();*/
-       // View view =getSupportActionBar().getCustomView();
-        //getActionBar().hide();
-//        getSupportActionBar().hide();
-        //toolbar = (Toolbar)findViewById(R.id.toolbaar);
-        //getSupportActionBar();
-       // setSupportActionBar(toolbar);
-       // getSupportActionBar().hide();
+
 
         toolbar = findViewById(R.id.toolbar_display_page);
         setSupportActionBar(toolbar);
@@ -51,7 +41,7 @@ public class MainHomeActivity extends AppCompatActivity {
         shupment_toolbar  = findViewById(R.id.toolbar_shipment);
         setSupportActionBar(shupment_toolbar);
 
-        final FrameLayout frameLayout = (FrameLayout)findViewById(R.id.frag_container);
+        final FrameLayout frameLayout = findViewById(R.id.frag_container);
 
 
         FragmentManager manager= getSupportFragmentManager();
@@ -62,7 +52,6 @@ public class MainHomeActivity extends AppCompatActivity {
 
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
-       // bottomNavigationView.setVisibility(View.INVISIBLE);
         bottomNavigationView.setSelectedItemId(R.id.navigation_home);
 
       /*  CoordinatorLayout.LayoutParams layoutParams = (CoordinatorLayout.LayoutParams) bottomNavigationView.getLayoutParams();
@@ -142,9 +131,6 @@ public class MainHomeActivity extends AppCompatActivity {
         bottomNavigationView.setVisibility(View.GONE);
     }
     public void showBottom(){bottomNavigationView.setVisibility(View.VISIBLE);}
-
-
-
 
     void removefragment(Fragment f){
         FragmentManager manager = getSupportFragmentManager();

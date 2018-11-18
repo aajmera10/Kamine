@@ -17,6 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +25,7 @@ import android.widget.Toast;
 import com.example.xina.kamine.Adapter.ProductSliderAdapter;
 import com.example.xina.kamine.Adapter.PicassoImageLoadingService;
 import com.example.xina.kamine.Adapter.ProductsPageAdapter;
+import com.example.xina.kamine.Model.AddToWishlistModel;
 import com.example.xina.kamine.Model.ProductDisplayModel;
 import com.example.xina.kamine.Model.ProductsPageModel;
 import com.example.xina.kamine.Model.SendOTPModel;
@@ -42,11 +44,12 @@ import ss.com.bannerslider.Slider;
 
 public class ProductsPageDisplayFragment extends Fragment {
     Slider slider;
+    ImageView wishlistW;
     RecyclerView rec_seemore,color_recv;
     List<ProductsPageModel> show_product;
     TextView show,hide,mrp,sellprice,discount,productname,productdescription;
     ConstraintLayout showlay;
-    String x;
+    String x,id;
     SharedPreferences sp;
     private ProgressDialog mProgressDialog;
     @Nullable
@@ -65,6 +68,7 @@ public class ProductsPageDisplayFragment extends Fragment {
             activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         slider = view.findViewById(R.id.banner_slider1);
+        wishlistW = view.findViewById(R.id.wishlist);
         slider.setAdapter(new ProductSliderAdapter());
         mrp= view.findViewById(R.id.productcost);
         sellprice = view.findViewById(R.id.productsellprice);
@@ -122,6 +126,7 @@ public class ProductsPageDisplayFragment extends Fragment {
 
         sp = getActivity().getSharedPreferences("pref",0);
         x = sp.getString("idvalproduct","");
+        id = sp.getString("globalD","");
 
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
@@ -148,7 +153,32 @@ public class ProductsPageDisplayFragment extends Fragment {
             }
         });
 
+            wishlistW.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //
+                    showProgressDialog();
+                    ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
+                    Call<AddToWishlistModel>addToWishlistModelCall =apiInterface.getaddtowishlist(id,x);
+                    addToWishlistModelCall.enqueue(new Callback<AddToWishlistModel>() {
+                        @Override
+                        public void onResponse(Call<AddToWishlistModel> call, Response<AddToWishlistModel> response) {
+                            if(response.body().getSuccess()==200){
+                                Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                hideProgressDialog();
+                            }else if (response.body().getSuccess()==202){
+                                Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
+                                hideProgressDialog();
+                            }
+                        }
+                        @Override
+                        public void onFailure(Call<AddToWishlistModel> call, Throwable t) {
+                            Toast.makeText(getContext(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
 
+                }
+            });
 
 
         return view;

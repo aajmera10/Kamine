@@ -93,9 +93,6 @@ public class SavedAddresses extends android.support.v4.app.Fragment {
                         }catch (NullPointerException ex){
                             ex.printStackTrace();
                         }
-
-
-
                 }
 
                 @Override

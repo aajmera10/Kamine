@@ -1,12 +1,17 @@
 package com.example.xina.kamine.Adapter;
 
 import android.app.AlertDialog;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +20,11 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.xina.kamine.Fragments.AddNewAddress;
+import com.example.xina.kamine.Fragments.EditAddressFragment;
+import com.example.xina.kamine.Fragments.ProductListDisplayFragment;
 import com.example.xina.kamine.Model.DeleteAddressModel;
+import com.example.xina.kamine.Model.EditAddressModel;
 import com.example.xina.kamine.Model.LogoutModel;
 import com.example.xina.kamine.Model.SelectAddressCardModel;
 import com.example.xina.kamine.Model.ShowAddressItem;
@@ -30,6 +39,8 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class SelectAddressCardAdapter extends RecyclerView.Adapter<SelectAddressCardAdapter.MyViewHolderOrder> {
 
@@ -82,8 +93,10 @@ public class SelectAddressCardAdapter extends RecyclerView.Adapter<SelectAddress
         TextView name,addressline,landmark,state,city,pincode,mobile,country;
         ConstraintLayout edit,remove;
         RadioButton selectAddress;
+        SharedPreferences sp;
+
         private ProgressDialog mProgressDialog;
-        public MyViewHolderOrder(View itemView) {
+        public MyViewHolderOrder(final View itemView) {
             super(itemView);
             edit = itemView.findViewById(R.id.select_address_edit);
             remove = itemView.findViewById(R.id.select_address_remove);
@@ -105,6 +118,7 @@ public class SelectAddressCardAdapter extends RecyclerView.Adapter<SelectAddress
                     notifyDataSetChanged();
                     ShowAddressItem clickedDataItem = selectaddresslist.get(mSelectedItem);
                     Toast.makeText(selectaddressAdapterContext,clickedDataItem.getId(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(selectaddressAdapterContext,clickedDataItem.getUserid(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -126,13 +140,14 @@ public class SelectAddressCardAdapter extends RecyclerView.Adapter<SelectAddress
                                     if (response.body().getSuccess() == 200){
                                         mSelectedItem = getAdapterPosition();
                                         removeAt(mSelectedItem);
+                                        Toast.makeText(selectaddressAdapterContext, "Deleted Address Successfully", Toast.LENGTH_SHORT).show();
                                     }
                                     hideProgressDialog();
                                 }
                                 @Override
                                 public void onFailure(Call<DeleteAddressModel> call, Throwable t) {
                                    hideProgressDialog();
-                                    Toast.makeText(selectaddressAdapterContext, t.getMessage(), Toast.LENGTH_SHORT).show();
+                                   Toast.makeText(selectaddressAdapterContext, t.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
                             dialog.cancel();
@@ -145,6 +160,58 @@ public class SelectAddressCardAdapter extends RecyclerView.Adapter<SelectAddress
                         }
                     });
                     builder.show();
+                }
+            });
+
+            edit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    mSelectedItem = getAdapterPosition();
+                    notifyDataSetChanged();
+                    ShowAddressItem clickedDataItem = selectaddresslist.get(mSelectedItem);
+                    String firstname= clickedDataItem.getFirstname();
+                    String Lastname= clickedDataItem.getLastname();
+                    String Address= clickedDataItem.getLastname();
+                    String City= clickedDataItem.getCity();
+                    String Country= clickedDataItem.getCountry();
+                    String Landmark= clickedDataItem.getLandmark();
+                    String Mobile= clickedDataItem.getMobile();
+                    String Id= clickedDataItem.getId();
+                    String State= clickedDataItem.getState();
+                    String Userid= clickedDataItem.getUserid();
+                    String pincodex= clickedDataItem.getPincode();
+                    sp = selectaddressAdapterContext.getSharedPreferences("pref", MODE_PRIVATE);
+                    SharedPreferences.Editor eg = sp.edit();
+                    eg.putString("add_id",clickedDataItem.getId());
+                    eg.putBoolean("editAddress",true);
+                    eg.putString("edt_firstname",firstname);
+                    eg.putString("edt_lastname",Lastname);
+                    eg.putString("edt_address",Address);
+                    eg.putString("edt_city",City);
+                    eg.putString("edt_country",Country);
+                    eg.putString("edt_landmark",Landmark);
+                    eg.putString("edt_mobile",Mobile);
+                    eg.putString("edt_id",Id);
+                    eg.putString("edt_state",State);
+                    eg.putString("edt_id",Userid);
+                    eg.putString("edt_pincode",pincodex);
+                    eg.apply();
+
+
+                    EditAddressFragment editAddressFragment = new EditAddressFragment();
+
+                    Bundle b = new Bundle();
+
+                    editAddressFragment.setArguments(b);
+
+                    android.support.v4.app.FragmentManager manager = ((AppCompatActivity)selectaddressAdapterContext).getSupportFragmentManager();
+                    android.support.v4.app.FragmentTransaction transaction = manager.beginTransaction();
+                    transaction.replace(R.id.frag_container, new EditAddressFragment());
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
+
                 }
             });
 
