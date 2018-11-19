@@ -250,8 +250,8 @@ public class HomeFragment extends android.support.v4.app.Fragment {
      men.setOnClickListener(new View.OnClickListener() {
          @Override
          public void onClick(View v) {
-            idm = "1";
-              man = "Men";
+             idm = "1";
+             man = "Men";
              sp = getActivity().getSharedPreferences("Pref",0);
              SharedPreferences.Editor eg = sp.edit();
              eg.putString("second",idm);

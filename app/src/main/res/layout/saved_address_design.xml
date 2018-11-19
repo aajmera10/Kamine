@@ -131,11 +131,6 @@
         android:id="@+id/view19"
         android:layout_width="0dp"
         android:layout_height="0.5dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:background="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -158,6 +153,7 @@
         android:id="@+id/view20"
         android:layout_width="0dp"
         android:layout_height="0.5dp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -170,6 +166,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/view20">
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0.5dp"
+            android:background="#000000"
+            app:layout_constraintBottom_toBottomOf="@+id/view22"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
         <android.support.constraint.ConstraintLayout
             android:id="@+id/select_address_edit"
             android:layout_width="0dp"
@@ -178,6 +183,14 @@
             app:layout_constraintEnd_toStartOf="@+id/view22"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="0dp"
+                android:background="#000000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.example.xina.kamine.Utils.PopinsBold
                 android:id="@+id/textView100"
@@ -195,6 +208,7 @@
             android:id="@+id/view21"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="#000000"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -218,6 +232,14 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/view22"
             app:layout_constraintTop_toTopOf="parent">
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="0dp"
+                android:background="#000000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <com.example.xina.kamine.Utils.PopinsBold
                 android:id="@+id/textView101"

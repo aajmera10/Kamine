@@ -43,12 +43,17 @@
                 android:id="@+id/rec_closet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#DCDCDC"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 android:clipToPadding="false"
                 android:padding="@dimen/item_offset"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view8" />
+                app:layout_constraintTop_toBottomOf="@+id/view8"
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
                 android:id="@+id/textView38"

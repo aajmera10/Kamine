@@ -39,7 +39,6 @@ public class ProductListDisplayFragment extends Fragment {
     private ProgressDialog mProgressDialog;
     TextView tv;
     String text,idx;
-
     ProductDisplayListAdapter recviewadapter;
     List<ProductListDetailI> listcategory;
 
@@ -52,7 +51,7 @@ public class ProductListDisplayFragment extends Fragment {
         recview = view.findViewById(R.id.productrec);
         recview.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_offset);
-        recview.addItemDecoration(new ProductListDisplayFragment.GridSpacingItemDecoration(1, spacingInPixels, true, 0));
+        recview.addItemDecoration(new ProductListDisplayFragment.GridSpacingItemDecoration(2, spacingInPixels, false, 0));
         recview.setHasFixedSize(true);
         recview.setNestedScrollingEnabled(false);
         recviewadapter = new ProductDisplayListAdapter(getContext(),listcategory);

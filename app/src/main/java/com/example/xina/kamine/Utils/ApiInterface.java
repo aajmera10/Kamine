@@ -16,6 +16,7 @@ import com.example.xina.kamine.Model.ProductListModel;
 import com.example.xina.kamine.Model.SaveAddressModel;
 import com.example.xina.kamine.Model.SendOTPModel;
 import com.example.xina.kamine.Model.ShowAddressesModel;
+import com.example.xina.kamine.Model.ShowWishlistModel;
 import com.example.xina.kamine.Model.SignUpDetailModel;
 import com.example.xina.kamine.Model.SocialLoginModel;
 import com.example.xina.kamine.Model.SocialLoginModelApi;
@@ -83,13 +84,7 @@ public interface ApiInterface {
                                           @Field("email")String Email,
                                           @Field("mobile")String mobile,
                                           @Field("dob")String dob);
-/*  @POST("social_login.php")
-  @FormUrlEncoded
-  Call<SocialLoginModel>getsociallogin(@Field("name")String name,
-                                       @Field("mobile")String mobile,
-                                       @Field("gender")String gender,
-                                       @Field("dob")String dob,
-                                       @Field("email")String email);*/
+
 
   @POST("update_profile.php")
   @FormUrlEncoded
@@ -133,7 +128,7 @@ public interface ApiInterface {
   @POST("wishlist.php")
   @FormUrlEncoded
   Call<AddToWishlistModel>getaddtowishlist(@Field("userid")String id,
-                                        @Field("productid")String productid);
+                                         @Field("productid")String productid);
 
   @POST("show_address.php")
   @FormUrlEncoded
@@ -172,4 +167,7 @@ public interface ApiInterface {
                                        @Field("pincode")String pincode,
                                        @Field("country")String country,
                                        @Field("mobile")String mobile);
+  @POST("show_wishlist.php")
+  @FormUrlEncoded
+  Call<ShowWishlistModel>getwishlist(@Field("userid")String id);
 }

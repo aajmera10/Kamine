@@ -22,10 +22,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.xina.kamine.Adapter.ColorSelectAdapter;
 import com.example.xina.kamine.Adapter.ProductSliderAdapter;
 import com.example.xina.kamine.Adapter.PicassoImageLoadingService;
 import com.example.xina.kamine.Adapter.ProductsPageAdapter;
+import com.example.xina.kamine.Adapter.SubCategoryDiaplayAdapter;
 import com.example.xina.kamine.Model.AddToWishlistModel;
+import com.example.xina.kamine.Model.HomeSliderMainDetail;
+import com.example.xina.kamine.Model.ProductDisplayColorItem;
 import com.example.xina.kamine.Model.ProductDisplayModel;
 import com.example.xina.kamine.Model.ProductsPageModel;
 import com.example.xina.kamine.Model.SendOTPModel;
@@ -47,6 +51,8 @@ public class ProductsPageDisplayFragment extends Fragment {
     ImageView wishlistW;
     RecyclerView rec_seemore,color_recv;
     List<ProductsPageModel> show_product;
+    List<ProductDisplayColorItem> productDisplayColorItems;
+    ColorSelectAdapter colorSelectAdapter;
     TextView show,hide,mrp,sellprice,discount,productname,productdescription;
     ConstraintLayout showlay;
     String x,id;
@@ -61,7 +67,6 @@ public class ProductsPageDisplayFragment extends Fragment {
         Toolbar toolbar = view.findViewById(R.id.toolbar_display_page);
         AppCompatActivity activity = (AppCompatActivity)getActivity();
 
-        //activity.getSupportActionBar(toolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar();
         if(activity.getSupportActionBar() != null)
 
@@ -69,7 +74,7 @@ public class ProductsPageDisplayFragment extends Fragment {
 
         slider = view.findViewById(R.id.banner_slider1);
         wishlistW = view.findViewById(R.id.wishlist);
-        slider.setAdapter(new ProductSliderAdapter());
+        //slider.setAdapter(new ProductSliderAdapter());
         mrp= view.findViewById(R.id.productcost);
         sellprice = view.findViewById(R.id.productsellprice);
         discount = view.findViewById(R.id.properoff);
@@ -79,10 +84,6 @@ public class ProductsPageDisplayFragment extends Fragment {
         color_recv = view.findViewById(R.id.color_recv);
 
         rec_seemore.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false));
-        // ItemOffsetDecoration itemDecoration = new ItemOffsetDecoration(getActivity(), R.dimen.item_offset);
-        //int spacingInPixels = getResources().getDimensionPixelSize(R.dimen.item_offset);
-        //recyclerView1.addItemDecoration(new ClosetFragment.GridSpacingItemDecoration(1, spacingInPixels, true, 0));
-        // recyclerView1.addItemDecoration(itemDecoration);
         rec_seemore.setHasFixedSize(true);
         rec_seemore.setNestedScrollingEnabled(false);
 
@@ -128,22 +129,34 @@ public class ProductsPageDisplayFragment extends Fragment {
         x = sp.getString("idvalproduct","");
         id = sp.getString("globalD","");
 
+        color_recv.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false));
+        color_recv.setHasFixedSize(true);
+        color_recv.setNestedScrollingEnabled(false);
+        colorSelectAdapter = new ColorSelectAdapter(getContext(),productDisplayColorItems);
+
 
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
         Call<ProductDisplayModel> call = apiInterface.getprodyctdisplaypage(x);
         call.enqueue(new Callback<ProductDisplayModel>() {
             @Override
             public void onResponse(Call<ProductDisplayModel> call, Response<ProductDisplayModel> response) {
-                hideProgressDialog();
-                //if(response.body().getSuccess() == 200){
+
+
                     productname.setText(response.body().getProductDisplayDetail().getProductName());
                     discount.setText(response.body().getProductDisplayDetail().getDiscount());
                     mrp.setText(response.body().getProductDisplayDetail().getMrp());
                     productdescription.setText(response.body().getProductDisplayDetail().getDescription());
                     sellprice.setText(response.body().getProductDisplayDetail().getPrice());
-                //}
+                   // response.body().getProductDisplayDetail().getColor().get(1);
+                productDisplayColorItems = response.body().getProductDisplayDetail().getColor();
+                colorSelectAdapter.setProductDisplayColorItems(productDisplayColorItems);
+                color_recv.setAdapter(colorSelectAdapter);
+                List<ProductDisplayColorItem> ProductDisplayColorItem = response.body().getProductDisplayDetail().getColor();
+                Slider.init(new PicassoImageLoadingService(getActivity()));
+                slider.setAdapter(new ProductSliderAdapter(getContext(),ProductDisplayColorItem));
+                //}  hideProgressDialog();
                 Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
-
+                hideProgressDialog();
             }
 
             @Override
@@ -164,6 +177,7 @@ public class ProductsPageDisplayFragment extends Fragment {
                         @Override
                         public void onResponse(Call<AddToWishlistModel> call, Response<AddToWishlistModel> response) {
                             if(response.body().getSuccess()==200){
+                                response.body().getAddToWishlistDetail().getId();
                                 Toast.makeText(getContext(), response.body().getMessage(), Toast.LENGTH_SHORT).show();
                                 hideProgressDialog();
                             }else if (response.body().getSuccess()==202){

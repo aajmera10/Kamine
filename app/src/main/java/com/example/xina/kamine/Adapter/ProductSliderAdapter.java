@@ -1,15 +1,28 @@
 package com.example.xina.kamine.Adapter;
 
+import android.content.Context;
+
+import com.example.xina.kamine.Model.HomeSliderMainDetail;
+import com.example.xina.kamine.Model.ProductDisplayColorItem;
 import com.example.xina.kamine.R;
+
+import java.util.List;
 
 import ss.com.bannerslider.adapters.SliderAdapter;
 import ss.com.bannerslider.viewholder.ImageSlideViewHolder;
 
 public class ProductSliderAdapter extends SliderAdapter {
 
+    private Context mCtx;
+    private List<ProductDisplayColorItem> ProductDisplayColorItem;
+
+    public ProductSliderAdapter(Context mCtx, List<ProductDisplayColorItem> ProductDisplayColorItem) {
+        this.mCtx = mCtx;
+        this.ProductDisplayColorItem = ProductDisplayColorItem;
+    }
     @Override
     public int getItemCount() {
-        return 3;
+        return ProductDisplayColorItem.size();
     }
 
     @Override
@@ -34,7 +47,10 @@ public class ProductSliderAdapter extends SliderAdapter {
             case 3:
                 viewHolder.bindImageSlide(R.drawable.img2);
                 break;
-        }
+
+                }
+                ProductDisplayColorItem item = ProductDisplayColorItem.get(position);
+                        viewHolder.bindImageSlide(item.getColorImgUrl());
     }
 
 }

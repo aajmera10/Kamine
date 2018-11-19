@@ -28,8 +28,9 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="outputName" value="ic_favorite_black_24dp" />
-                            <entry key="sourceFile" value="C:\Users\Akshat Ajmera" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="outputName" value="ic_edit" />
+                            <entry key="sourceFile" value="E:\Kamine\edit.svg" />
                           </map>
                         </option>
                       </PersistentState>

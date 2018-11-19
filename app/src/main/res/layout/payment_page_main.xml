@@ -50,7 +50,7 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/areoright" />
+                    app:srcCompat="@drawable/areobottem" />
             </android.support.constraint.ConstraintLayout>
 
             <android.support.constraint.ConstraintLayout
@@ -200,7 +200,7 @@
                     android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/areoright" />
+                    app:srcCompat="@drawable/areobottem" />
 
                 <ImageView
                     android:id="@+id/imageView11"
@@ -384,7 +384,7 @@
                     android:layout_marginBottom="8dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginStart="8dp"
-                    android:text="By Choosing This Option You Agree Our Terms and Conditions"
+                    android:text="By Choosing This Option You Agree Kamine's Terms and Conditions"
                     android:textSize="10sp" />
 
                 <!--   <TextView
