@@ -41,6 +41,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
+import com.facebook.accountkit.AccountKit;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -212,6 +213,7 @@ public class LoginScreen extends Fragment implements GoogleApiClient.OnConnectio
 
         mLoginManager = LoginManager.getInstance();
         callbackManager = CallbackManager.Factory.create();
+        com.facebook.accountkit.AccessToken accessToken = AccountKit.getCurrentAccessToken();
 
         mLoginManager.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override

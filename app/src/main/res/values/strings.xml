@@ -1,12 +1,22 @@
-<resources>
-    <string name="app_name">Kamine</string>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name" translatable="false">Kamine</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="empty_old_pswd">Please Enter Your Old Password</string>
     <string name="empty_new_pswd">Your New Password Cannot Be Empty</string>
     <string name="empty_confirm_pswd">This Field Cannot Be Empty</string>
-    <string name="pswd_not_match">Passwords Do Not Match</string>
-    <string name="facebook_app_id">301838683757612</string>
-    <string name="fb_login_protocol_scheme">fb301838683757612</string>
+    <string name="pswd_not_match" translatable="false">Passwords Do Not Match</string>
+    <string name="facebook_app_id" tools:ignore="MissingTranslation">301838683757612</string>
+    <string name="account_kit_client_token" translatable="false">9ba677f29f7c24e295432f55fd81f8bc</string>
+    <string name="fb_login_protocol_scheme" tools:ignore="MissingTranslation">fb301838683757612</string>
+    <string name="ak_login_protocol_scheme">ak301838683757612</string>
+    <!-- Fragment Tags -->
+    <string name="tag_fragment_home">Home Fragment</string>
+    <string name="tag_login_screen">Login Screen</string>
+    <string name="tag_accountFragment">accountFragment</string>
+    <string name="tag_collectionFragment">collectionFragment</string>
+    <string name="tag_closetFragment">closetFragment</string>
+    <string name="tag_cartFragement">cartFragement</string>
+
 </resources>

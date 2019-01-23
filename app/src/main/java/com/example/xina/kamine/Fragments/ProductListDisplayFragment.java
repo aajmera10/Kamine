@@ -107,7 +107,7 @@ public class ProductListDisplayFragment extends Fragment {
             mProgressDialog.hide();
         }
 
-
+          //  int a = 5-8*8+(55%2);
     }
 
     private void replaceFragment(android.support.v4.app.Fragment f) {

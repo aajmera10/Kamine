@@ -26,6 +26,13 @@ import com.example.xina.kamine.R;
 
 public class MainHomeActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
+    ///fragments
+    private HomeFragment homeFragment;
+    private AccountFragment accountFragment;
+    private LoginScreen loginScreen;
+    private CollectionFragment collectionFragment;
+    private ClosetFragment closetFragment;
+    private CartFragement cartFragement;
     Toolbar toolbar, shupment_toolbar;
     SharedPreferences sp;
     @SuppressLint("NewApi")
@@ -41,12 +48,14 @@ public class MainHomeActivity extends AppCompatActivity {
         shupment_toolbar  = findViewById(R.id.toolbar_shipment);
         setSupportActionBar(shupment_toolbar);
 
+
+
+
         final FrameLayout frameLayout = findViewById(R.id.frag_container);
-
-
         FragmentManager manager= getSupportFragmentManager();
+        homeFragment = new HomeFragment();
         FragmentTransaction transaction  = manager.beginTransaction();
-        transaction.replace(R.id.frag_container,new HomeFragment());
+        transaction.replace(R.id.frag_container,homeFragment,getString(R.string.tag_fragment_home));
         transaction.commit();
 
 
@@ -82,14 +91,42 @@ public class MainHomeActivity extends AppCompatActivity {
                         switch (item.getItemId()) {
                             case R.id.navigation_account:
                                 if (sp.getBoolean("hasloggedIN",true)){
-                                    removefragment(new AccountFragment());
+                                    accountFragment = new AccountFragment();
+                                    FragmentManager manager = getSupportFragmentManager();
+                                    FragmentTransaction transaction  = manager.beginTransaction();
+                                    transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
+                                            R.anim.fragment_slide_left_exit,
+                                            R.anim.fragment_slide_right_enter,
+                                            R.anim.fragment_slide_right_exit);
+                                    transaction.replace(R.id.frag_container,accountFragment,getString(R.string.tag_accountFragment));
+                                    transaction.addToBackStack(getString(R.string.tag_accountFragment));
+                                    transaction.commit();
                                 }else{
-                                    removefragment(new LoginScreen());
+                                    //removefragment(new LoginScreen());
+                                    loginScreen = new LoginScreen();
+                                    FragmentManager manager = getSupportFragmentManager();
+                                    FragmentTransaction transaction  = manager.beginTransaction();
+                                    transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
+                                            R.anim.fragment_slide_left_exit,
+                                            R.anim.fragment_slide_right_enter,
+                                            R.anim.fragment_slide_right_exit);
+                                    transaction.replace(R.id.frag_container,loginScreen,getString(R.string.tag_login_screen));
+                                    transaction.addToBackStack(getString(R.string.tag_login_screen));
+                                    transaction.commit();
                                 }
                                 break;
                             case R.id.navigation_collections:
              //                   item.setIcon(R.drawable.iconred3);
                                 removefragment(new CollectionFragment());
+                                collectionFragment = new CollectionFragment();
+                                FragmentManager manager = getSupportFragmentManager();
+                                FragmentTransaction transaction = manager.beginTransaction();
+                                transaction.setCustomAnimations(R.anim.fragment_slide_left_enter,
+                                        R.anim.fragment_slide_left_exit,
+                                        R.anim.fragment_slide_right_enter,
+                                        R.anim.fragment_slide_right_exit);
+
+
 
                                 break;
                             case R.id.navigation_home:

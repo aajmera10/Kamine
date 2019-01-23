@@ -53,7 +53,9 @@ dependencies {
     implementation 'com.ss.bannerslider:bannerslider:2.0.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.squareup.picasso:picasso:2.71828'
+    implementation 'com.facebook.shimmer:shimmer:0.1.0@aar'
     implementation 'de.hdodenhof:circleimageview:2.2.0'
+    implementation 'com.facebook.android:account-kit-sdk:4.39.0'
 
 
 }

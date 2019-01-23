@@ -39,6 +39,7 @@ import com.example.xina.kamine.Utils.ApiInterface;
 
 import java.lang.invoke.ConstantCallSite;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -89,16 +90,16 @@ public class ProductsPageDisplayFragment extends Fragment {
 
         show_product = new ArrayList<>();
 
-        show_product.add(new ProductsPageModel("Kamine", "Rs.590", "Rs.750", "25% off", "the best design at the price", R.drawable.image));
-        show_product.add(new ProductsPageModel("Kamine", "Rs.590", "RS.750", "25% off", "the best design at the price", R.drawable.image2));
-        show_product.add(new ProductsPageModel("Kamine", "Rs.590", "750", "25%", "the best design at the price", R.drawable.image3));
-        show_product.add(new ProductsPageModel("Kamine", "Rs.590", "750", "25%", "the best design at the price", R.drawable.image));
-        show_product.add(new ProductsPageModel("Kamine", "Rs.590", "750", "25%", "the best design at the price", R.drawable.image2));
-        show_product.add(new ProductsPageModel("Kamine", "Rs.590", "750", "25%", "the best design at the price", R.drawable.image3));
-        show_product.add(new ProductsPageModel("Kamine", "Rs.590", "750", "25%", "the best design at the price", R.drawable.image));
-        show_product.add(new ProductsPageModel("Kamine", "Rs.590", "750", "25%", "the best design at the price", R.drawable.image2));
-        show_product.add(new ProductsPageModel("Kamine", "Rs.590", "750", "25%", "the best design at the price", R.drawable.image3));
-        show_product.add(new ProductsPageModel("Kamine", "Rs.590", "750", "25%", "the best design at the price", R.drawable.image));
+        show_product.add(new ProductsPageModel("Kamine", "590", "750", "25", "the best design at the price", R.drawable.image));
+        show_product.add(new ProductsPageModel("Kamine", "590", "750", "25", "the best design at the price", R.drawable.image2));
+        show_product.add(new ProductsPageModel("Kamine", "590", "750", "25", "the best design at the price", R.drawable.image3));
+        show_product.add(new ProductsPageModel("Kamine", "590", "750", "25", "the best design at the price", R.drawable.image));
+        show_product.add(new ProductsPageModel("Kamine", "590", "750", "25", "the best design at the price", R.drawable.image2));
+        show_product.add(new ProductsPageModel("Kamine", "590", "750", "25", "the best design at the price", R.drawable.image3));
+        show_product.add(new ProductsPageModel("Kamine", "590", "750", "25", "the best design at the price", R.drawable.image));
+        show_product.add(new ProductsPageModel("Kamine", "590", "750", "25", "the best design at the price", R.drawable.image2));
+        show_product.add(new ProductsPageModel("Kamine", "590", "750", "25", "the best design at the price", R.drawable.image3));
+
 
 
         ProductsPageAdapter ppadapt = new ProductsPageAdapter(getActivity(), show_product);
@@ -129,7 +130,8 @@ public class ProductsPageDisplayFragment extends Fragment {
         x = sp.getString("idvalproduct","");
         id = sp.getString("globalD","");
 
-        color_recv.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false));
+        //color_recv.setLayoutManager(new GridLayoutManager(getActivity(),GridLayoutManager.HORIZONTAL,1, false));
+        color_recv.setLayoutManager(new GridLayoutManager(getActivity(),2,GridLayoutManager.VERTICAL, false));
         color_recv.setHasFixedSize(true);
         color_recv.setNestedScrollingEnabled(false);
         colorSelectAdapter = new ColorSelectAdapter(getContext(),productDisplayColorItems);
@@ -140,14 +142,15 @@ public class ProductsPageDisplayFragment extends Fragment {
         call.enqueue(new Callback<ProductDisplayModel>() {
             @Override
             public void onResponse(Call<ProductDisplayModel> call, Response<ProductDisplayModel> response) {
-
+                sp = getActivity().getSharedPreferences("pref",0);
+                int c =    sp.getInt("colorpos",0);
 
                     productname.setText(response.body().getProductDisplayDetail().getProductName());
                     discount.setText(response.body().getProductDisplayDetail().getDiscount());
                     mrp.setText(response.body().getProductDisplayDetail().getMrp());
                     productdescription.setText(response.body().getProductDisplayDetail().getDescription());
                     sellprice.setText(response.body().getProductDisplayDetail().getPrice());
-                   // response.body().getProductDisplayDetail().getColor().get(1);
+
                 productDisplayColorItems = response.body().getProductDisplayDetail().getColor();
                 colorSelectAdapter.setProductDisplayColorItems(productDisplayColorItems);
                 color_recv.setAdapter(colorSelectAdapter);

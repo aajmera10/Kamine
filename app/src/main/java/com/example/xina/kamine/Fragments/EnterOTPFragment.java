@@ -57,6 +57,7 @@ public class EnterOTPFragment extends Fragment {
        // OTP_password = sp.getString("password_signup","");
         usr_no.setText(OTP_mobile);
 
+/*
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,20 +104,7 @@ public class EnterOTPFragment extends Fragment {
              }
             }
         });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*/
 
 
 

@@ -13,10 +13,11 @@
 
     <android.support.design.widget.BottomNavigationView
         android:layout_width="0dp"
+        android:background="@color/white"
         android:theme="@style/Widget.Design.BottomNavigationView"
         android:layout_height="wrap_content"
+        app:elevation="16dp"
         android:id="@+id/bottom_navigation"
-        app:itemBackground="@color/white"
         app:itemIconTint="@drawable/bottom_nav_bg"
         app:itemTextColor="@drawable/bottom_nav_bg"
         app:layout_constraintBottom_toBottomOf="parent"

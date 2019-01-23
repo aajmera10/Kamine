@@ -89,6 +89,7 @@ public class SignupFragment extends Fragment {
         signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                removefragment(new EnterOTPFragment());
                 int gen = group.getCheckedRadioButtonId();
                 if(gen==R.id.radioButton4){
                     gender="male";
@@ -181,7 +182,7 @@ public class SignupFragment extends Fragment {
                                 editor.apply();
 
 
-                                removefragment(new EnterOTPFragment());
+                              //  removefragment(new EnterOTPFragment());
 
 
                             }else if(response.body().getSuccess()==201){

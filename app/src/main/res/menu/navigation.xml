@@ -4,6 +4,7 @@
     <item
         android:id="@+id/navigation_account"
         android:icon="@drawable/iconred31_2"
+        android:enabled="true"
         android:title="My Account" />
 
     <item
